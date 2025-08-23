@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG Pulse Monitor</title>
+    <!-- Inter font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-card {
+            background-color: #2D3748;
+            border: 1px solid #4A5568;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            height: 40vh;
+            width: 100%;
+        }
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 p-6 sm:p-10">
+
+    <!-- Header Section -->
+    <header class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2">
+            ESG Pulse Monitor
+        </h1>
+        <p class="text-xl text-gray-400">July 2025 Overview</p>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        
+        <!-- CO2 Intensity Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-semibold mb-2 text-cyan-400">CO2 Intensity</h2>
+                <p class="text-5xl font-bold mb-1">
+                    <span id="co2-intensity-value">2.13</span> 
+                    <span class="text-2xl text-gray-400">tCO₂/tcs</span>
+                </p>
+                <p class="text-md text-gray-400">vs Target: 2.09 tCO₂/tcs</p>
+            </div>
+            <div class="mt-4">
+                <canvas id="co2LineChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Crude Steel Production Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-semibold mb-2 text-lime-400">Crude Steel Production</h2>
+                <p class="text-5xl font-bold mb-1">
+                    <span id="cs-production-value">0.59</span> 
+                    <span class="text-2xl text-gray-400">MnT</span>
+                </p>
+                <p class="text-md text-gray-400">This Month</p>
+            </div>
+            <div class="mt-4 flex flex-col items-center">
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                    <div class="bg-lime-500 h-2.5 rounded-full" style="width: 92%;"></div>
+                </div>
+                <p class="text-sm mt-2 text-gray-400">YTD Growth: 92% of target</p>
+            </div>
+        </div>
+
+        <!-- Scrap Input Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-semibold mb-2 text-orange-400">Scrap Input</h2>
+                <p class="text-5xl font-bold mb-1">
+                    <span id="scrap-input-value">6.0</span> 
+                    <span class="text-2xl text-gray-400">%</span>
+                </p>
+                <p class="text-md text-gray-400">vs Target: 7.1%</p>
+            </div>
+            <div class="mt-4">
+                <div class="w-full flex justify-between items-center text-sm">
+                    <div class="flex-1 text-center">
+                        <span class="block text-2xl font-bold text-gray-300">7.89</span>
+                        <span class="block text-gray-500">External KT</span>
+                    </div>
+                    <div class="flex-1 text-center">
+                        <span class="block text-2xl font-bold text-gray-300">29.07</span>
+                        <span class="block text-gray-500">Internal KT</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detailed Charts Section -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        
+        <!-- Down Stream Emission Intensity Chart -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h2 class="text-xl font-semibold mb-4 text-pink-400">Down Stream Emission Intensity (July)</h2>
+            <div class="chart-container">
+                <canvas id="downstreamBarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- CSR Beneficiaries Donut Chart -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h2 class="text-xl font-semibold mb-4 text-purple-400">CSR Beneficiaries (July)</h2>
+            <div class="chart-container">
+                <canvas id="csrDonutChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Metrics Section -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+        <!-- RE from Grid Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-2 text-indigo-400">RE from Grid</h3>
+            <p class="text-4xl font-bold mb-1">
+                <span id="re-grid-value">33</span>
+                <span class="text-xl text-gray-400">%</span>
+            </p>
+            <p class="text-sm text-gray-400">Met Target of 33%</p>
+        </div>
+
+        <!-- Trees Planted Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-2 text-green-400">Trees Planted</h3>
+            <p class="text-4xl font-bold mb-1">
+                <span id="trees-planted-value">1,870</span>
+            </p>
+            <p class="text-sm text-gray-400">Survival Rate: 95%</p>
+        </div>
+
+        <!-- Water Consumption Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-2 text-blue-400">Water Consumption</h3>
+            <p class="text-4xl font-bold mb-1">
+                <span id="water-consumption-value">1.401</span>
+                <span class="text-xl text-gray-400">m³/tcs</span>
+            </p>
+            <p class="text-sm text-gray-400">Recycled & Reused: 5,08,924 m³</p>
+        </div>
+        
+        <!-- CSR Spent Card -->
+        <div class="bg-card rounded-xl p-6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-2 text-yellow-400">CSR Spent</h3>
+            <p class="text-4xl font-bold mb-1">
+                <span id="csr-spent-value">8.88</span>
+                <span class="text-xl text-gray-400">Cr.</span>
+            </p>
+            <p class="text-sm text-gray-400">July 2025</p>
+        </div>
+    </section>
+
+    <!-- Insights & Summary Section -->
+    <section class="bg-gray-800 rounded-xl p-6 shadow-lg mb-12">
+        <h2 class="text-2xl font-semibold mb-4 text-white">July 2025 Highlights & Insights</h2>
+        <ul class="list-disc list-inside space-y-2 text-gray-300">
+            <li><span class="font-medium text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
+            <li><span class="font-medium text-orange-300">Scrap Input Increase:</span> Scrap input percentage increased from 5.6% in June to 6.0% in July, showing positive progress towards the 7.1% target.</li>
+            <li><span class="font-medium text-blue-300">High Water Reuse:</span> Over 5 lakh cubic meters of water were recycled and reused, a strong indicator of water stewardship.</li>
+            <li><span class="font-medium text-red-300">Increased CO2 Intensity:</span> CO2 Intensity increased to 2.13 tCO₂/tcs, moving further away from the target of 2.09 tCO₂/tcs. This area requires attention.</li>
+            <li><span class="font-medium text-purple-300">Significant Beneficiaries:</span> The CSR initiatives reached over 1.7 lakh people in the health sector alone, demonstrating strong community impact.</li>
+        </ul>
+    </section>
+
+    <script>
+        // Data parsed from the provided dashboard PDF
+        const dashboardData = {
+            co2: {
+                labels: ['May', 'Jun', 'Jul'],
+                emissions: [2.15, 2.08, 2.13],
+                target: [2.09, 2.09, 2.09],
+            },
+            production: {
+                july: 0.59,
+            },
+            scrap: {
+                july: 6.0,
+                target: 7.1,
+                external: 7.89,
+                internal: 29.07,
+            },
+            reGrid: {
+                july: 33,
+                target: 33,
+            },
+            downstreamEmissions: {
+                labels: ['Pune', 'Khopoli', 'Gandhidham'],
+                values: [0.04, 0.17, 0.15],
+            },
+            trees: {
+                planted: 1870,
+                survival: 95,
+            },
+            water: {
+                specificConsumption: 1.401,
+                recycled: 508924,
+            },
+            csr: {
+                spent: 8.88,
+                beneficiaries: {
+                    health: 170793,
+                    education: 96294,
+                    skill: 28051,
+                    environment: 3900,
+                    community: 12800,
+                    sports: 27077
+                }
+            }
+        };
+
+        window.onload = function() {
+            // Chart configuration for CO2 Intensity
+            const co2Ctx = document.getElementById('co2LineChart').getContext('2d');
+            new Chart(co2Ctx, {
+                type: 'line',
+                data: {
+                    labels: dashboardData.co2.labels,
+                    datasets: [
+                        {
+                            label: 'CO2 Emissions Intensity',
+                            data: dashboardData.co2.emissions,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            tension: 0.4,
+                            fill: false,
+                            pointStyle: 'circle',
+                            pointRadius: 6,
+                            pointHoverRadius: 10,
+                        },
+                        {
+                            label: 'Intensity Target',
+                            data: dashboardData.co2.target,
+                            borderColor: 'rgb(75, 192, 192)',
+                            borderDash: [5, 5],
+                            tension: 0,
+                            fill: false,
+                            pointStyle: false,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: 'white' },
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: 'white' },
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white',
+                                usePointStyle: true,
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart configuration for Down Stream Emissions
+            const downstreamCtx = document.getElementById('downstreamBarChart').getContext('2d');
+            new Chart(downstreamCtx, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.downstreamEmissions.labels,
+                    datasets: [{
+                        label: 'tCO₂/ton',
+                        data: dashboardData.downstreamEmissions.values,
+                        backgroundColor: [
+                            'rgba(255, 159, 64, 0.7)',
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                        ],
+                        borderColor: [
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: 'white' },
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: 'white' },
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + ' tCO₂/ton';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart configuration for CSR Beneficiaries
+            const csrCtx = document.getElementById('csrDonutChart').getContext('2d');
+            const csrData = Object.values(dashboardData.csr.beneficiaries);
+            const csrLabels = Object.keys(dashboardData.csr.beneficiaries).map(key => key.charAt(0).toUpperCase() + key.slice(1));
+
+            new Chart(csrCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: csrLabels,
+                    datasets: [{
+                        label: 'Beneficiaries',
+                        data: csrData,
+                        backgroundColor: [
+                            'rgba(52, 211, 153, 0.7)', // green
+                            'rgba(96, 165, 250, 0.7)', // blue
+                            'rgba(167, 139, 250, 0.7)', // purple
+                            'rgba(250, 204, 21, 0.7)', // yellow
+                            'rgba(244, 63, 94, 0.7)', // rose
+                            'rgba(239, 68, 68, 0.7)', // red
+                        ],
+                        borderColor: 'rgb(30, 41, 59)',
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: 'white',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw.toLocaleString() + ' beneficiaries';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>

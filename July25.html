@@ -422,5 +422,14 @@
             document.getElementById('unit-selector').addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
         };
     </script>
+    <!-- Beta Overlay -->
+    <div id="beta-overlay" class="fixed inset-0 z-[9999] pointer-events-none select-none">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <div class="px-6 py-3 rounded-xl border-4 border-red-600/80 bg-red-600/10 dark:bg-red-500/10 text-red-700 dark:text-red-300 font-extrabold text-2xl sm:text-3xl tracking-widest drop-shadow-lg backdrop-blur-sm">
+                In BETA Testing, DONOT REFER THIS
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

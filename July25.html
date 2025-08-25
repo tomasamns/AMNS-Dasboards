@@ -71,15 +71,18 @@
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-            /* --- BETA overlays and helpers --- */
-        .beta-ribbon { position: fixed; top: 14px; right: -60px; transform: rotate(35deg); z-index: 60; }
-        .beta-ribbon span { display:inline-block; padding: 6px 90px; font-weight:800; text-transform:uppercase; }
-        #beta-watermark { pointer-events: none; }
-        #beta-watermark span { letter-spacing: 0.18em; }
-        @media print { #beta-overlay, #beta-banner, #beta-watermark, .beta-ribbon { display: none !important; } }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-6 sm:p-10 transition-colors duration-300">
+
+    <!-- BETA Overlay -->
+    <div id="beta-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0" id="beta-modal">
+            <h3 class="text-2xl font-bold text-yellow-500 mb-4">BETA Testing</h3>
+            <p class="text-gray-700 dark:text-gray-300 mb-6">This dashboard is currently in a testing phase. The data displayed is for demonstration purposes only and should not be used for official reference.</p>
+            <button id="dismiss-beta" class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Acknowledge & Continue</button>
+        </div>
+    </div>
 
     <!-- Header Section -->
     <header class="relative text-center mb-12">
@@ -88,7 +91,7 @@
             ESG Pulse Monitor
         </h1>
         <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">July 2025 Overview</p>
-        <p id="greeting-line" class="mt-1 text-lg text-gray-600 dark:text-gray-300"></p>
+        <div id="dynamic-greeting" class="flex items-center justify-center gap-2 text-lg text-gray-500 dark:text-gray-400 mt-1"></div>
 
         <!-- Theme Toggle Button -->
         <div class="absolute top-0 right-0 flex items-center gap-3">
@@ -119,29 +122,6 @@
         </div>
     </header>
 
-    <!-- === BETA Overlays === -->
-    <!-- Top fixed banner -->
-    <div id="beta-banner" class="fixed top-0 left-0 right-0 z-50 bg-amber-200/90 dark:bg-amber-900/80 text-amber-900 dark:text-amber-100 text-center px-4 py-2 shadow font-semibold tracking-wide">
-        BETA TESTING — Internal only. <span class="underline">Do not refer to this externally</span>.
-    </div>
-
-    <!-- Diagonal ribbon -->
-    <div class="beta-ribbon z-[55]"><span class="bg-rose-500 text-white rounded">BETA</span></div>
-
-    <!-- Watermark across the page -->
-    <div id="beta-watermark" class="fixed inset-0 z-40 flex items-center justify-center select-none">
-        <span class="text-6xl sm:text-8xl font-extrabold text-rose-500/10 dark:text-rose-300/10">BETA • DO NOT REFER</span>
-    </div>
-
-    <!-- Full-screen modal overlay (dismissable for this session) -->
-    <div id="beta-overlay" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-xl mx-4 text-center shadow-2xl border border-gray-200 dark:border-gray-700">
-            <h3 class="text-2xl font-extrabold text-rose-600 dark:text-rose-400 mb-2">BETA — Do Not Circulate</h3>
-            <p class="text-gray-700 dark:text-gray-300 mt-1">Please do not refer or share externally</p>
-            <button id="beta-dismiss" class="mt-5 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow hover:shadow-md transition">I understand</button>
-        </div>
-    </div>
-
     <!-- Filter Buttons for Monthly, Quarterly, YTD -->
     <div class="flex justify-center mb-8">
         <div class="inline-flex p-1 bg-gray-200 dark:bg-gray-700 rounded-full">
@@ -155,14 +135,26 @@
     <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         
         <!-- CO2 Intensity Card -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg flex flex-col justify-between">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+            </div>
+            <div class="absolute top-4 right-4 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                    Placeholder for CO2 Intensity information.
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                </div>
+            </div>
             <div>
                 <h2 class="text-xl font-semibold mb-2 text-cyan-600 dark:text-cyan-400">CO2 Intensity</h2>
                 <p class="text-5xl font-bold mb-1">
                     <span id="co2-intensity-value">2.13</span> 
                     <span class="text-2xl text-gray-500 dark:text-gray-400">tCO₂/tcs</span>
                 </p>
-                <p class="text-md text-gray-500 dark:text-gray-400">vs Target: 2.09 tCO₂/tcs</p>
+                <p id="co2-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400">vs Target: 2.09 tCO₂/tcs</p>
             </div>
             <div class="mt-4">
                 <canvas id="co2LineChart"></canvas>
@@ -170,7 +162,19 @@
         </div>
 
         <!-- Crude Steel Production Card -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg flex flex-col justify-between">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+            </div>
+            <div class="absolute top-4 right-4 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                    Placeholder for Crude Steel Production information.
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                </div>
+            </div>
             <div>
                 <h2 class="text-xl font-semibold mb-2 text-lime-600 dark:text-lime-400">Crude Steel Production</h2>
                 <div class="flex items-baseline">
@@ -202,7 +206,19 @@
         </div>
 
         <!-- Scrap Input Card -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg flex flex-col justify-between">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+            </div>
+            <div class="absolute top-4 right-4 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                    Placeholder for Scrap Input information.
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                </div>
+            </div>
             <div>
                 <h2 class="text-xl font-semibold mb-2 text-orange-600 dark:text-orange-400">Scrap Input</h2>
                 <p class="text-5xl font-bold mb-1">
@@ -230,7 +246,19 @@
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         
         <!-- Down Stream Emission Intensity Chart -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
+            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+            </div>
+            <div class="absolute top-4 right-4 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                    Placeholder for Down Stream Emission information.
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                </div>
+            </div>
             <h2 class="text-xl font-semibold mb-4 text-pink-600 dark:text-pink-400">Down Stream Emission Intensity (July)</h2>
             <div class="flex space-x-2 mb-4">
                 <button class="filter-btn active">All Locations</button>
@@ -244,7 +272,19 @@
         </div>
 
         <!-- CSR Beneficiaries Donut Chart -->
-        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-lg">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
+             <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+            </div>
+            <div class="absolute top-4 right-4 group">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                    Placeholder for CSR Beneficiaries information.
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                </div>
+            </div>
             <h2 class="text-xl font-semibold mb-4 text-purple-600 dark:text-purple-400">CSR Beneficiaries (July)</h2>
             <div class="chart-container">
                 <canvas id="csrDonutChart"></canvas>
@@ -253,7 +293,19 @@
     </section>
 
     <!-- Insights & Summary Section -->
-    <section class="bg-gray-200 dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-12">
+    <section class="relative bg-gray-200 dark:bg-gray-800 rounded-xl p-6 pt-12 shadow-lg mb-12">
+        <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+            <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+        </div>
+        <div class="absolute top-4 right-4 group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                Placeholder for Highlights & Insights information.
+                <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+            </div>
+        </div>
         <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">July 2025 Highlights & Insights</h2>
         <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
             <li><span class="font-medium text-green-600 dark:text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
@@ -270,78 +322,54 @@
         const lightIcon = document.getElementById('theme-icon-light');
         const darkIcon = document.getElementById('theme-icon-dark');
 
-        function applyTheme(mode){
-            const isDark = mode === 'dark';
-            document.documentElement.classList.toggle('dark', isDark);
-            lightIcon.classList.toggle('hidden', isDark);
-            darkIcon.classList.toggle('hidden', !isDark);
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-        function getISTHour(){
-            try {
-                const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit' });
-                return parseInt(fmt.format(new Date()), 10);
-            } catch (e) {
-                return new Date().getHours(); // fallback to local hour
+        function setAutoTheme() {
+            // Get current time in UTC
+            const now = new Date();
+            // Convert to IST (UTC+5:30)
+            const istOffset = 5.5 * 60 * 60 * 1000;
+            const istTime = new Date(now.getTime() + istOffset);
+            const istHour = istTime.getUTCHours(); // Use getUTCHours because we've already offset the time
+
+            const isNight = istHour >= 17 || istHour < 6;
+
+            // Remove existing theme classes
+            document.documentElement.classList.remove('dark', 'light');
+            
+            if (isNight) {
+                document.documentElement.classList.add('dark');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'dark'); // Also set it in local storage so charts render correctly
+            } else {
+                document.documentElement.classList.add('light'); // Explicitly add light class
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
             }
         }
-        function isISTDarkHours(){
-            const h = getISTHour();
-            return (h >= 17 || h < 6); // 17:00–05:59 dark
-        }
-
-        // Initial theme: respect manual override if present; otherwise auto by IST time window
-        const hasOverride = localStorage.getItem('theme_override') === '1';
-        if (hasOverride) {
-            applyTheme(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
-        } else {
-            applyTheme(isISTDarkHours() ? 'dark' : 'light');
-        }
-        // Offset body for fixed banner
-        (function(){ const banner = document.getElementById('beta-banner'); if (banner) document.body.classList.add('pt-12'); })();
+        
+        // Run auto-theme on initial load
+        setAutoTheme();
 
         themeToggleBtn.addEventListener('click', () => {
-            const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-            applyTheme(next);
-            localStorage.setItem('theme_override','1'); // user manually chose
-            updateDashboard(currentDataView); // re-render charts with new colors
+            // Toggle the dark class on the root <html> element
+            document.documentElement.classList.toggle('dark');
+            
+            // Update the icon visibility
+            lightIcon.classList.toggle('hidden');
+            darkIcon.classList.toggle('hidden');
+
+            // Save the user's preference to localStorage
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+            
+            // Re-render charts with updated colors
+            updateDashboard(currentDataView);
         });
 
-        // BETA modal overlay — reappears every 10s
-        (function(){
-            const overlay = document.getElementById('beta-overlay');
-            const dismiss = document.getElementById('beta-dismiss');
-            function show(){ if (overlay) overlay.classList.remove('hidden'); }
-            function hide(){ if (overlay) overlay.classList.add('hidden'); }
-            if (dismiss) dismiss.addEventListener('click', hide);
-            // Ensure it pops every 10 seconds regardless of dismiss
-            setInterval(show, 10000);
-        })();
-
-        // --- GREETING (IST) ---
-        function greetingFromISTHour(h){
-            if (h >= 6 && h < 12) return 'Good morning';
-            if (h >= 12 && h < 17) return 'Good afternoon';
-            if (h >= 17 && h < 21) return 'Good evening';
-            return 'Good night';
-        }
-        function updateGreeting(){
-            const h = getISTHour();
-            const greeting = greetingFromISTHour(h);
-            const el = document.getElementById('greeting-line');
-            if (el) el.textContent = greeting;
-        }
-        // Initial greeting + refresh every 60s
-        updateGreeting();
-        setInterval(() => {
-            updateGreeting();
-            // If user has not overridden theme, adjust at boundaries automatically
-            if (localStorage.getItem('theme_override') !== '1') {
-                const desired = isISTDarkHours() ? 'dark' : 'light';
-                const cur = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                if (desired !== cur) applyTheme(desired);
-            }
-        }, 60000);
 
         // --- DASHBOARD DATA ---
         const dashboardData = {
@@ -363,6 +391,7 @@
             },
             quarterly: {
                 overviewText: 'Q2 FY25 Overview',
+                co2: { labels: [], emissions: [], target: [], average: 0 }, // Placeholder
                 production: { value: 1.83, valueInTonnes: 1828671, growth: 94, periodLabel: 'Q2 FY25', text: 'Quarterly Growth: 94% of target' },
                 scrap: { value: 6.2, target: 7.1, external: 23.50, internal: 85.10 },
                 reGrid: { value: 34 },
@@ -373,6 +402,7 @@
             },
             ytd: {
                 overviewText: 'Year-to-Date Overview',
+                co2: { labels: [], emissions: [], target: [], average: 0 }, // Placeholder
                 production: { value: 2.47, valueInTonnes: 2466247, growth: 93, periodLabel: 'April 2025 to latest month', text: 'YTD Growth: 93% of target' },
                 scrap: { value: 5.9, target: 7.1, external: 54.20, internal: 210.30 },
                 reGrid: { value: 32 },
@@ -384,55 +414,37 @@
         };
         
         // --- DATA SERIES ---
-        const co2IntensitySeries = [
-    { ym: '2024-04', mtd: 2.16, ytd: 2.17 },
-    { ym: '2024-05', mtd: 2.19, ytd: 2.17 },
-    { ym: '2024-06', mtd: 2.25, ytd: 2.18 },
-    { ym: '2024-07', mtd: 2.27, ytd: 2.20 },
-    { ym: '2024-08', mtd: 2.17, ytd: 2.19 },
-    { ym: '2024-09', mtd: 2.22, ytd: 2.20 },
-    { ym: '2024-10', mtd: 2.05, ytd: 2.18 },
-    { ym: '2024-11', mtd: 2.03, ytd: 2.17 },
-    { ym: '2024-12', mtd: 2.15, ytd: 2.16 },
-    { ym: '2025-01', mtd: 2.13, ytd: 2.16 },
-    { ym: '2025-02', mtd: 2.10, ytd: 2.16 },
-    { ym: '2025-03', mtd: 2.21, ytd: 2.16 },
-    { ym: '2025-04', mtd: 2.09, ytd: 2.09 },
-    { ym: '2025-05', mtd: 2.15, ytd: 2.12 },
-    { ym: '2025-06', mtd: 2.08, ytd: 2.10 },
-    { ym: '2025-07', mtd: 2.13, ytd: 2.11 }
-];
+        const fullDataSeries = [
+            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00, cumulativeEmissionYTD: 5717780.00, cumulativeProductionYTD: 2637584.00 },
+            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00, cumulativeEmissionYTD: 7095614.00, cumulativeProductionYTD: 3266362.00 },
+            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00, cumulativeEmissionYTD: 8406308.00, cumulativeProductionYTD: 3849462.00 },
+            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00, cumulativeEmissionYTD: 9744182.00, cumulativeProductionYTD: 4438016.00 },
+            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00, cumulativeEmissionYTD: 11112704.00, cumulativeProductionYTD: 5069300.00 },
+            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1160302.00, cumulativeEmissionYTD: 12273006.00, cumulativeProductionYTD: 5592545.00 },
+            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1359679.00, cumulativeEmissionYTD: 13632685.00, cumulativeProductionYTD: 6253915.00 },
+            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00, cumulativeEmissionYTD: 14964466.00, cumulativeProductionYTD: 6908510.00 },
+            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00, cumulativeEmissionYTD: 16327965.00, cumulativeProductionYTD: 7542147.00 },
+            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00, cumulativeEmissionYTD: 17456085.00, cumulativeProductionYTD: 8072575.00 },
+            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00, cumulativeEmissionYTD: 18610226.00, cumulativeProductionYTD: 8622262.00 },
+            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00, cumulativeEmissionYTD: 19942849.00, cumulativeProductionYTD: 9226014.00 },
+            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1247688.00, cumulativeEmissionYTD: 1247688.00, cumulativeProductionYTD: 596980.00 },
+            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1263198.00, cumulativeEmissionYTD: 2510886.00, cumulativeProductionYTD: 1184514.07 },
+            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1339847.00, cumulativeEmissionYTD: 3850733.00, cumulativeProductionYTD: 1828671.12 },
+            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1358037.00, cumulativeEmissionYTD: 5208770.00, cumulativeProductionYTD: 2466247.12 },
+        ];
 
-        const productionSeries = [
-    { ym: '2024-04', ton: 653105.00 },
-    { ym: '2024-05', ton: 628778.00 },
-    { ym: '2024-06', ton: 583100.00 },
-    { ym: '2024-07', ton: 588554.00 },
-    { ym: '2024-08', ton: 631284.00 },
-    { ym: '2024-09', ton: 523245.00 },
-    { ym: '2024-10', ton: 661370.00 },
-    { ym: '2024-11', ton: 654595.00 },
-    { ym: '2024-12', ton: 633637.00 },
-    { ym: '2025-01', ton: 530428.00 },
-    { ym: '2025-02', ton: 549687.00 },
-    { ym: '2025-03', ton: 603752.00 },
-    { ym: '2025-04', ton: 596980.00 },
-    { ym: '2025-05', ton: 587534.07 },
-    { ym: '2025-06', ton: 644157.05 },
-    { ym: '2025-07', ton: 637576.00 }
-];
 
         // Helpers for month dropdown
         const toMonthLabel = (ym) => {
             const [y, m] = ym.split('-').map(Number);
             const d = new Date(y, m - 1, 1);
-            return d.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+            return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
         };
         const fyFromYM = (ym) => {
             const [y, m] = ym.split('-').map(Number);
             return `FY${m >= 4 ? y + 1 : y}`;
         };
-        const latestYM = productionSeries[productionSeries.length - 1].ym;
+        const latestYM = fullDataSeries[fullDataSeries.length - 1].ym;
 
         // ==== Fancy Month Popover (FY25 & FY26) ====
         function monthsForFY(fyLabel) {
@@ -443,7 +455,7 @@
             for (let m = 1; m <= 3; m++) months.push(`${startYear+1}-${String(m).padStart(2,'0')}`);
             return months;
         }
-        const AVAILABLE_MONTHS = new Set(productionSeries.map(d => d.ym));
+        const AVAILABLE_MONTHS = new Set(fullDataSeries.map(d => d.ym));
         let selectedMonthYM = latestYM;
 
         // ===== Quarter helpers =====
@@ -451,22 +463,28 @@
         function toYM(y,m){ return `${y}-${String(m).padStart(2,'0')}`; }
         function fyFromYMonth(y,m){ return `FY${m>=4 ? y+1 : y}`; }
         function quarterFromMonth(m){ if(m>=4&&m<=6) return 1; if(m>=7&&m<=9) return 2; if(m>=10&&m<=12) return 3; return 4; }
+        
         function quarterRangeForYM(ym){
             const {y,m} = ymToParts(ym); const q = quarterFromMonth(m);
             if(q===1){ return { start: toYM(y,4), end: toYM(y,6), q, fy: fyFromYMonth(y,4) }; }
             if(q===2){ return { start: toYM(y,7), end: toYM(y,9), q, fy: fyFromYMonth(y,7) }; }
             if(q===3){ return { start: toYM(y,10), end: toYM(y,12), q, fy: fyFromYMonth(y,10) }; }
-            return { start: toYM(y,1), end: toYM(y,3), q, fy: fyFromYMonth(y,1) }; // Q4
+            return { start: toYM(y,1), end: toYM(y,3), q: 4, fy: fyFromYMonth(y,1) }; // Q4
         }
+        
         function previousQuarterRangeForYM(ym){
-            const {y,m} = ymToParts(ym); const q = quarterFromMonth(m);
-            if(q===1){ // prev is Q4 of same calendar year (Jan–Mar)
-                return { start: toYM(y,1), end: toYM(y,3), q: 4, fy: fyFromYMonth(y,1) };
+            const {y,m} = ymToParts(ym);
+            let prev_q_year = y;
+            let prev_q_month_start = m-3;
+            if(prev_q_month_start < 1){
+                prev_q_month_start = prev_q_month_start + 12;
+                prev_q_year = y - 1;
             }
-            if(q===2){ return { start: toYM(y,4), end: toYM(y,6), q: 1, fy: fyFromYMonth(y,4) }; }
-            if(q===3){ return { start: toYM(y,7), end: toYM(y,9), q: 2, fy: fyFromYMonth(y,7) }; }
-            return { start: toYM(y,10), end: toYM(y,12), q: 3, fy: fyFromYMonth(y,10) }; // q===4
+            const temp_date = new Date(prev_q_year, prev_q_month_start-1, 1);
+            const prev_q_start_ym = toYM(temp_date.getFullYear(), temp_date.getMonth()+1);
+            return quarterRangeForYM(prev_q_start_ym);
         }
+
         function monthsBetweenInclusive(startYM,endYM){
             const out=[]; let {y:ys,m:ms}=ymToParts(startYM); const {y:ye,m:me}=ymToParts(endYM);
             while(ys<ye || (ys===ye && ms<=me)){ out.push(toYM(ys,ms)); ms++; if(ms>12){ ms=1; ys++; } }
@@ -478,49 +496,67 @@
             const ye = endYM.split('-')[0];
             return `${fmt(startYM)}–${fmt(endYM)} ${ye}`;
         }
-        function setQuarterlyFromRange(startYM,endYM, q, fy){
-            // Production data
-            const totalProduction = sumBetween(startYM,endYM);
-            lastQuarterUsed = { startYM, endYM };
-            dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
-            dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
-            dashboardData.quarterly.production.value = +(totalProduction/1e6).toFixed(2);
-            dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(startYM,endYM)})`;
-            dashboardData.quarterly.production.text = 'Quarterly Production';
-            dashboardData.quarterly.production.growth = 100;
-
-            // CO2 data
-            const quarterMonths = monthsBetweenInclusive(startYM, endYM);
-            const co2DataForQuarter = co2IntensitySeries.filter(d => quarterMonths.includes(d.ym));
-            const avgIntensity = co2DataForQuarter.reduce((sum, d) => sum + d.mtd, 0) / co2DataForQuarter.length;
+        
+        function calculateQuarterlyIntensity(quarterRange) {
+            const quarterMonths = monthsBetweenInclusive(quarterRange.start, quarterRange.end);
+            const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
             
-            dashboardData.quarterly.co2 = {
-                labels: [`Q${q} ${fy}`],
-                emissions: [avgIntensity.toFixed(2)],
-                target: [2.09]
-            };
+            if(dataForQuarter.length !== 3) return null;
+
+            const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
+            const totalEmission = dataForQuarter.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
+
+            return totalProduction > 0 ? (totalEmission / totalProduction) : 0;
         }
+
         function handleQuarterlySwitch(){
-            // 1) Try previous quarter of the selected month
-            const prev = previousQuarterRangeForYM(selectedMonthYM);
-            if(prev && hasAllMonths(prev.start, prev.end)){
-                setQuarterlyFromRange(prev.start, prev.end, prev.q, prev.fy);
-                updateDashboard('quarterly');
-                return;
+            let pastQuartersData = [];
+            let currentQuarter = previousQuarterRangeForYM(selectedMonthYM);
+
+            for (let i = 0; i < 3; i++) {
+                if (currentQuarter && hasAllMonths(currentQuarter.start, currentQuarter.end)) {
+                    const intensity = calculateQuarterlyIntensity(currentQuarter);
+                    if (intensity !== null) {
+                        pastQuartersData.unshift({ // Add to the beginning to maintain chronological order
+                            label: `${currentQuarter.fy} Q${currentQuarter.q}`,
+                            intensity: intensity,
+                            range: currentQuarter
+                        });
+                    }
+                    currentQuarter = previousQuarterRangeForYM(currentQuarter.start);
+                } else {
+                    break; // Stop if a full quarter is not available
+                }
             }
-            // 2) Fallback: current quarter of the selected month (e.g., Apr 2024 => Q1 FY25)
-            const cur = quarterRangeForYM(selectedMonthYM);
-            if(hasAllMonths(cur.start, cur.end)){
-                setQuarterlyFromRange(cur.start, cur.end, cur.q, cur.fy);
+            
+            if (pastQuartersData.length > 0) {
+                const mostRecentQuarter = pastQuartersData[pastQuartersData.length - 1];
+                
+                // Update CO2 data for the chart
+                dashboardData.quarterly.co2 = {
+                    labels: pastQuartersData.map(q => q.label),
+                    emissions: pastQuartersData.map(q => q.intensity),
+                    target: pastQuartersData.map(() => 2.09),
+                    average: mostRecentQuarter.intensity.toFixed(2),
+                    title: mostRecentQuarter.label
+                };
+
+                // Update production data for the card
+                const { start, end, q, fy } = mostRecentQuarter.range;
+                const quarterMonths = monthsBetweenInclusive(start, end);
+                const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
+                const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
+                lastQuarterUsed = { startYM: start, endYM: end };
+                
+                dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
+                dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
+                dashboardData.quarterly.production.value = +(totalProduction / 1e6).toFixed(2);
+                dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(start, end)})`;
+
                 updateDashboard('quarterly');
-                return;
             }
-            // 3) Last resort: earliest complete quarter in the data
-            const earliestYM = productionSeries[0].ym;
-            const earliestQ = quarterRangeForYM(earliestYM);
-            setQuarterlyFromRange(earliestQ.start, earliestQ.end, earliestQ.q, earliestQ.fy);
-            updateDashboard('quarterly');
         }
+
         function buildMonthPopover() {
             const wrap = document.getElementById('month-popover-content');
             if (!wrap) return;
@@ -557,7 +593,15 @@
                     if (available) {
                         btn.addEventListener('click', () => {
                             selectedMonthYM = ym;
-                            updateMonthlyFor(ym);
+                            if(currentDataView === 'quarterly') {
+                                handleQuarterlySwitch();
+                            } else if (currentDataView === 'ytd') {
+                                // YTD is independent, but we can still update the monthly data in the background
+                                updateMonthlyFor(ym);
+                                updateDashboard('ytd'); // Re-render YTD view
+                            } else {
+                                updateMonthlyFor(ym);
+                            }
                             buildMonthPopover();
                             closeMonthPopover();
                         });
@@ -584,74 +628,24 @@
             if (pop.classList.contains('hidden')) openMonthPopover(); else closeMonthPopover();
         }
 
-        function populateMonthDropdown() {
-            const sel = document.getElementById('month-selector');
-            sel.innerHTML = '';
-            // Group by FY
-            const groups = {};
-            productionSeries.forEach(d => {
-                const fy = fyFromYM(d.ym);
-                if (!groups[fy]) groups[fy] = [];
-                groups[fy].push(d.ym);
-            });
-            Object.keys(groups).sort().forEach(fy => {
-                const og = document.createElement('optgroup');
-                og.label = fy;
-                groups[fy].sort().forEach(ym => {
-                    const opt = document.createElement('option');
-                    opt.value = ym;
-                    opt.textContent = toMonthLabel(ym);
-                    og.appendChild(opt);
-                });
-                sel.appendChild(og);
-            });
-            sel.value = latestYM; // default to latest
-        }
-
         function updateMonthlyFor(ym) {
-            const rec = productionSeries.find(r => r.ym === ym);
+            const rec = fullDataSeries.find(r => r.ym === ym);
             if (!rec) return;
             const selLabel = toMonthLabel(ym);
-            // Update monthly card
             dashboardData.monthly.overviewText = `${selLabel} Overview`;
-            dashboardData.monthly.production.valueInTonnes = +rec.ton.toFixed(2);
-            dashboardData.monthly.production.value = +(rec.ton / 1e6).toFixed(2);
+            dashboardData.monthly.production.valueInTonnes = +rec.productionMTD.toFixed(2);
+            dashboardData.monthly.production.value = +(rec.productionMTD / 1e6).toFixed(2);
             dashboardData.monthly.production.periodLabel = selLabel;
-            dashboardData.monthly.production.text = 'Monthly Production';
-            dashboardData.monthly.production.growth = 100;
-            // Reflect change in UI
             updateDashboard('monthly');
         }
 
-        const sumBetween = (startYM, endYM) => productionSeries
-            .filter(d => d.ym >= startYM && d.ym <= endYM)
-            .reduce((s, d) => s + d.ton, 0);
+        // Initialize with latest month data
+        const latestData = fullDataSeries.find(d => d.ym === latestYM);
+        dashboardData.monthly.overviewText = `${toMonthLabel(latestYM)} Overview`;
+        dashboardData.monthly.production.valueInTonnes = +latestData.productionMTD.toFixed(2);
+        dashboardData.monthly.production.value = +(latestData.productionMTD / 1e6).toFixed(2);
+        dashboardData.monthly.production.periodLabel = toMonthLabel(latestYM);
 
-        // Monthly (latest)
-        const latest = productionSeries[productionSeries.length - 1];
-        dashboardData.monthly.overviewText = 'July 2025 Overview';
-        dashboardData.monthly.production.valueInTonnes = +latest.ton.toFixed(2);
-        dashboardData.monthly.production.value = +(latest.ton / 1e6).toFixed(2);
-        dashboardData.monthly.production.text = 'Monthly Production';
-        dashboardData.monthly.production.growth = 100;
-
-        // Quarterly: Q1 FY26 (Apr–Jun 2025)
-        const q1fy26 = sumBetween('2025-04', '2025-06');
-        dashboardData.quarterly.overviewText = 'Q1 FY26 Overview';
-        dashboardData.quarterly.production.valueInTonnes = +q1fy26.toFixed(2);
-        dashboardData.quarterly.production.value = +(q1fy26 / 1e6).toFixed(2);
-        dashboardData.quarterly.production.periodLabel = 'Q1 FY26 (Apr–Jun 2025)';
-        dashboardData.quarterly.production.text = 'Quarterly Production';
-        dashboardData.quarterly.production.growth = 100;
-
-        // YTD: FY26 Apr–Jul 2025
-        const ytdfy26 = sumBetween('2025-04', '2025-07');
-        dashboardData.ytd.overviewText = 'FY26 YTD Overview';
-        dashboardData.ytd.production.valueInTonnes = +ytdfy26.toFixed(2);
-        dashboardData.ytd.production.value = +(ytdfy26 / 1e6).toFixed(2);
-        dashboardData.ytd.production.periodLabel = 'Apr–Jul 2025';
-        dashboardData.ytd.production.text = 'YTD Total';
-        dashboardData.ytd.production.growth = 100;
 
         // --- CHARTING AND DASHBOARD LOGIC ---
         let downstreamBarChartInstance = null;
@@ -689,7 +683,20 @@
                         y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } },
                         x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
                     },
-                    plugins: { legend: { labels: { color: colors.legendColor, usePointStyle: true } } }
+                    plugins: { 
+                        legend: { 
+                            position: 'top',
+                            align: 'start', // Align legend to the left
+                            labels: { 
+                                color: colors.legendColor, 
+                                usePointStyle: true,
+                                filter: function(legendItem, chartData) {
+                                    // Only show the legend item if the label is not 'Intensity Target'
+                                    return legendItem.text !== 'Intensity Target';
+                                }
+                            } 
+                        } 
+                    }
                 }
             });
         }
@@ -768,7 +775,6 @@
             const canvas = document.getElementById('prodMiniChart');
             if(!wrap || !canvas) return;
 
-            // Hide for YTD
             if(view === 'ytd'){
                 wrap.classList.add('hidden');
                 if (prodMiniChartInstance) { prodMiniChartInstance.destroy(); prodMiniChartInstance = null; }
@@ -783,27 +789,24 @@
             let labels = [], data = [], bg=[], border=[];
             
             if(view === 'monthly'){
-                // Use selectedMonthYM (defaults to latest)
-                const idx = productionSeries.findIndex(d => d.ym === selectedMonthYM);
-                const i = idx >= 0 ? idx : productionSeries.length - 1;
+                const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
+                const i = idx >= 0 ? idx : fullDataSeries.length - 1;
                 const start = Math.max(0, i - 2);
-                const subset = productionSeries.slice(start, i + 1);
+                const subset = fullDataSeries.slice(start, i + 1);
                 labels = subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'}));
-                data = subset.map(d => d.ton);
+                data = subset.map(d => d.productionMTD);
                 
-                // New aesthetic color scheme for monthly view
                 const activeColor = '#5A95F8';
-                const lightShade = '#A9C7FB'; // Lighter, opaque shade
+                const lightShade = '#A9C7FB'; 
 
                 bg = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
                 border = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
 
             } else if(view === 'quarterly'){
-                // Use lastQuarterUsed (set during handleQuarterlySwitch)
                 const range = lastQuarterUsed;
                 const yms = monthsBetweenInclusive(range.startYM, range.endYM);
                 labels = yms.map(ym => new Date(ym+'-01').toLocaleString('en-US',{month:'short'}));
-                data = yms.map(ym => (productionSeries.find(r => r.ym === ym) || {ton:0}).ton);
+                data = yms.map(ym => (fullDataSeries.find(r => r.ym === ym) || {ton:0}).productionMTD);
                 bg = yms.map(() => 'rgba(59,130,246,0.75)');
                 border = yms.map(() => 'rgb(59,130,246)');
             }
@@ -820,7 +823,7 @@
                             beginAtZero:true, 
                             grid:{ color: colors.gridColor }, 
                             ticks:{ color: colors.ticksColor, callback:(v)=> (v/1e6).toFixed(1) },
-                            suggestedMax: maxDataValue * 1.2 // Add 20% padding for labels
+                            suggestedMax: maxDataValue * 1.2 
                         },
                         x:{ grid:{ display:false }, ticks:{ color: colors.ticksColor }}
                     },
@@ -882,6 +885,36 @@
             document.getElementById('internal-scrap').textContent = data.scrap.internal;
         }
 
+        function setDynamicGreeting() {
+            const greetingEl = document.getElementById('dynamic-greeting');
+            if (!greetingEl) return;
+
+            const now = new Date();
+            const istOffset = 5.5 * 60 * 60 * 1000;
+            const istTime = new Date(now.getTime() + istOffset);
+            const istHour = istTime.getUTCHours();
+
+            let greetingText = '';
+            let iconSvg = '';
+
+            if (istHour >= 5 && istHour < 12) {
+                greetingText = 'Good Morning';
+                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
+            } else if (istHour >= 12 && istHour < 17) {
+                greetingText = 'Good Afternoon';
+                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
+            } else if (istHour >= 17 && istHour < 21) {
+                greetingText = 'Good Evening';
+                iconSvg = `<svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16"></path></svg>`;
+            } else {
+                greetingText = 'Good Night';
+                iconSvg = `<svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
+            }
+
+            greetingEl.innerHTML = `${iconSvg}<span>${greetingText}</span>`;
+        }
+
+
         function updateDashboard(view) {
             currentDataView = view;
             document.querySelectorAll('.time-filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -890,31 +923,44 @@
             updateMetrics(currentData);
 
             let co2ChartData;
+            const co2Subtitle = document.getElementById('co2-intensity-subtitle');
+
             if (view === 'monthly') {
-                const idx = co2IntensitySeries.findIndex(d => d.ym === selectedMonthYM);
-                const i = idx >= 0 ? idx : co2IntensitySeries.length - 1;
-                const start = Math.max(0, i - 2); // Get current and previous two months
-                const subset = co2IntensitySeries.slice(start, i + 1);
+                co2Subtitle.textContent = 'vs Target: 2.09 tCO₂/tcs';
+                const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
+                const i = idx >= 0 ? idx : fullDataSeries.length - 1;
+                const start = Math.max(0, i - 2); 
+                const subset = fullDataSeries.slice(start, i + 1);
                 
                 co2ChartData = {
                     labels: subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'})),
-                    emissions: subset.map(d => d.mtd),
-                    target: subset.map(() => 2.09) // Assuming target is constant
+                    emissions: subset.map(d => d.totalAbsEmissionMTD / d.productionMTD),
+                    target: subset.map(() => 2.09) 
                 };
-                // Update the main metric display
-                document.getElementById('co2-intensity-value').textContent = subset[subset.length - 1].mtd.toFixed(2);
+                const latestIntensity = subset[subset.length-1].totalAbsEmissionMTD / subset[subset.length-1].productionMTD;
+                document.getElementById('co2-intensity-value').textContent = latestIntensity.toFixed(2);
+
             } else if (view === 'ytd') {
-                const ytdRecord = co2IntensitySeries.find(d => d.ym === selectedMonthYM);
+                const fy25Record = fullDataSeries.find(d => d.ym === '2025-03');
+                const fy26Record = fullDataSeries[fullDataSeries.length - 1]; // Latest record
+
+                const fy25Intensity = fy25Record.cumulativeEmissionYTD / fy25Record.cumulativeProductionYTD;
+                const fy26Intensity = fy26Record.cumulativeEmissionYTD / fy26Record.cumulativeProductionYTD;
+                
+                const latestMonthLabel = toMonthLabel(fy26Record.ym).split(' ')[0];
+                co2Subtitle.textContent = `YTD FY26 (till ${latestMonthLabel})`;
+
                 co2ChartData = {
-                    labels: [`YTD ${toMonthLabel(selectedMonthYM)}`],
-                    emissions: [ytdRecord ? ytdRecord.ytd : 0],
-                    target: [2.09]
+                    labels: ['FY25', 'YTD FY26'],
+                    emissions: [fy25Intensity, fy26Intensity],
+                    target: [2.09, 2.09]
                 };
-                 document.getElementById('co2-intensity-value').textContent = ytdRecord ? ytdRecord.ytd.toFixed(2) : 'N/A';
-            }
-            else if (view === 'quarterly') {
+                 document.getElementById('co2-intensity-value').textContent = fy26Intensity.toFixed(2);
+
+            } else if (view === 'quarterly') {
                 co2ChartData = currentData.co2;
-                document.getElementById('co2-intensity-value').textContent = co2ChartData.emissions[0];
+                document.getElementById('co2-intensity-value').textContent = currentData.co2.average;
+                co2Subtitle.textContent = `${currentData.co2.title} Average Intensity`;
             }
             
             renderCo2Chart(co2ChartData);
@@ -924,6 +970,28 @@
         }
 
         window.onload = function() {
+            // BETA Overlay Logic
+            const betaOverlay = document.getElementById('beta-overlay');
+            const betaModal = document.getElementById('beta-modal');
+            const dismissBtn = document.getElementById('dismiss-beta');
+            
+            // Animate modal in
+            setTimeout(() => {
+                betaModal.classList.remove('scale-95', 'opacity-0');
+                betaModal.classList.add('scale-100', 'opacity-100');
+            }, 100);
+
+            dismissBtn.addEventListener('click', () => {
+                betaOverlay.style.opacity = 0;
+                setTimeout(() => {
+                    betaOverlay.style.display = 'none';
+                }, 300);
+            });
+
+            // Set dynamic greeting
+            setDynamicGreeting();
+
+            // Dashboard initialization
             updateDashboard('monthly');
             // time filters
             document.getElementById('filter-monthly').addEventListener('click', () => updateDashboard('monthly'));

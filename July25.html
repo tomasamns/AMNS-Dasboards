@@ -71,6 +71,12 @@
             color: white;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+            /* --- BETA overlays and helpers --- */
+        .beta-ribbon { position: fixed; top: 14px; right: -60px; transform: rotate(35deg); z-index: 60; }
+        .beta-ribbon span { display:inline-block; padding: 6px 90px; font-weight:800; text-transform:uppercase; }
+        #beta-watermark { pointer-events: none; }
+        #beta-watermark span { letter-spacing: 0.18em; }
+        @media print { #beta-overlay, #beta-banner, #beta-watermark, .beta-ribbon { display: none !important; } }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-6 sm:p-10 transition-colors duration-300">
@@ -82,9 +88,26 @@
             ESG Pulse Monitor
         </h1>
         <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">July 2025 Overview</p>
+        <p id="greeting-line" class="mt-1 text-lg text-gray-600 dark:text-gray-300"></p>
 
         <!-- Theme Toggle Button -->
-        <div class="absolute top-0 right-0">
+        <div class="absolute top-0 right-0 flex items-center gap-3">
+            <!-- Custom Month Popover -->
+            <div class="relative">
+                <button id="month-popover-btn" aria-expanded="false" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 ring-2 ring-indigo-300/60 hover:ring-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 transition">
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </button>
+                <div id="month-popover" class="hidden absolute right-0 mt-3 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 z-50">
+                    <div id="month-popover-content"></div>
+                </div>
+            </div>
+
+            <!-- Theme Toggle Button -->
             <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -95,6 +118,29 @@
             </button>
         </div>
     </header>
+
+    <!-- === BETA Overlays === -->
+    <!-- Top fixed banner -->
+    <div id="beta-banner" class="fixed top-0 left-0 right-0 z-50 bg-amber-200/90 dark:bg-amber-900/80 text-amber-900 dark:text-amber-100 text-center px-4 py-2 shadow font-semibold tracking-wide">
+        BETA TESTING — Internal only. <span class="underline">Do not refer to this externally</span>.
+    </div>
+
+    <!-- Diagonal ribbon -->
+    <div class="beta-ribbon z-[55]"><span class="bg-rose-500 text-white rounded">BETA</span></div>
+
+    <!-- Watermark across the page -->
+    <div id="beta-watermark" class="fixed inset-0 z-40 flex items-center justify-center select-none">
+        <span class="text-6xl sm:text-8xl font-extrabold text-rose-500/10 dark:text-rose-300/10">BETA • DO NOT REFER</span>
+    </div>
+
+    <!-- Full-screen modal overlay (dismissable for this session) -->
+    <div id="beta-overlay" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-xl mx-4 text-center shadow-2xl border border-gray-200 dark:border-gray-700">
+            <h3 class="text-2xl font-extrabold text-rose-600 dark:text-rose-400 mb-2">BETA — Do Not Circulate</h3>
+            <p class="text-gray-700 dark:text-gray-300">This dashboard is undergoing testing. Data and visuals may change. Please do not reference or share externally.</p>
+            <button id="beta-dismiss" class="mt-5 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow hover:shadow-md transition">I understand</button>
+        </div>
+    </div>
 
     <!-- Filter Buttons for Monthly, Quarterly, YTD -->
     <div class="flex justify-center mb-8">
@@ -148,6 +194,10 @@
                     <div id="cs-production-bar" class="bg-lime-500 h-2.5 rounded-full" style="width: 92%;"></div>
                 </div>
                 <p id="cs-production-text" class="text-sm mt-2 text-gray-500 dark:text-gray-400">YTD Growth: 92% of target</p>
+                <!-- Mini bar chart: last 3 months / selected quarter -->
+                <div id="prodMiniWrap" class="mt-4 w-full h-28">
+                    <canvas id="prodMiniChart" class="w-full h-full"></canvas>
+                </div>
             </div>
         </div>
 
@@ -220,44 +270,87 @@
         const lightIcon = document.getElementById('theme-icon-light');
         const darkIcon = document.getElementById('theme-icon-dark');
 
-        // Check for saved theme in localStorage and apply it
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            darkIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.remove('dark');
-            lightIcon.classList.remove('hidden');
+        function applyTheme(mode){
+            const isDark = mode === 'dark';
+            document.documentElement.classList.toggle('dark', isDark);
+            lightIcon.classList.toggle('hidden', isDark);
+            darkIcon.classList.toggle('hidden', !isDark);
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        function getISTHour(){
+            try {
+                const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit' });
+                return parseInt(fmt.format(new Date()), 10);
+            } catch (e) {
+                return new Date().getHours(); // fallback to local hour
+            }
+        }
+        function isISTDarkHours(){
+            const h = getISTHour();
+            return (h >= 17 || h < 6); // 17:00–05:59 dark
         }
 
-        themeToggleBtn.addEventListener('click', () => {
-            // Toggle the dark class on the root <html> element
-            document.documentElement.classList.toggle('dark');
-            
-            // Update the icon visibility
-            lightIcon.classList.toggle('hidden');
-            darkIcon.classList.toggle('hidden');
+        // Initial theme: respect manual override if present; otherwise auto by IST time window
+        const hasOverride = localStorage.getItem('theme_override') === '1';
+        if (hasOverride) {
+            applyTheme(localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
+        } else {
+            applyTheme(isISTDarkHours() ? 'dark' : 'light');
+        }
+        // Offset body for fixed banner
+        (function(){ const banner = document.getElementById('beta-banner'); if (banner) document.body.classList.add('pt-12'); })();
 
-            // Save the user's preference to localStorage
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
-            
-            // Re-render charts with updated colors
-            updateDashboard(currentDataView);
+        themeToggleBtn.addEventListener('click', () => {
+            const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(next);
+            localStorage.setItem('theme_override','1'); // user manually chose
+            updateDashboard(currentDataView); // re-render charts with new colors
         });
 
+        // BETA modal overlay dismiss (session only)
+        (function(){
+            const overlay = document.getElementById('beta-overlay');
+            const dismiss = document.getElementById('beta-dismiss');
+            if (sessionStorage.getItem('beta_ack') === '1') {
+                overlay.classList.add('hidden');
+            }
+            if (dismiss) {
+                dismiss.addEventListener('click', () => {
+                    sessionStorage.setItem('beta_ack','1');
+                    overlay.classList.add('hidden');
+                });
+            }
+        })();
+
+        // --- GREETING (IST) ---
+        function greetingFromISTHour(h){
+            if (h >= 6 && h < 12) return 'Good morning';
+            if (h >= 12 && h < 17) return 'Good afternoon';
+            if (h >= 17 && h < 21) return 'Good evening';
+            return 'Good night';
+        }
+        function updateGreeting(){
+            const h = getISTHour();
+            const greeting = greetingFromISTHour(h);
+            const el = document.getElementById('greeting-line');
+            if (el) el.textContent = greeting;
+        }
+        // Initial greeting + refresh every 60s
+        updateGreeting();
+        setInterval(() => {
+            updateGreeting();
+            // If user has not overridden theme, adjust at boundaries automatically
+            if (localStorage.getItem('theme_override') !== '1') {
+                const desired = isISTDarkHours() ? 'dark' : 'light';
+                const cur = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                if (desired !== cur) applyTheme(desired);
+            }
+        }, 60000);
 
         // --- DASHBOARD DATA ---
         const dashboardData = {
             monthly: {
                 overviewText: 'July 2025 Overview',
-                co2: {
-                    labels: ['Apr', 'May', 'Jun', 'Jul'],
-                    emissions: [2.09, 2.15, 2.08, 2.13],
-                    target: [2.09, 2.09, 2.09, 2.09],
-                },
                 production: {
                     value: 0.64,
                     valueInTonnes: 637576,
@@ -274,7 +367,6 @@
             },
             quarterly: {
                 overviewText: 'Q2 FY25 Overview',
-                co2: { labels: ['Q2 2025', 'Q3 2025'], emissions: [2.11, 2.13], target: [2.09, 2.09] },
                 production: { value: 1.83, valueInTonnes: 1828671, growth: 94, periodLabel: 'Q2 FY25', text: 'Quarterly Growth: 94% of target' },
                 scrap: { value: 6.2, target: 7.1, external: 23.50, internal: 85.10 },
                 reGrid: { value: 34 },
@@ -285,7 +377,6 @@
             },
             ytd: {
                 overviewText: 'Year-to-Date Overview',
-                co2: { labels: ['YTD Jul 2025'], emissions: [2.11], target: [2.09] },
                 production: { value: 2.47, valueInTonnes: 2466247, growth: 93, periodLabel: 'April 2025 to latest month', text: 'YTD Growth: 93% of target' },
                 scrap: { value: 5.9, target: 7.1, external: 54.20, internal: 210.30 },
                 reGrid: { value: 32 },
@@ -295,11 +386,283 @@
                 csr: { spent: 60.15, beneficiaries: { health: 1200000, education: 850000, skill: 220000, environment: 32000, community: 105000, sports: 240000 } }
             }
         };
+        
+        // --- DATA SERIES ---
+        const co2IntensitySeries = [
+    { ym: '2024-04', mtd: 2.16, ytd: 2.17 },
+    { ym: '2024-05', mtd: 2.19, ytd: 2.17 },
+    { ym: '2024-06', mtd: 2.25, ytd: 2.18 },
+    { ym: '2024-07', mtd: 2.27, ytd: 2.20 },
+    { ym: '2024-08', mtd: 2.17, ytd: 2.19 },
+    { ym: '2024-09', mtd: 2.22, ytd: 2.20 },
+    { ym: '2024-10', mtd: 2.05, ytd: 2.18 },
+    { ym: '2024-11', mtd: 2.03, ytd: 2.17 },
+    { ym: '2024-12', mtd: 2.15, ytd: 2.16 },
+    { ym: '2025-01', mtd: 2.13, ytd: 2.16 },
+    { ym: '2025-02', mtd: 2.10, ytd: 2.16 },
+    { ym: '2025-03', mtd: 2.21, ytd: 2.16 },
+    { ym: '2025-04', mtd: 2.09, ytd: 2.09 },
+    { ym: '2025-05', mtd: 2.15, ytd: 2.12 },
+    { ym: '2025-06', mtd: 2.08, ytd: 2.10 },
+    { ym: '2025-07', mtd: 2.13, ytd: 2.11 }
+];
+
+        const productionSeries = [
+    { ym: '2024-04', ton: 653105.00 },
+    { ym: '2024-05', ton: 628778.00 },
+    { ym: '2024-06', ton: 583100.00 },
+    { ym: '2024-07', ton: 588554.00 },
+    { ym: '2024-08', ton: 631284.00 },
+    { ym: '2024-09', ton: 523245.00 },
+    { ym: '2024-10', ton: 661370.00 },
+    { ym: '2024-11', ton: 654595.00 },
+    { ym: '2024-12', ton: 633637.00 },
+    { ym: '2025-01', ton: 530428.00 },
+    { ym: '2025-02', ton: 549687.00 },
+    { ym: '2025-03', ton: 603752.00 },
+    { ym: '2025-04', ton: 596980.00 },
+    { ym: '2025-05', ton: 587534.07 },
+    { ym: '2025-06', ton: 644157.05 },
+    { ym: '2025-07', ton: 637576.00 }
+];
+
+        // Helpers for month dropdown
+        const toMonthLabel = (ym) => {
+            const [y, m] = ym.split('-').map(Number);
+            const d = new Date(y, m - 1, 1);
+            return d.toLocaleString('en-US', { month: 'short', year: 'numeric' });
+        };
+        const fyFromYM = (ym) => {
+            const [y, m] = ym.split('-').map(Number);
+            return `FY${m >= 4 ? y + 1 : y}`;
+        };
+        const latestYM = productionSeries[productionSeries.length - 1].ym;
+
+        // ==== Fancy Month Popover (FY25 & FY26) ====
+        function monthsForFY(fyLabel) {
+            const fy = parseInt(fyLabel.replace('FY',''));
+            const months = [];
+            const startYear = fy - 1; // FY2025 => starts Apr 2024
+            for (let m = 4; m <= 12; m++) months.push(`${startYear}-${String(m).padStart(2,'0')}`);
+            for (let m = 1; m <= 3; m++) months.push(`${startYear+1}-${String(m).padStart(2,'0')}`);
+            return months;
+        }
+        const AVAILABLE_MONTHS = new Set(productionSeries.map(d => d.ym));
+        let selectedMonthYM = latestYM;
+
+        // ===== Quarter helpers =====
+        function ymToParts(ym){ const [y,m] = ym.split('-').map(Number); return {y, m}; }
+        function toYM(y,m){ return `${y}-${String(m).padStart(2,'0')}`; }
+        function fyFromYMonth(y,m){ return `FY${m>=4 ? y+1 : y}`; }
+        function quarterFromMonth(m){ if(m>=4&&m<=6) return 1; if(m>=7&&m<=9) return 2; if(m>=10&&m<=12) return 3; return 4; }
+        function quarterRangeForYM(ym){
+            const {y,m} = ymToParts(ym); const q = quarterFromMonth(m);
+            if(q===1){ return { start: toYM(y,4), end: toYM(y,6), q, fy: fyFromYMonth(y,4) }; }
+            if(q===2){ return { start: toYM(y,7), end: toYM(y,9), q, fy: fyFromYMonth(y,7) }; }
+            if(q===3){ return { start: toYM(y,10), end: toYM(y,12), q, fy: fyFromYMonth(y,10) }; }
+            return { start: toYM(y,1), end: toYM(y,3), q, fy: fyFromYMonth(y,1) }; // Q4
+        }
+        function previousQuarterRangeForYM(ym){
+            const {y,m} = ymToParts(ym); const q = quarterFromMonth(m);
+            if(q===1){ // prev is Q4 of same calendar year (Jan–Mar)
+                return { start: toYM(y,1), end: toYM(y,3), q: 4, fy: fyFromYMonth(y,1) };
+            }
+            if(q===2){ return { start: toYM(y,4), end: toYM(y,6), q: 1, fy: fyFromYMonth(y,4) }; }
+            if(q===3){ return { start: toYM(y,7), end: toYM(y,9), q: 2, fy: fyFromYMonth(y,7) }; }
+            return { start: toYM(y,10), end: toYM(y,12), q: 3, fy: fyFromYMonth(y,10) }; // q===4
+        }
+        function monthsBetweenInclusive(startYM,endYM){
+            const out=[]; let {y:ys,m:ms}=ymToParts(startYM); const {y:ye,m:me}=ymToParts(endYM);
+            while(ys<ye || (ys===ye && ms<=me)){ out.push(toYM(ys,ms)); ms++; if(ms>12){ ms=1; ys++; } }
+            return out;
+        }
+        function hasAllMonths(startYM,endYM){ return monthsBetweenInclusive(startYM,endYM).every(ym => AVAILABLE_MONTHS.has(ym)); }
+        function rangeLabel(startYM,endYM){
+            const fmt = ym => { const [y,m]=ym.split('-').map(Number); return new Date(y,m-1,1).toLocaleString('en-US',{month:'short'}); };
+            const ye = endYM.split('-')[0];
+            return `${fmt(startYM)}–${fmt(endYM)} ${ye}`;
+        }
+        function setQuarterlyFromRange(startYM,endYM, q, fy){
+            // Production data
+            const totalProduction = sumBetween(startYM,endYM);
+            lastQuarterUsed = { startYM, endYM };
+            dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
+            dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
+            dashboardData.quarterly.production.value = +(totalProduction/1e6).toFixed(2);
+            dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(startYM,endYM)})`;
+            dashboardData.quarterly.production.text = 'Quarterly Production';
+            dashboardData.quarterly.production.growth = 100;
+
+            // CO2 data
+            const quarterMonths = monthsBetweenInclusive(startYM, endYM);
+            const co2DataForQuarter = co2IntensitySeries.filter(d => quarterMonths.includes(d.ym));
+            const avgIntensity = co2DataForQuarter.reduce((sum, d) => sum + d.mtd, 0) / co2DataForQuarter.length;
+            
+            dashboardData.quarterly.co2 = {
+                labels: [`Q${q} ${fy}`],
+                emissions: [avgIntensity.toFixed(2)],
+                target: [2.09]
+            };
+        }
+        function handleQuarterlySwitch(){
+            // 1) Try previous quarter of the selected month
+            const prev = previousQuarterRangeForYM(selectedMonthYM);
+            if(prev && hasAllMonths(prev.start, prev.end)){
+                setQuarterlyFromRange(prev.start, prev.end, prev.q, prev.fy);
+                updateDashboard('quarterly');
+                return;
+            }
+            // 2) Fallback: current quarter of the selected month (e.g., Apr 2024 => Q1 FY25)
+            const cur = quarterRangeForYM(selectedMonthYM);
+            if(hasAllMonths(cur.start, cur.end)){
+                setQuarterlyFromRange(cur.start, cur.end, cur.q, cur.fy);
+                updateDashboard('quarterly');
+                return;
+            }
+            // 3) Last resort: earliest complete quarter in the data
+            const earliestYM = productionSeries[0].ym;
+            const earliestQ = quarterRangeForYM(earliestYM);
+            setQuarterlyFromRange(earliestQ.start, earliestQ.end, earliestQ.q, earliestQ.fy);
+            updateDashboard('quarterly');
+        }
+        function buildMonthPopover() {
+            const wrap = document.getElementById('month-popover-content');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            const fyOrder = ['FY2026','FY2025'];
+            fyOrder.forEach((fy, idx) => {
+                const section = document.createElement('div');
+                section.className = idx === 0 ? 'mb-3' : 'mt-4';
+                const h = document.createElement('div');
+                h.className = 'text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2';
+                h.textContent = fy;
+                section.appendChild(h);
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-3 gap-2';
+                const months = monthsForFY(fy);
+                const monthNames = ['Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec','Jan','Feb','Mar'];
+                months.forEach((ym, i) => {
+                    const available = AVAILABLE_MONTHS.has(ym);
+                    const label = monthNames[i] || toMonthLabel(ym).split(' ')[0];
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.dataset.ym = ym;
+                    btn.className = 'px-3 py-1.5 rounded-full text-sm font-semibold transition select-none';
+                    if (available) {
+                        btn.className += ' text-gray-800 dark:text-gray-100 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700';
+                    } else {
+                        btn.className += ' text-gray-400 bg-gray-100/40 dark:bg-gray-800/40 cursor-not-allowed';
+                        btn.disabled = true;
+                    }
+                    if (ym === selectedMonthYM) {
+                        btn.className = btn.className.replace('bg-gray-100','bg-green-500').replace('text-gray-800 dark:text-gray-100','text-white');
+                    }
+                    btn.textContent = label;
+                    if (available) {
+                        btn.addEventListener('click', () => {
+                            selectedMonthYM = ym;
+                            updateMonthlyFor(ym);
+                            buildMonthPopover();
+                            closeMonthPopover();
+                        });
+                    }
+                    grid.appendChild(btn);
+                });
+                section.appendChild(grid);
+                wrap.appendChild(section);
+            });
+        }
+        function openMonthPopover() {
+            const pop = document.getElementById('month-popover');
+            buildMonthPopover();
+            pop.classList.remove('hidden');
+            document.getElementById('month-popover-btn').setAttribute('aria-expanded','true');
+        }
+        function closeMonthPopover() {
+            const pop = document.getElementById('month-popover');
+            pop.classList.add('hidden');
+            document.getElementById('month-popover-btn').setAttribute('aria-expanded','false');
+        }
+        function toggleMonthPopover() {
+            const pop = document.getElementById('month-popover');
+            if (pop.classList.contains('hidden')) openMonthPopover(); else closeMonthPopover();
+        }
+
+        function populateMonthDropdown() {
+            const sel = document.getElementById('month-selector');
+            sel.innerHTML = '';
+            // Group by FY
+            const groups = {};
+            productionSeries.forEach(d => {
+                const fy = fyFromYM(d.ym);
+                if (!groups[fy]) groups[fy] = [];
+                groups[fy].push(d.ym);
+            });
+            Object.keys(groups).sort().forEach(fy => {
+                const og = document.createElement('optgroup');
+                og.label = fy;
+                groups[fy].sort().forEach(ym => {
+                    const opt = document.createElement('option');
+                    opt.value = ym;
+                    opt.textContent = toMonthLabel(ym);
+                    og.appendChild(opt);
+                });
+                sel.appendChild(og);
+            });
+            sel.value = latestYM; // default to latest
+        }
+
+        function updateMonthlyFor(ym) {
+            const rec = productionSeries.find(r => r.ym === ym);
+            if (!rec) return;
+            const selLabel = toMonthLabel(ym);
+            // Update monthly card
+            dashboardData.monthly.overviewText = `${selLabel} Overview`;
+            dashboardData.monthly.production.valueInTonnes = +rec.ton.toFixed(2);
+            dashboardData.monthly.production.value = +(rec.ton / 1e6).toFixed(2);
+            dashboardData.monthly.production.periodLabel = selLabel;
+            dashboardData.monthly.production.text = 'Monthly Production';
+            dashboardData.monthly.production.growth = 100;
+            // Reflect change in UI
+            updateDashboard('monthly');
+        }
+
+        const sumBetween = (startYM, endYM) => productionSeries
+            .filter(d => d.ym >= startYM && d.ym <= endYM)
+            .reduce((s, d) => s + d.ton, 0);
+
+        // Monthly (latest)
+        const latest = productionSeries[productionSeries.length - 1];
+        dashboardData.monthly.overviewText = 'July 2025 Overview';
+        dashboardData.monthly.production.valueInTonnes = +latest.ton.toFixed(2);
+        dashboardData.monthly.production.value = +(latest.ton / 1e6).toFixed(2);
+        dashboardData.monthly.production.text = 'Monthly Production';
+        dashboardData.monthly.production.growth = 100;
+
+        // Quarterly: Q1 FY26 (Apr–Jun 2025)
+        const q1fy26 = sumBetween('2025-04', '2025-06');
+        dashboardData.quarterly.overviewText = 'Q1 FY26 Overview';
+        dashboardData.quarterly.production.valueInTonnes = +q1fy26.toFixed(2);
+        dashboardData.quarterly.production.value = +(q1fy26 / 1e6).toFixed(2);
+        dashboardData.quarterly.production.periodLabel = 'Q1 FY26 (Apr–Jun 2025)';
+        dashboardData.quarterly.production.text = 'Quarterly Production';
+        dashboardData.quarterly.production.growth = 100;
+
+        // YTD: FY26 Apr–Jul 2025
+        const ytdfy26 = sumBetween('2025-04', '2025-07');
+        dashboardData.ytd.overviewText = 'FY26 YTD Overview';
+        dashboardData.ytd.production.valueInTonnes = +ytdfy26.toFixed(2);
+        dashboardData.ytd.production.value = +(ytdfy26 / 1e6).toFixed(2);
+        dashboardData.ytd.production.periodLabel = 'Apr–Jul 2025';
+        dashboardData.ytd.production.text = 'YTD Total';
+        dashboardData.ytd.production.growth = 100;
 
         // --- CHARTING AND DASHBOARD LOGIC ---
         let downstreamBarChartInstance = null;
         let co2LineChartInstance = null;
         let csrDonutChartInstance = null;
+        let prodMiniChartInstance = null;
+        let lastQuarterUsed = null;
         let currentDataView = 'monthly';
 
         function getChartColors() {
@@ -352,10 +715,34 @@
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } },
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { color: colors.gridColor }, 
+                            ticks: { color: colors.ticksColor },
+                            suggestedMax: Math.max(...values) * 1.2 // Add padding for labels
+                        },
                         x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false } },
+                    animation: {
+                        onComplete: function() {
+                            const chart = this;
+                            const ctx = chart.ctx;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            ctx.font = "12px 'Inter', sans-serif";
+                            const isDarkMode = document.documentElement.classList.contains('dark');
+                            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
+
+                            this.data.datasets.forEach(function(dataset, i) {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach(function(bar, index) {
+                                    const data = dataset.data[index];
+                                    ctx.fillText(data.toFixed(2), bar.x, bar.y - 5);
+                                });
+                            });
+                        }
+                    }
                 }
             });
         }
@@ -380,7 +767,92 @@
                 }
             });
         }
-        
+        function renderProductionMiniChart(view){
+            const wrap = document.getElementById('prodMiniWrap');
+            const canvas = document.getElementById('prodMiniChart');
+            if(!wrap || !canvas) return;
+
+            // Hide for YTD
+            if(view === 'ytd'){
+                wrap.classList.add('hidden');
+                if (prodMiniChartInstance) { prodMiniChartInstance.destroy(); prodMiniChartInstance = null; }
+                return;
+            }
+            wrap.classList.remove('hidden');
+
+            const ctx = canvas.getContext('2d');
+            if (prodMiniChartInstance) prodMiniChartInstance.destroy();
+
+            const colors = getChartColors();
+            let labels = [], data = [], bg=[], border=[];
+            
+            if(view === 'monthly'){
+                // Use selectedMonthYM (defaults to latest)
+                const idx = productionSeries.findIndex(d => d.ym === selectedMonthYM);
+                const i = idx >= 0 ? idx : productionSeries.length - 1;
+                const start = Math.max(0, i - 2);
+                const subset = productionSeries.slice(start, i + 1);
+                labels = subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'}));
+                data = subset.map(d => d.ton);
+                
+                // New aesthetic color scheme for monthly view
+                const activeColor = '#5A95F8';
+                const lightShade = '#A9C7FB'; // Lighter, opaque shade
+
+                bg = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
+                border = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
+
+            } else if(view === 'quarterly'){
+                // Use lastQuarterUsed (set during handleQuarterlySwitch)
+                const range = lastQuarterUsed;
+                const yms = monthsBetweenInclusive(range.startYM, range.endYM);
+                labels = yms.map(ym => new Date(ym+'-01').toLocaleString('en-US',{month:'short'}));
+                data = yms.map(ym => (productionSeries.find(r => r.ym === ym) || {ton:0}).ton);
+                bg = yms.map(() => 'rgba(59,130,246,0.75)');
+                border = yms.map(() => 'rgb(59,130,246)');
+            }
+            
+            const maxDataValue = Math.max(...data);
+
+            prodMiniChartInstance = new Chart(ctx,{
+                type:'bar',
+                data:{ labels, datasets:[{ data, backgroundColor:bg, borderColor:border, borderWidth:1 }]},
+                options:{
+                    responsive:true, maintainAspectRatio:false,
+                    scales:{
+                        y:{ 
+                            beginAtZero:true, 
+                            grid:{ color: colors.gridColor }, 
+                            ticks:{ color: colors.ticksColor, callback:(v)=> (v/1e6).toFixed(1) },
+                            suggestedMax: maxDataValue * 1.2 // Add 20% padding for labels
+                        },
+                        x:{ grid:{ display:false }, ticks:{ color: colors.ticksColor }}
+                    },
+                    plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> (ctx.raw / 1e6).toFixed(2) + ' MnT' }}},
+                    animation: {
+                        onComplete: function() {
+                            const chart = this;
+                            const ctx = chart.ctx;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'bottom';
+                            ctx.font = "12px 'Inter', sans-serif";
+                            const isDarkMode = document.documentElement.classList.contains('dark');
+                            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
+
+                            this.data.datasets.forEach(function(dataset, i) {
+                                const meta = chart.getDatasetMeta(i);
+                                meta.data.forEach(function(bar, index) {
+                                    const data = dataset.data[index];
+                                    const label = (data / 1e6).toFixed(2); // Format to MnT
+                                    ctx.fillText(label, bar.x, bar.y - 5);
+                                });
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
         function updateProductionCard(data) {
             if (!data || !data.production) return;
             const unit = document.getElementById('unit-selector').value;
@@ -391,13 +863,24 @@
         function updateMetrics(data) {
             if (!data) return;
             document.getElementById('overview-subtitle').textContent = data.overviewText;
+            
+            const prodBarContainer = document.getElementById('cs-production-bar').parentElement;
+            const prodText = document.getElementById('cs-production-text');
+
+            if (currentDataView === 'monthly' || currentDataView === 'quarterly') {
+                prodBarContainer.classList.add('hidden');
+                prodText.classList.add('hidden');
+            } else {
+                prodBarContainer.classList.remove('hidden');
+                prodText.classList.remove('hidden');
+            }
+
             if (data.production) {
                 updateProductionCard(data);
                 document.getElementById('cs-production-bar').style.width = data.production.growth + '%';
                 document.getElementById('cs-production-text').textContent = data.production.text;
                 document.getElementById('cs-production-period-text').textContent = data.production.periodLabel;
             }
-            document.getElementById('co2-intensity-value').textContent = data.co2.emissions[data.co2.emissions.length - 1];
             document.getElementById('scrap-input-value').textContent = data.scrap.value;
             document.getElementById('external-scrap').textContent = data.scrap.external;
             document.getElementById('internal-scrap').textContent = data.scrap.internal;
@@ -409,27 +892,60 @@
             document.getElementById(`filter-${view}`).classList.add('active');
             const currentData = dashboardData[view];
             updateMetrics(currentData);
-            renderCo2Chart(currentData.co2);
+
+            let co2ChartData;
+            if (view === 'monthly') {
+                const idx = co2IntensitySeries.findIndex(d => d.ym === selectedMonthYM);
+                const i = idx >= 0 ? idx : co2IntensitySeries.length - 1;
+                const start = Math.max(0, i - 2); // Get current and previous two months
+                const subset = co2IntensitySeries.slice(start, i + 1);
+                
+                co2ChartData = {
+                    labels: subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'})),
+                    emissions: subset.map(d => d.mtd),
+                    target: subset.map(() => 2.09) // Assuming target is constant
+                };
+                // Update the main metric display
+                document.getElementById('co2-intensity-value').textContent = subset[subset.length - 1].mtd.toFixed(2);
+            } else if (view === 'ytd') {
+                const ytdRecord = co2IntensitySeries.find(d => d.ym === selectedMonthYM);
+                co2ChartData = {
+                    labels: [`YTD ${toMonthLabel(selectedMonthYM)}`],
+                    emissions: [ytdRecord ? ytdRecord.ytd : 0],
+                    target: [2.09]
+                };
+                 document.getElementById('co2-intensity-value').textContent = ytdRecord ? ytdRecord.ytd.toFixed(2) : 'N/A';
+            }
+            else if (view === 'quarterly') {
+                co2ChartData = currentData.co2;
+                document.getElementById('co2-intensity-value').textContent = co2ChartData.emissions[0];
+            }
+            
+            renderCo2Chart(co2ChartData);
             renderDownstreamChart(currentData.downstreamEmissions.labels, currentData.downstreamEmissions.values);
             renderCsrDonutChart(currentData.csr);
+            renderProductionMiniChart(view);
         }
 
         window.onload = function() {
             updateDashboard('monthly');
+            // time filters
             document.getElementById('filter-monthly').addEventListener('click', () => updateDashboard('monthly'));
-            document.getElementById('filter-quarterly').addEventListener('click', () => updateDashboard('quarterly'));
+            document.getElementById('filter-quarterly').addEventListener('click', () => handleQuarterlySwitch());
             document.getElementById('filter-ytd').addEventListener('click', () => updateDashboard('ytd'));
+            // unit toggle
             document.getElementById('unit-selector').addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
+            // Month popover interactions
+            const btn = document.getElementById('month-popover-btn');
+            const pop = document.getElementById('month-popover');
+            btn.addEventListener('click', (e) => { e.stopPropagation(); toggleMonthPopover(); });
+            document.addEventListener('click', (e) => {
+                if (!pop.classList.contains('hidden') && !pop.contains(e.target) && e.target !== btn) {
+                    closeMonthPopover();
+                }
+            });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMonthPopover(); });
         };
     </script>
-    <!-- Beta Overlay -->
-    <div id="beta-overlay" class="fixed inset-0 z-[9999] pointer-events-none select-none">
-        <div class="absolute inset-0 flex items-center justify-center">
-            <div class="px-6 py-3 rounded-xl border-4 border-red-600/80 bg-red-600/10 dark:bg-red-500/10 text-red-700 dark:text-red-300 font-extrabold text-2xl sm:text-3xl tracking-widest drop-shadow-lg backdrop-blur-sm">
-                In BETA Testing, DONOT REFER THIS
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>

@@ -137,7 +137,7 @@
     <div id="beta-overlay" class="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-center justify-center">
         <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-xl mx-4 text-center shadow-2xl border border-gray-200 dark:border-gray-700">
             <h3 class="text-2xl font-extrabold text-rose-600 dark:text-rose-400 mb-2">BETA — Do Not Circulate</h3>
-            <p class="text-gray-700 dark:text-gray-300">This dashboard is undergoing testing. Data and visuals may change. Please do not reference or share externally.</p>
+            <p class="text-gray-700 dark:text-gray-300 mt-1">Please do not refer or share externally</p>
             <button id="beta-dismiss" class="mt-5 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow hover:shadow-md transition">I understand</button>
         </div>
     </div>
@@ -307,19 +307,15 @@
             updateDashboard(currentDataView); // re-render charts with new colors
         });
 
-        // BETA modal overlay dismiss (session only)
+        // BETA modal overlay — reappears every 10s
         (function(){
             const overlay = document.getElementById('beta-overlay');
             const dismiss = document.getElementById('beta-dismiss');
-            if (sessionStorage.getItem('beta_ack') === '1') {
-                overlay.classList.add('hidden');
-            }
-            if (dismiss) {
-                dismiss.addEventListener('click', () => {
-                    sessionStorage.setItem('beta_ack','1');
-                    overlay.classList.add('hidden');
-                });
-            }
+            function show(){ if (overlay) overlay.classList.remove('hidden'); }
+            function hide(){ if (overlay) overlay.classList.add('hidden'); }
+            if (dismiss) dismiss.addEventListener('click', hide);
+            // Ensure it pops every 10 seconds regardless of dismiss
+            setInterval(show, 10000);
         })();
 
         // --- GREETING (IST) ---

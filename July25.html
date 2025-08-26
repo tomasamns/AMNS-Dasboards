@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class=""> <!-- Class for dark mode toggling -->
+<html lang="en" class="dark"> <!-- Class for dark mode toggling -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +12,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Libraries for Downloading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         // Tailwind config for dark mode
         tailwind.config = {
@@ -21,6 +24,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+             overflow-x: hidden;
         }
         .filter-btn {
             background-color: #E5E7EB; /* gray-200 */
@@ -93,7 +97,22 @@
         <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">July 2025 Overview</p>
         <div id="dynamic-greeting" class="flex items-center justify-center gap-2 text-lg text-gray-500 dark:text-gray-400 mt-1"></div>
 
-        <!-- Theme Toggle Button -->
+        <!-- Download Button -->
+        <div class="absolute top-0 left-0">
+            <div class="relative">
+                <button id="download-btn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                </button>
+                <div id="download-menu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
+                    <a href="#" id="download-png" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PNG</a>
+                    <a href="#" id="download-pdf" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PDF</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side buttons -->
         <div class="absolute top-0 right-0 flex items-center gap-3">
             <!-- Custom Month Popover -->
             <div class="relative">
@@ -135,7 +154,7 @@
     <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         
         <!-- CO2 Intensity Card -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col">
             <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
                 <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
             </div>
@@ -154,9 +173,9 @@
                     <span id="co2-intensity-value">2.13</span> 
                     <span class="text-2xl text-gray-500 dark:text-gray-400">tCO₂/tcs</span>
                 </p>
-                <p id="co2-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400">vs Target: 2.09 tCO₂/tcs</p>
+                <p id="co2-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400 mb-2">vs Target: 2.09 tCO₂/tcs</p>
             </div>
-            <div class="mt-4">
+            <div class="flex-grow">
                 <canvas id="co2LineChart"></canvas>
             </div>
         </div>
@@ -193,14 +212,10 @@
                 </div>
                 <p id="cs-production-period-text" class="text-md text-gray-500 dark:text-gray-400">July 2025</p>
             </div>
-            <div class="mt-4 flex flex-col items-center">
-                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                    <div id="cs-production-bar" class="bg-lime-500 h-2.5 rounded-full" style="width: 92%;"></div>
-                </div>
-                <p id="cs-production-text" class="text-sm mt-2 text-gray-500 dark:text-gray-400">YTD Growth: 92% of target</p>
+            <div class="mt-4 flex flex-col items-center flex-grow">
                 <!-- Mini bar chart: last 3 months / selected quarter -->
-                <div id="prodMiniWrap" class="mt-4 w-full h-28">
-                    <canvas id="prodMiniChart" class="w-full h-full"></canvas>
+                <div id="prodChartWrap" class="w-full flex-grow">
+                    <canvas id="prodChart" class="w-full h-full"></canvas>
                 </div>
             </div>
         </div>
@@ -259,12 +274,12 @@
                     <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
                 </div>
             </div>
-            <h2 class="text-xl font-semibold mb-4 text-pink-600 dark:text-pink-400">Down Stream Emission Intensity (July)</h2>
-            <div class="flex space-x-2 mb-4">
-                <button class="filter-btn active">All Locations</button>
-                <button class="filter-btn">Pune</button>
-                <button class="filter-btn">Khopoli</button>
-                <button class="filter-btn">Gandhidham</button>
+            <h2 id="downstream-chart-title" class="text-xl font-semibold mb-4 text-pink-600 dark:text-pink-400">Down Stream Emission Intensity (July)</h2>
+            <div id="downstream-filter-container" class="flex space-x-2 mb-4">
+                <button class="filter-btn active" data-location="all">All Locations</button>
+                <button class="filter-btn" data-location="pune">Pune</button>
+                <button class="filter-btn" data-location="khopoli">Khopoli</button>
+                <button class="filter-btn" data-location="gandhidham">Gandhidham</button>
             </div>
             <div class="chart-container">
                 <canvas id="downstreamBarChart"></canvas>
@@ -285,7 +300,7 @@
                     <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
                 </div>
             </div>
-            <h2 class="text-xl font-semibold mb-4 text-purple-600 dark:text-purple-400">CSR Beneficiaries (July)</h2>
+            <h2 id="csr-chart-title" class="text-xl font-semibold mb-4 text-purple-600 dark:text-purple-400">CSR Beneficiaries (July)</h2>
             <div class="chart-container">
                 <canvas id="csrDonutChart"></canvas>
             </div>
@@ -306,8 +321,8 @@
                 <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
             </div>
         </div>
-        <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">July 2025 Highlights & Insights</h2>
-        <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+        <h2 id="insights-title" class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">July 2025 Highlights & Insights</h2>
+        <ul id="insights-list" class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
             <li><span class="font-medium text-green-600 dark:text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
             <li><span class="font-medium text-orange-600 dark:text-orange-300">Scrap Input Increase:</span> Scrap input percentage increased from 5.6% in June to 6.0% in July.</li>
             <li><span class="font-medium text-blue-600 dark:text-blue-300">High Water Reuse:</span> Over 5 lakh cubic meters of water were recycled and reused.</li>
@@ -317,172 +332,146 @@
     </section>
 
     <script>
+        // --- GLOBAL STATE & CONFIG ---
+        let downstreamBarChartInstance = null;
+        let co2LineChartInstance = null;
+        let csrDonutChartInstance = null;
+        let prodChartInstance = null;
+        let lastQuarterUsed = null;
+        let currentDataView = 'monthly';
+        let selectedMonthYM = '2025-07'; // Initialize with a default
+        let currentDownstreamLocation = 'all';
+
         // --- THEME TOGGLE LOGIC ---
         const themeToggleBtn = document.getElementById('theme-toggle');
         const lightIcon = document.getElementById('theme-icon-light');
         const darkIcon = document.getElementById('theme-icon-dark');
 
         function setAutoTheme() {
-            // Get current time in UTC
             const now = new Date();
-            // Convert to IST (UTC+5:30)
             const istOffset = 5.5 * 60 * 60 * 1000;
             const istTime = new Date(now.getTime() + istOffset);
-            const istHour = istTime.getUTCHours(); // Use getUTCHours because we've already offset the time
-
+            const istHour = istTime.getUTCHours();
             const isNight = istHour >= 17 || istHour < 6;
 
-            // Remove existing theme classes
             document.documentElement.classList.remove('dark', 'light');
             
             if (isNight) {
                 document.documentElement.classList.add('dark');
                 darkIcon.classList.remove('hidden');
                 lightIcon.classList.add('hidden');
-                localStorage.setItem('theme', 'dark'); // Also set it in local storage so charts render correctly
+                localStorage.setItem('theme', 'dark');
             } else {
-                document.documentElement.classList.add('light'); // Explicitly add light class
+                document.documentElement.classList.add('light');
                 lightIcon.classList.remove('hidden');
                 darkIcon.classList.add('hidden');
                 localStorage.setItem('theme', 'light');
             }
         }
         
-        // Run auto-theme on initial load
-        setAutoTheme();
+        setAutoTheme(); // Run auto-theme on initial load
 
         themeToggleBtn.addEventListener('click', () => {
-            // Toggle the dark class on the root <html> element
             document.documentElement.classList.toggle('dark');
-            
-            // Update the icon visibility
             lightIcon.classList.toggle('hidden');
             darkIcon.classList.toggle('hidden');
-
-            // Save the user's preference to localStorage
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-            } else {
-                localStorage.setItem('theme', 'light');
-            }
-            
-            // Re-render charts with updated colors
-            updateDashboard(currentDataView);
+            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            updateDashboard(currentDataView); // Re-render charts with updated colors
         });
 
 
-        // --- DASHBOARD DATA ---
+        // --- DATA STORE ---
+        // Raw time-series data, simulating a database table
+        const fullDataSeries = [
+            { ym: '2024-01', productionMTD: 668528.00, totalAbsEmissionMTD: 1482810.00 },
+            { ym: '2024-02', productionMTD: 637899.00, totalAbsEmissionMTD: 1394002.00 },
+            { ym: '2024-03', productionMTD: 678052.00, totalAbsEmissionMTD: 1440466.00 },
+            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00 },
+            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00 },
+            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00 },
+            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00 },
+            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00 },
+            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1163087.00 },
+            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1356894.00 },
+            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00 },
+            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00 },
+            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00 },
+            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00 },
+            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00 },
+            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1245932.00 },
+            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1265043.00 },
+            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1336695.00 },
+            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1356904.00 },
+        ];
+        selectedMonthYM = fullDataSeries[fullDataSeries.length - 1].ym; // Set latest month on load
+
+        // Pre-calculated/static data for different views
         const dashboardData = {
             monthly: {
                 overviewText: 'July 2025 Overview',
-                production: {
-                    value: 0.64,
-                    valueInTonnes: 637576,
-                    growth: 92,
-                    periodLabel: 'July 2025',
-                    text: 'YTD Growth: 92% of target',
-                },
+                production: { value: 0.64, valueInTonnes: 637576, periodLabel: 'July 2025' },
                 scrap: { value: 6.0, target: 7.1, external: 7.89, internal: 29.07 },
-                reGrid: { value: 33 },
-                downstreamEmissions: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.15] },
-                trees: { planted: 1870 },
-                water: { specificConsumption: 1.401 },
-                csr: { spent: 8.88, beneficiaries: { health: 170793, education: 96294, skill: 28051, environment: 3900, community: 12800, sports: 27077 } }
+                downstreamEmissions: {
+                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.15] },
+                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.03, 0.05] },
+                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.18, 0.16] },
+                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.14, 0.16] }
+                },
+                csr: { beneficiaries: { health: 170793, education: 96294, skill: 28051, environment: 3900, community: 12800, sports: 27077 } }
             },
             quarterly: {
                 overviewText: 'Q2 FY25 Overview',
-                co2: { labels: [], emissions: [], target: [], average: 0 }, // Placeholder
-                production: { value: 1.83, valueInTonnes: 1828671, growth: 94, periodLabel: 'Q2 FY25', text: 'Quarterly Growth: 94% of target' },
+                co2: { labels: [], emissions: [], target: [], average: 0 },
+                production: { value: 1.83, valueInTonnes: 1828671, periodLabel: 'Q2 FY25' },
                 scrap: { value: 6.2, target: 7.1, external: 23.50, internal: 85.10 },
-                reGrid: { value: 34 },
-                downstreamEmissions: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.05, 0.16, 0.14] },
-                trees: { planted: 5500 },
-                water: { specificConsumption: 1.38 },
-                csr: { spent: 25.40, beneficiaries: { health: 450000, education: 280000, skill: 75000, environment: 11000, community: 38000, sports: 80000 } }
+                downstreamEmissions: {
+                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.05, 0.16, 0.14] },
+                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.04, 0.06] },
+                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.17, 0.15] },
+                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.13, 0.15] }
+                },
+                csr: { beneficiaries: { health: 450000, education: 280000, skill: 75000, environment: 11000, community: 38000, sports: 80000 } }
             },
             ytd: {
                 overviewText: 'Year-to-Date Overview',
-                co2: { labels: [], emissions: [], target: [], average: 0 }, // Placeholder
-                production: { value: 2.47, valueInTonnes: 2466247, growth: 93, periodLabel: 'April 2025 to latest month', text: 'YTD Growth: 93% of target' },
+                production: { value: 2.47, valueInTonnes: 2466247.12, periodLabel: 'April 2025 to latest month' },
                 scrap: { value: 5.9, target: 7.1, external: 54.20, internal: 210.30 },
-                reGrid: { value: 32 },
-                downstreamEmissions: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.16] },
-                trees: { planted: 11000 },
-                water: { specificConsumption: 1.41 },
-                csr: { spent: 60.15, beneficiaries: { health: 1200000, education: 850000, skill: 220000, environment: 32000, community: 105000, sports: 240000 } }
+                downstreamEmissions: {
+                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.16] },
+                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.03, 0.05] },
+                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.18, 0.16] },
+                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.15, 0.17] }
+                },
+                csr: { beneficiaries: { health: 1200000, education: 850000, skill: 220000, environment: 32000, community: 105000, sports: 240000 } }
             }
         };
-        
-        // --- DATA SERIES ---
-        const fullDataSeries = [
-            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00, cumulativeEmissionYTD: 5717780.00, cumulativeProductionYTD: 2637584.00 },
-            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00, cumulativeEmissionYTD: 7095614.00, cumulativeProductionYTD: 3266362.00 },
-            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00, cumulativeEmissionYTD: 8406308.00, cumulativeProductionYTD: 3849462.00 },
-            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00, cumulativeEmissionYTD: 9744182.00, cumulativeProductionYTD: 4438016.00 },
-            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00, cumulativeEmissionYTD: 11112704.00, cumulativeProductionYTD: 5069300.00 },
-            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1160302.00, cumulativeEmissionYTD: 12273006.00, cumulativeProductionYTD: 5592545.00 },
-            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1359679.00, cumulativeEmissionYTD: 13632685.00, cumulativeProductionYTD: 6253915.00 },
-            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00, cumulativeEmissionYTD: 14964466.00, cumulativeProductionYTD: 6908510.00 },
-            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00, cumulativeEmissionYTD: 16327965.00, cumulativeProductionYTD: 7542147.00 },
-            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00, cumulativeEmissionYTD: 17456085.00, cumulativeProductionYTD: 8072575.00 },
-            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00, cumulativeEmissionYTD: 18610226.00, cumulativeProductionYTD: 8622262.00 },
-            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00, cumulativeEmissionYTD: 19942849.00, cumulativeProductionYTD: 9226014.00 },
-            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1247688.00, cumulativeEmissionYTD: 1247688.00, cumulativeProductionYTD: 596980.00 },
-            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1263198.00, cumulativeEmissionYTD: 2510886.00, cumulativeProductionYTD: 1184514.07 },
-            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1339847.00, cumulativeEmissionYTD: 3850733.00, cumulativeProductionYTD: 1828671.12 },
-            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1358037.00, cumulativeEmissionYTD: 5208770.00, cumulativeProductionYTD: 2466247.12 },
-        ];
 
-
-        // Helpers for month dropdown
-        const toMonthLabel = (ym) => {
-            const [y, m] = ym.split('-').map(Number);
-            const d = new Date(y, m - 1, 1);
-            return d.toLocaleString('en-US', { month: 'long', year: 'numeric' });
-        };
-        const fyFromYM = (ym) => {
-            const [y, m] = ym.split('-').map(Number);
-            return `FY${m >= 4 ? y + 1 : y}`;
-        };
-        const latestYM = fullDataSeries[fullDataSeries.length - 1].ym;
-
-        // ==== Fancy Month Popover (FY25 & FY26) ====
-        function monthsForFY(fyLabel) {
-            const fy = parseInt(fyLabel.replace('FY',''));
-            const months = [];
-            const startYear = fy - 1; // FY2025 => starts Apr 2024
-            for (let m = 4; m <= 12; m++) months.push(`${startYear}-${String(m).padStart(2,'0')}`);
-            for (let m = 1; m <= 3; m++) months.push(`${startYear+1}-${String(m).padStart(2,'0')}`);
-            return months;
-        }
+        // --- DATA HELPERS & CALCULATORS ---
+        const toMonthLabel = (ym) => new Date(ym + '-02').toLocaleString('en-US', { month: 'long', year: 'numeric' });
         const AVAILABLE_MONTHS = new Set(fullDataSeries.map(d => d.ym));
-        let selectedMonthYM = latestYM;
-
-        // ===== Quarter helpers =====
+        
         function ymToParts(ym){ const [y,m] = ym.split('-').map(Number); return {y, m}; }
         function toYM(y,m){ return `${y}-${String(m).padStart(2,'0')}`; }
-        function fyFromYMonth(y,m){ return `FY${m>=4 ? y+1 : y}`; }
+        function getFY(ym) {
+            const [year, month] = ym.split('-').map(Number);
+            return month >= 4 ? `FY${year + 1}` : `FY${year}`;
+        }
         function quarterFromMonth(m){ if(m>=4&&m<=6) return 1; if(m>=7&&m<=9) return 2; if(m>=10&&m<=12) return 3; return 4; }
         
         function quarterRangeForYM(ym){
             const {y,m} = ymToParts(ym); const q = quarterFromMonth(m);
-            if(q===1){ return { start: toYM(y,4), end: toYM(y,6), q, fy: fyFromYMonth(y,4) }; }
-            if(q===2){ return { start: toYM(y,7), end: toYM(y,9), q, fy: fyFromYMonth(y,7) }; }
-            if(q===3){ return { start: toYM(y,10), end: toYM(y,12), q, fy: fyFromYMonth(y,10) }; }
-            return { start: toYM(y,1), end: toYM(y,3), q: 4, fy: fyFromYMonth(y,1) }; // Q4
+            const fy = getFY(ym);
+            if(q===1){ return { start: toYM(y,4), end: toYM(y,6), q, fy }; }
+            if(q===2){ return { start: toYM(y,7), end: toYM(y,9), q, fy }; }
+            if(q===3){ return { start: toYM(y,10), end: toYM(y,12), q, fy }; }
+            return { start: toYM(y,1), end: toYM(y,3), q: 4, fy };
         }
         
         function previousQuarterRangeForYM(ym){
-            const {y,m} = ymToParts(ym);
-            let prev_q_year = y;
-            let prev_q_month_start = m-3;
-            if(prev_q_month_start < 1){
-                prev_q_month_start = prev_q_month_start + 12;
-                prev_q_year = y - 1;
-            }
-            const temp_date = new Date(prev_q_year, prev_q_month_start-1, 1);
-            const prev_q_start_ym = toYM(temp_date.getFullYear(), temp_date.getMonth()+1);
-            return quarterRangeForYM(prev_q_start_ym);
+            let {y,m} = ymToParts(ym);
+            m -= 3;
+            if (m < 1) { m += 12; y -= 1; }
+            return quarterRangeForYM(toYM(y, m));
         }
 
         function monthsBetweenInclusive(startYM,endYM){
@@ -492,175 +481,71 @@
         }
         function hasAllMonths(startYM,endYM){ return monthsBetweenInclusive(startYM,endYM).every(ym => AVAILABLE_MONTHS.has(ym)); }
         function rangeLabel(startYM,endYM){
-            const fmt = ym => { const [y,m]=ym.split('-').map(Number); return new Date(y,m-1,1).toLocaleString('en-US',{month:'short'}); };
-            const ye = endYM.split('-')[0];
-            return `${fmt(startYM)}–${fmt(endYM)} ${ye}`;
+            const fmt = ym => new Date(ym+'-02').toLocaleString('en-US',{month:'short'});
+            return `${fmt(startYM)}–${fmt(endYM)} ${endYM.split('-')[0]}`;
         }
         
         function calculateQuarterlyIntensity(quarterRange) {
             const quarterMonths = monthsBetweenInclusive(quarterRange.start, quarterRange.end);
             const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
-            
             if(dataForQuarter.length !== 3) return null;
-
             const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
             const totalEmission = dataForQuarter.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
-
             return totalProduction > 0 ? (totalEmission / totalProduction) : 0;
         }
 
-        function handleQuarterlySwitch(){
-            let pastQuartersData = [];
-            let currentQuarter = previousQuarterRangeForYM(selectedMonthYM);
-
-            for (let i = 0; i < 3; i++) {
-                if (currentQuarter && hasAllMonths(currentQuarter.start, currentQuarter.end)) {
-                    const intensity = calculateQuarterlyIntensity(currentQuarter);
-                    if (intensity !== null) {
-                        pastQuartersData.unshift({ // Add to the beginning to maintain chronological order
-                            label: `${currentQuarter.fy} Q${currentQuarter.q}`,
-                            intensity: intensity,
-                            range: currentQuarter
-                        });
-                    }
-                    currentQuarter = previousQuarterRangeForYM(currentQuarter.start);
-                } else {
-                    break; // Stop if a full quarter is not available
-                }
+        // --- UI UPDATE FUNCTIONS ---
+        function updateMetrics(data) {
+            if (!data) return;
+            document.getElementById('overview-subtitle').textContent = data.overviewText;
+            if (data.production) {
+                updateProductionCard(data);
+                document.getElementById('cs-production-period-text').textContent = data.production.periodLabel;
             }
-            
-            if (pastQuartersData.length > 0) {
-                const mostRecentQuarter = pastQuartersData[pastQuartersData.length - 1];
-                
-                // Update CO2 data for the chart
-                dashboardData.quarterly.co2 = {
-                    labels: pastQuartersData.map(q => q.label),
-                    emissions: pastQuartersData.map(q => q.intensity),
-                    target: pastQuartersData.map(() => 2.09),
-                    average: mostRecentQuarter.intensity.toFixed(2),
-                    title: mostRecentQuarter.label
-                };
+            document.getElementById('scrap-input-value').textContent = data.scrap.value;
+            document.getElementById('external-scrap').textContent = data.scrap.external;
+            document.getElementById('internal-scrap').textContent = data.scrap.internal;
+        }
 
-                // Update production data for the card
-                const { start, end, q, fy } = mostRecentQuarter.range;
-                const quarterMonths = monthsBetweenInclusive(start, end);
-                const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
-                const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
-                lastQuarterUsed = { startYM: start, endYM: end };
-                
-                dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
-                dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
-                dashboardData.quarterly.production.value = +(totalProduction / 1e6).toFixed(2);
-                dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(start, end)})`;
+        function updateProductionCard(data) {
+            if (!data || !data.production) return;
+            const unit = document.getElementById('unit-selector').value;
+            const valueEl = document.getElementById('cs-production-value');
+            valueEl.textContent = (unit === 'MnT') ? data.production.value : data.production.valueInTonnes.toLocaleString();
+        }
 
-                updateDashboard('quarterly');
+        function setDynamicGreeting() {
+            const greetingEl = document.getElementById('dynamic-greeting');
+            if (!greetingEl) return;
+            const now = new Date();
+            const istOffset = 5.5 * 60 * 60 * 1000;
+            const istTime = new Date(now.getTime() + istOffset);
+            const istHour = istTime.getUTCHours();
+            let greetingText = '', iconSvg = '';
+
+            if (istHour >= 5 && istHour < 12) {
+                greetingText = 'Good Morning';
+                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
+            } else if (istHour >= 12 && istHour < 17) {
+                greetingText = 'Good Afternoon';
+                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
+            } else if (istHour >= 17 && istHour < 21) {
+                greetingText = 'Good Evening';
+                iconSvg = `<svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16"></path></svg>`;
+            } else {
+                greetingText = 'Good Night';
+                iconSvg = `<svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
             }
+            greetingEl.innerHTML = `${iconSvg}<span>${greetingText}</span>`;
         }
 
-        function buildMonthPopover() {
-            const wrap = document.getElementById('month-popover-content');
-            if (!wrap) return;
-            wrap.innerHTML = '';
-            const fyOrder = ['FY2026','FY2025'];
-            fyOrder.forEach((fy, idx) => {
-                const section = document.createElement('div');
-                section.className = idx === 0 ? 'mb-3' : 'mt-4';
-                const h = document.createElement('div');
-                h.className = 'text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2';
-                h.textContent = fy;
-                section.appendChild(h);
-                const grid = document.createElement('div');
-                grid.className = 'grid grid-cols-3 gap-2';
-                const months = monthsForFY(fy);
-                const monthNames = ['Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec','Jan','Feb','Mar'];
-                months.forEach((ym, i) => {
-                    const available = AVAILABLE_MONTHS.has(ym);
-                    const label = monthNames[i] || toMonthLabel(ym).split(' ')[0];
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.dataset.ym = ym;
-                    btn.className = 'px-3 py-1.5 rounded-full text-sm font-semibold transition select-none';
-                    if (available) {
-                        btn.className += ' text-gray-800 dark:text-gray-100 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700';
-                    } else {
-                        btn.className += ' text-gray-400 bg-gray-100/40 dark:bg-gray-800/40 cursor-not-allowed';
-                        btn.disabled = true;
-                    }
-                    if (ym === selectedMonthYM) {
-                        btn.className = btn.className.replace('bg-gray-100','bg-green-500').replace('text-gray-800 dark:text-gray-100','text-white');
-                    }
-                    btn.textContent = label;
-                    if (available) {
-                        btn.addEventListener('click', () => {
-                            selectedMonthYM = ym;
-                            if(currentDataView === 'quarterly') {
-                                handleQuarterlySwitch();
-                            } else if (currentDataView === 'ytd') {
-                                // YTD is independent, but we can still update the monthly data in the background
-                                updateMonthlyFor(ym);
-                                updateDashboard('ytd'); // Re-render YTD view
-                            } else {
-                                updateMonthlyFor(ym);
-                            }
-                            buildMonthPopover();
-                            closeMonthPopover();
-                        });
-                    }
-                    grid.appendChild(btn);
-                });
-                section.appendChild(grid);
-                wrap.appendChild(section);
-            });
-        }
-        function openMonthPopover() {
-            const pop = document.getElementById('month-popover');
-            buildMonthPopover();
-            pop.classList.remove('hidden');
-            document.getElementById('month-popover-btn').setAttribute('aria-expanded','true');
-        }
-        function closeMonthPopover() {
-            const pop = document.getElementById('month-popover');
-            pop.classList.add('hidden');
-            document.getElementById('month-popover-btn').setAttribute('aria-expanded','false');
-        }
-        function toggleMonthPopover() {
-            const pop = document.getElementById('month-popover');
-            if (pop.classList.contains('hidden')) openMonthPopover(); else closeMonthPopover();
-        }
-
-        function updateMonthlyFor(ym) {
-            const rec = fullDataSeries.find(r => r.ym === ym);
-            if (!rec) return;
-            const selLabel = toMonthLabel(ym);
-            dashboardData.monthly.overviewText = `${selLabel} Overview`;
-            dashboardData.monthly.production.valueInTonnes = +rec.productionMTD.toFixed(2);
-            dashboardData.monthly.production.value = +(rec.productionMTD / 1e6).toFixed(2);
-            dashboardData.monthly.production.periodLabel = selLabel;
-            updateDashboard('monthly');
-        }
-
-        // Initialize with latest month data
-        const latestData = fullDataSeries.find(d => d.ym === latestYM);
-        dashboardData.monthly.overviewText = `${toMonthLabel(latestYM)} Overview`;
-        dashboardData.monthly.production.valueInTonnes = +latestData.productionMTD.toFixed(2);
-        dashboardData.monthly.production.value = +(latestData.productionMTD / 1e6).toFixed(2);
-        dashboardData.monthly.production.periodLabel = toMonthLabel(latestYM);
-
-
-        // --- CHARTING AND DASHBOARD LOGIC ---
-        let downstreamBarChartInstance = null;
-        let co2LineChartInstance = null;
-        let csrDonutChartInstance = null;
-        let prodMiniChartInstance = null;
-        let lastQuarterUsed = null;
-        let currentDataView = 'monthly';
-
+        // --- CHART RENDERING ---
         function getChartColors() {
             const isDarkMode = document.documentElement.classList.contains('dark');
             return {
                 gridColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-                ticksColor: isDarkMode ? 'white' : '#374151', // gray-700
-                legendColor: isDarkMode ? 'white' : '#1f2937', // gray-800
+                ticksColor: isDarkMode ? 'white' : '#374151',
+                legendColor: isDarkMode ? 'white' : '#1f2937',
             };
         }
 
@@ -685,64 +570,43 @@
                     },
                     plugins: { 
                         legend: { 
-                            position: 'top',
-                            align: 'start', // Align legend to the left
-                            labels: { 
-                                color: colors.legendColor, 
-                                usePointStyle: true,
-                                filter: function(legendItem, chartData) {
-                                    // Only show the legend item if the label is not 'Intensity Target'
-                                    return legendItem.text !== 'Intensity Target';
-                                }
-                            } 
+                            position: 'top', align: 'start',
+                            labels: { color: colors.legendColor, usePointStyle: true, filter: (item) => item.text !== 'Intensity Target' } 
                         } 
                     }
                 }
             });
         }
 
-        function renderDownstreamChart(labels, values) {
+        function renderDownstreamChart(data) {
             const downstreamCtx = document.getElementById('downstreamBarChart').getContext('2d');
             if (downstreamBarChartInstance) downstreamBarChartInstance.destroy();
             const colors = getChartColors();
             downstreamBarChartInstance = new Chart(downstreamCtx, {
                 type: 'bar',
                 data: {
-                    labels: labels,
+                    labels: data.labels,
                     datasets: [{
-                        label: 'tCO₂/ton', data: values,
-                        backgroundColor: ['rgba(255, 159, 64, 0.7)', 'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)'],
-                        borderColor: ['rgb(255, 159, 64)', 'rgb(255, 99, 132)', 'rgb(54, 162, 235)'], borderWidth: 1
+                        label: 'tCO₂/ton', data: data.values,
+                        backgroundColor: ['rgba(255, 159, 64, 0.7)', 'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(153, 102, 255, 0.7)'],
+                        borderColor: ['rgb(255, 159, 64)', 'rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'], borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            grid: { color: colors.gridColor }, 
-                            ticks: { color: colors.ticksColor },
-                            suggestedMax: Math.max(...values) * 1.2 // Add padding for labels
-                        },
+                        y: { beginAtZero: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor }, suggestedMax: Math.max(...data.values) * 1.2 },
                         x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
                     },
                     plugins: { legend: { display: false } },
                     animation: {
                         onComplete: function() {
-                            const chart = this;
-                            const ctx = chart.ctx;
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
-                            ctx.font = "12px 'Inter', sans-serif";
-                            const isDarkMode = document.documentElement.classList.contains('dark');
-                            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
-
-                            this.data.datasets.forEach(function(dataset, i) {
+                            const chart = this; const ctx = chart.ctx;
+                            ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.font = "12px 'Inter', sans-serif";
+                            ctx.fillStyle = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
+                            this.data.datasets.forEach((dataset, i) => {
                                 const meta = chart.getDatasetMeta(i);
-                                meta.data.forEach(function(bar, index) {
-                                    const data = dataset.data[index];
-                                    ctx.fillText(data.toFixed(2), bar.x, bar.y - 5);
-                                });
+                                meta.data.forEach((bar, index) => ctx.fillText(dataset.data[index].toFixed(2), bar.x, bar.y - 5));
                             });
                         }
                     }
@@ -770,160 +634,197 @@
                 }
             });
         }
-        function renderProductionMiniChart(view){
-            const wrap = document.getElementById('prodMiniWrap');
-            const canvas = document.getElementById('prodMiniChart');
+        
+        function renderProductionChart(view){
+            const wrap = document.getElementById('prodChartWrap');
+            const canvas = document.getElementById('prodChart');
             if(!wrap || !canvas) return;
-
-            if(view === 'ytd'){
-                wrap.classList.add('hidden');
-                if (prodMiniChartInstance) { prodMiniChartInstance.destroy(); prodMiniChartInstance = null; }
-                return;
-            }
             wrap.classList.remove('hidden');
 
             const ctx = canvas.getContext('2d');
-            if (prodMiniChartInstance) prodMiniChartInstance.destroy();
-
+            if (prodChartInstance) prodChartInstance.destroy();
             const colors = getChartColors();
-            let labels = [], data = [], bg=[], border=[];
-            
-            if(view === 'monthly'){
-                const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
-                const i = idx >= 0 ? idx : fullDataSeries.length - 1;
-                const start = Math.max(0, i - 2);
-                const subset = fullDataSeries.slice(start, i + 1);
-                labels = subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'}));
-                data = subset.map(d => d.productionMTD);
-                
-                const activeColor = '#5A95F8';
-                const lightShade = '#A9C7FB'; 
 
-                bg = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
-                border = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
+            if (view === 'ytd') {
+                let allFYs = [...new Set(fullDataSeries.map(d => getFY(d.ym)))].sort();
+                allFYs = allFYs.filter(fy => fy === 'FY2025' || fy === 'FY2026'); // Filter for specific FYs
 
-            } else if(view === 'quarterly'){
-                const range = lastQuarterUsed;
-                const yms = monthsBetweenInclusive(range.startYM, range.endYM);
-                labels = yms.map(ym => new Date(ym+'-01').toLocaleString('en-US',{month:'short'}));
-                data = yms.map(ym => (fullDataSeries.find(r => r.ym === ym) || {ton:0}).productionMTD);
-                bg = yms.map(() => 'rgba(59,130,246,0.75)');
-                border = yms.map(() => 'rgb(59,130,246)');
-            }
-            
-            const maxDataValue = Math.max(...data);
+                const monthNames = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
+                const monthColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8D6E63', '#EC407A', '#7E57C2', '#26A69A', '#D4E157', '#FFA726'];
+                const monthMap = { Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12, Jan: 1, Feb: 2, Mar: 3 };
 
-            prodMiniChartInstance = new Chart(ctx,{
-                type:'bar',
-                data:{ labels, datasets:[{ data, backgroundColor:bg, borderColor:border, borderWidth:1 }]},
-                options:{
-                    responsive:true, maintainAspectRatio:false,
-                    scales:{
-                        y:{ 
-                            beginAtZero:true, 
-                            grid:{ color: colors.gridColor }, 
-                            ticks:{ color: colors.ticksColor, callback:(v)=> (v/1e6).toFixed(1) },
-                            suggestedMax: maxDataValue * 1.2 
+                const datasets = monthNames.map((monthName, index) => {
+                    const monthNum = monthMap[monthName];
+                    return {
+                        label: monthName,
+                        data: allFYs.map(fy => {
+                            const fyData = fullDataSeries.filter(d => getFY(d.ym) === fy);
+                            const monthData = fyData.find(d => ymToParts(d.ym).m === monthNum);
+                            return monthData ? monthData.productionMTD : 0;
+                        }),
+                        backgroundColor: monthColors[index],
+                    };
+                });
+
+                prodChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: allFYs, datasets: datasets },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.dataset.label}: ${(ctx.raw / 1e6).toFixed(2)} MnT`
+                                }
+                            }
                         },
-                        x:{ grid:{ display:false }, ticks:{ color: colors.ticksColor }}
-                    },
-                    plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> (ctx.raw / 1e6).toFixed(2) + ' MnT' }}},
-                    animation: {
-                        onComplete: function() {
-                            const chart = this;
-                            const ctx = chart.ctx;
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'bottom';
-                            ctx.font = "12px 'Inter', sans-serif";
-                            const isDarkMode = document.documentElement.classList.contains('dark');
-                            ctx.fillStyle = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
-
-                            this.data.datasets.forEach(function(dataset, i) {
-                                const meta = chart.getDatasetMeta(i);
-                                meta.data.forEach(function(bar, index) {
-                                    const data = dataset.data[index];
-                                    const label = (data / 1e6).toFixed(2); // Format to MnT
-                                    ctx.fillText(label, bar.x, bar.y - 5);
-                                });
-                            });
+                        scales: {
+                            x: { stacked: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: (v) => (v / 1e6).toFixed(0) + 'M' } },
+                            y: { stacked: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
                         }
                     }
+                });
+
+            } else {
+                let labels = [], data = [], bg=[], border=[];
+                
+                if(view === 'monthly'){
+                    const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
+                    const i = idx >= 0 ? idx : fullDataSeries.length - 1;
+                    const start = Math.max(0, i - 2);
+                    const subset = fullDataSeries.slice(start, i + 1);
+                    labels = subset.map(d => new Date(d.ym+'-02').toLocaleString('en-US',{month:'short'}));
+                    data = subset.map(d => d.productionMTD);
+                    const activeColor = '#5A95F8', lightShade = '#A9C7FB'; 
+                    bg = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
+                    border = subset.map((_,j) => j === subset.length-1 ? activeColor : lightShade);
+                } else if(view === 'quarterly'){
+                    const yms = monthsBetweenInclusive(lastQuarterUsed.startYM, lastQuarterUsed.endYM);
+                    labels = yms.map(ym => new Date(ym+'-02').toLocaleString('en-US',{month:'short'}));
+                    data = yms.map(ym => (fullDataSeries.find(r => r.ym === ym) || {ton:0}).productionMTD);
+                    bg = yms.map(() => 'rgba(59,130,246,0.75)');
+                    border = yms.map(() => 'rgb(59,130,246)');
                 }
-            });
+                
+                prodChartInstance = new Chart(ctx,{
+                    type:'bar', data:{ labels, datasets:[{ data, backgroundColor:bg, borderColor:border, borderWidth:1 }]},
+                    options:{
+                        responsive:true, maintainAspectRatio:false,
+                        scales:{
+                            y:{ beginAtZero:true, grid:{ color: colors.gridColor }, ticks:{ color: colors.ticksColor, callback:(v)=> (v/1e6).toFixed(1) }, suggestedMax: Math.max(...data) * 1.2 },
+                            x:{ grid:{ display:false }, ticks:{ color: colors.ticksColor }}
+                        },
+                        plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label:(ctx)=> (ctx.raw / 1e6).toFixed(2) + ' MnT' }}},
+                        animation: {
+                            onComplete: function() {
+                                const chart = this; const ctx = chart.ctx;
+                                ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.font = "12px 'Inter', sans-serif";
+                                ctx.fillStyle = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
+                                this.data.datasets.forEach((dataset, i) => {
+                                    const meta = chart.getDatasetMeta(i);
+                                    meta.data.forEach((bar, index) => ctx.fillText((dataset.data[index] / 1e6).toFixed(2), bar.x, bar.y - 5));
+                                });
+                            }
+                        }
+                    }
+                });
+            }
         }
 
-        function updateProductionCard(data) {
-            if (!data || !data.production) return;
-            const unit = document.getElementById('unit-selector').value;
-            const valueEl = document.getElementById('cs-production-value');
-            valueEl.textContent = (unit === 'MnT') ? data.production.value : data.production.valueInTonnes.toLocaleString();
-        }
+        // --- EVENT HANDLERS & LOGIC ---
+        function handleQuarterlySwitch(){
+            let pastQuartersData = [];
+            let currentQuarter = previousQuarterRangeForYM(selectedMonthYM);
 
-        function updateMetrics(data) {
-            if (!data) return;
-            document.getElementById('overview-subtitle').textContent = data.overviewText;
+            for (let i = 0; i < 3; i++) {
+                if (currentQuarter && hasAllMonths(currentQuarter.start, currentQuarter.end)) {
+                    const intensity = calculateQuarterlyIntensity(currentQuarter);
+                    if (intensity !== null) {
+                        pastQuartersData.unshift({ label: `${currentQuarter.fy.replace('20','')} Q${currentQuarter.q}`, intensity: intensity, range: currentQuarter });
+                    }
+                    currentQuarter = previousQuarterRangeForYM(currentQuarter.start);
+                } else { break; }
+            }
             
-            const prodBarContainer = document.getElementById('cs-production-bar').parentElement;
-            const prodText = document.getElementById('cs-production-text');
+            if (pastQuartersData.length > 0) {
+                const mostRecentQuarter = pastQuartersData[pastQuartersData.length - 1];
+                dashboardData.quarterly.co2 = {
+                    labels: pastQuartersData.map(q => q.label), emissions: pastQuartersData.map(q => q.intensity),
+                    target: pastQuartersData.map(() => 2.09), average: mostRecentQuarter.intensity.toFixed(2), title: mostRecentQuarter.label
+                };
 
-            if (currentDataView === 'monthly' || currentDataView === 'quarterly') {
-                prodBarContainer.classList.add('hidden');
-                prodText.classList.add('hidden');
-            } else {
-                prodBarContainer.classList.remove('hidden');
-                prodText.classList.remove('hidden');
-            }
+                const { start, end, q, fy } = mostRecentQuarter.range;
+                const quarterMonths = monthsBetweenInclusive(start, end);
+                const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
+                const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
+                lastQuarterUsed = { startYM: start, endYM: end };
+                
+                dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
+                dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
+                dashboardData.quarterly.production.value = +(totalProduction / 1e6).toFixed(2);
+                dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(start, end)})`;
 
-            if (data.production) {
-                updateProductionCard(data);
-                document.getElementById('cs-production-bar').style.width = data.production.growth + '%';
-                document.getElementById('cs-production-text').textContent = data.production.text;
-                document.getElementById('cs-production-period-text').textContent = data.production.periodLabel;
+                updateDashboard('quarterly');
             }
-            document.getElementById('scrap-input-value').textContent = data.scrap.value;
-            document.getElementById('external-scrap').textContent = data.scrap.external;
-            document.getElementById('internal-scrap').textContent = data.scrap.internal;
         }
 
-        function setDynamicGreeting() {
-            const greetingEl = document.getElementById('dynamic-greeting');
-            if (!greetingEl) return;
-
-            const now = new Date();
-            const istOffset = 5.5 * 60 * 60 * 1000;
-            const istTime = new Date(now.getTime() + istOffset);
-            const istHour = istTime.getUTCHours();
-
-            let greetingText = '';
-            let iconSvg = '';
-
-            if (istHour >= 5 && istHour < 12) {
-                greetingText = 'Good Morning';
-                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
-            } else if (istHour >= 12 && istHour < 17) {
-                greetingText = 'Good Afternoon';
-                iconSvg = `<svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>`;
-            } else if (istHour >= 17 && istHour < 21) {
-                greetingText = 'Good Evening';
-                iconSvg = `<svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16"></path></svg>`;
-            } else {
-                greetingText = 'Good Night';
-                iconSvg = `<svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>`;
-            }
-
-            greetingEl.innerHTML = `${iconSvg}<span>${greetingText}</span>`;
+        function updateMonthlyFor(ym) {
+            const rec = fullDataSeries.find(r => r.ym === ym);
+            if (!rec) return;
+            const selLabel = toMonthLabel(ym);
+            dashboardData.monthly.overviewText = `${selLabel} Overview`;
+            dashboardData.monthly.production.valueInTonnes = +rec.productionMTD.toFixed(2);
+            dashboardData.monthly.production.value = +(rec.productionMTD / 1e6).toFixed(2);
+            dashboardData.monthly.production.periodLabel = selLabel;
+            updateDashboard('monthly');
         }
 
-
+        // --- MAIN DASHBOARD UPDATE FUNCTION ---
         function updateDashboard(view) {
             currentDataView = view;
             document.querySelectorAll('.time-filter-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`filter-${view}`).classList.add('active');
-            const currentData = dashboardData[view];
+            
+            let currentData = dashboardData[view];
+
+            if (view === 'ytd') {
+                const latestDataPoint = fullDataSeries[fullDataSeries.length - 1];
+                const latestFY = getFY(latestDataPoint.ym);
+                const selectedFY = getFY(selectedMonthYM);
+
+                let ytdProductionData, ytdLabel, overviewText;
+                
+                const fiscalYearData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY);
+                
+                if (selectedFY < latestFY) {
+                    ytdProductionData = fiscalYearData.reduce((sum, d) => sum + d.productionMTD, 0);
+                    ytdLabel = `Total for ${selectedFY}`;
+                    overviewText = `${selectedFY} Overview`;
+                } else {
+                    ytdProductionData = fiscalYearData.reduce((sum, d) => sum + d.productionMTD, 0);
+                    const latestMonthName = toMonthLabel(latestDataPoint.ym).split(' ')[0];
+                    ytdLabel = `YTD for ${latestFY} (till ${latestMonthName})`;
+                    overviewText = `${latestFY} YTD Overview`;
+                }
+
+                dashboardData.ytd.production.valueInTonnes = +ytdProductionData.toFixed(2);
+                dashboardData.ytd.production.value = +(ytdProductionData / 1e6).toFixed(2);
+                dashboardData.ytd.production.periodLabel = ytdLabel;
+                dashboardData.ytd.overviewText = overviewText;
+                currentData = dashboardData.ytd; // Ensure currentData reflects these changes
+            }
+
             updateMetrics(currentData);
 
             let co2ChartData;
             const co2Subtitle = document.getElementById('co2-intensity-subtitle');
+            const downstreamTitle = document.getElementById('downstream-chart-title');
+            const csrTitle = document.getElementById('csr-chart-title');
+            const insightsTitle = document.getElementById('insights-title');
+            let periodLabelForTitles = '';
 
             if (view === 'monthly') {
                 co2Subtitle.textContent = 'vs Target: 2.09 tCO₂/tcs';
@@ -933,55 +834,131 @@
                 const subset = fullDataSeries.slice(start, i + 1);
                 
                 co2ChartData = {
-                    labels: subset.map(d => new Date(d.ym+'-01').toLocaleString('en-US',{month:'short'})),
+                    labels: subset.map(d => new Date(d.ym+'-02').toLocaleString('en-US',{month:'short'})),
                     emissions: subset.map(d => d.totalAbsEmissionMTD / d.productionMTD),
                     target: subset.map(() => 2.09) 
                 };
                 const latestIntensity = subset[subset.length-1].totalAbsEmissionMTD / subset[subset.length-1].productionMTD;
                 document.getElementById('co2-intensity-value').textContent = latestIntensity.toFixed(2);
+                periodLabelForTitles = toMonthLabel(selectedMonthYM).split(' ')[0];
 
             } else if (view === 'ytd') {
-                const fy25Record = fullDataSeries.find(d => d.ym === '2025-03');
-                const fy26Record = fullDataSeries[fullDataSeries.length - 1]; // Latest record
+                const allFYs = [...new Set(fullDataSeries.map(d => getFY(d.ym)))].sort();
+    
+                if (allFYs.length >= 2) {
+                    const latestFY = allFYs[allFYs.length - 1];
+                    const previousFY = allFYs[allFYs.length - 2];
 
-                const fy25Intensity = fy25Record.cumulativeEmissionYTD / fy25Record.cumulativeProductionYTD;
-                const fy26Intensity = fy26Record.cumulativeEmissionYTD / fy26Record.cumulativeProductionYTD;
-                
-                const latestMonthLabel = toMonthLabel(fy26Record.ym).split(' ')[0];
-                co2Subtitle.textContent = `YTD FY26 (till ${latestMonthLabel})`;
+                    const previousFYData = fullDataSeries.filter(d => getFY(d.ym) === previousFY);
+                    const latestFYData = fullDataSeries.filter(d => getFY(d.ym) === latestFY);
 
-                co2ChartData = {
-                    labels: ['FY25', 'YTD FY26'],
-                    emissions: [fy25Intensity, fy26Intensity],
-                    target: [2.09, 2.09]
-                };
-                 document.getElementById('co2-intensity-value').textContent = fy26Intensity.toFixed(2);
+                    const previousFYTotalProd = previousFYData.reduce((sum, d) => sum + d.productionMTD, 0);
+                    const previousFYTotalEmission = previousFYData.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
+                    const previousFYIntensity = previousFYTotalEmission / previousFYTotalProd;
+
+                    const latestFYTotalProd = latestFYData.reduce((sum, d) => sum + d.productionMTD, 0);
+                    const latestFYTotalEmission = latestFYData.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
+                    const latestFYIntensity = latestFYTotalEmission / latestFYTotalProd;
+
+                    const latestMonthLabel = toMonthLabel(latestFYData[latestFYData.length - 1].ym).split(' ')[0];
+                    co2Subtitle.textContent = `YTD ${latestFY} (till ${latestMonthLabel})`;
+                    co2ChartData = {
+                        labels: [previousFY, `YTD ${latestFY}`],
+                        emissions: [previousFYIntensity, latestFYIntensity],
+                        target: [2.09, 2.09]
+                    };
+                    document.getElementById('co2-intensity-value').textContent = latestFYIntensity.toFixed(2);
+                } else {
+                    co2ChartData = { labels: [], emissions: [], target: [] };
+                    co2Subtitle.textContent = 'Not enough data for YTD comparison';
+                    document.getElementById('co2-intensity-value').textContent = 'N/A';
+                }
+                periodLabelForTitles = currentData.overviewText.replace(' Overview', '');
 
             } else if (view === 'quarterly') {
                 co2ChartData = currentData.co2;
                 document.getElementById('co2-intensity-value').textContent = currentData.co2.average;
                 co2Subtitle.textContent = `${currentData.co2.title} Average Intensity`;
+                periodLabelForTitles = currentData.overviewText.replace(' Overview', '');
             }
             
+            downstreamTitle.textContent = `Down Stream Emission Intensity (${periodLabelForTitles})`;
+            csrTitle.textContent = `CSR Beneficiaries (${periodLabelForTitles})`;
+            insightsTitle.textContent = `${periodLabelForTitles} Highlights & Insights`;
+
             renderCo2Chart(co2ChartData);
-            renderDownstreamChart(currentData.downstreamEmissions.labels, currentData.downstreamEmissions.values);
+            const downstreamData = currentData.downstreamEmissions[currentDownstreamLocation];
+            renderDownstreamChart(downstreamData);
             renderCsrDonutChart(currentData.csr);
-            renderProductionMiniChart(view);
+            renderProductionChart(view);
         }
 
+        // --- MONTH POPOVER LOGIC ---
+        function buildMonthPopover() {
+            const wrap = document.getElementById('month-popover-content');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+            ['FY2026','FY2025'].forEach((fy, idx) => {
+                const section = document.createElement('div');
+                section.className = idx === 0 ? 'mb-3' : 'mt-4';
+                const h = document.createElement('div');
+                h.className = 'text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2';
+                h.textContent = fy;
+                section.appendChild(h);
+                const grid = document.createElement('div');
+                grid.className = 'grid grid-cols-3 gap-2';
+                
+                const startYear = parseInt(fy.replace('FY','')) - 1;
+                const months = Array.from({length: 12}, (_, i) => {
+                    const month = (i + 3) % 12 + 1;
+                    const year = startYear + Math.floor((i + 3) / 12);
+                    return toYM(year, month);
+                });
+                const monthNames = ['Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec','Jan','Feb','Mar'];
+
+                months.forEach((ym, i) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.dataset.ym = ym;
+                    btn.textContent = monthNames[i];
+                    btn.className = 'px-3 py-1.5 rounded-full text-sm font-semibold transition select-none';
+                    if (AVAILABLE_MONTHS.has(ym)) {
+                        btn.className += (ym === selectedMonthYM)
+                            ? ' bg-green-500 text-white'
+                            : ' text-gray-800 dark:text-gray-100 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700';
+                        btn.addEventListener('click', () => {
+                            selectedMonthYM = ym;
+                            if(currentDataView === 'quarterly') handleQuarterlySwitch();
+                            else if (currentDataView === 'ytd') { updateDashboard('ytd'); } 
+                            else updateMonthlyFor(ym);
+                            buildMonthPopover();
+                            closeMonthPopover();
+                        });
+                    } else {
+                        btn.className += ' text-gray-400 bg-gray-100/40 dark:bg-gray-800/40 cursor-not-allowed';
+                        btn.disabled = true;
+                    }
+                    grid.appendChild(btn);
+                });
+                section.appendChild(grid);
+                wrap.appendChild(section);
+            });
+        }
+        function closeMonthPopover() {
+            document.getElementById('month-popover').classList.add('hidden');
+            document.getElementById('month-popover-btn').setAttribute('aria-expanded','false');
+        }
+
+        // --- INITIALIZATION ---
         window.onload = function() {
-            // BETA Overlay Logic
+            // Beta Overlay
             const betaOverlay = document.getElementById('beta-overlay');
             const betaModal = document.getElementById('beta-modal');
-            const dismissBtn = document.getElementById('dismiss-beta');
-            
-            // Animate modal in
             setTimeout(() => {
                 betaModal.classList.remove('scale-95', 'opacity-0');
                 betaModal.classList.add('scale-100', 'opacity-100');
             }, 100);
-
-            dismissBtn.addEventListener('click', () => {
+            document.getElementById('dismiss-beta').addEventListener('click', () => {
                 betaOverlay.style.opacity = 0;
                 setTimeout(() => {
                     betaOverlay.style.display = 'none';
@@ -991,24 +968,79 @@
             // Set dynamic greeting
             setDynamicGreeting();
 
-            // Dashboard initialization
+            // Initial dashboard render
             updateDashboard('monthly');
-            // time filters
+
+            // Attach event listeners
             document.getElementById('filter-monthly').addEventListener('click', () => updateDashboard('monthly'));
             document.getElementById('filter-quarterly').addEventListener('click', () => handleQuarterlySwitch());
             document.getElementById('filter-ytd').addEventListener('click', () => updateDashboard('ytd'));
-            // unit toggle
             document.getElementById('unit-selector').addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
+
+            // Downstream filter logic
+            document.getElementById('downstream-filter-container').addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const location = e.target.dataset.location;
+                    if (location) {
+                        currentDownstreamLocation = location;
+                        document.querySelectorAll('#downstream-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+                        const data = dashboardData[currentDataView].downstreamEmissions[location];
+                        renderDownstreamChart(data);
+                    }
+                }
+            });
+
             // Month popover interactions
-            const btn = document.getElementById('month-popover-btn');
-            const pop = document.getElementById('month-popover');
-            btn.addEventListener('click', (e) => { e.stopPropagation(); toggleMonthPopover(); });
-            document.addEventListener('click', (e) => {
-                if (!pop.classList.contains('hidden') && !pop.contains(e.target) && e.target !== btn) {
+            const monthBtn = document.getElementById('month-popover-btn');
+            const monthPop = document.getElementById('month-popover');
+            monthBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (monthPop.classList.contains('hidden')) {
+                    buildMonthPopover();
+                    monthPop.classList.remove('hidden');
+                    monthBtn.setAttribute('aria-expanded','true');
+                } else {
                     closeMonthPopover();
                 }
             });
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMonthPopover(); });
+            document.addEventListener('click', (e) => !monthPop.classList.contains('hidden') && !monthPop.contains(e.target) && e.target !== monthBtn && closeMonthPopover());
+            document.addEventListener('keydown', (e) => e.key === 'Escape' && closeMonthPopover());
+
+            // Download functionality
+            const downloadBtn = document.getElementById('download-btn');
+            const downloadMenu = document.getElementById('download-menu');
+            downloadBtn.addEventListener('click', (e) => { e.stopPropagation(); downloadMenu.classList.toggle('hidden'); });
+            document.addEventListener('click', (e) => !downloadMenu.classList.contains('hidden') && !downloadMenu.contains(e.target) && e.target !== downloadBtn && downloadMenu.classList.add('hidden'));
+
+            const captureDashboard = () => {
+                const elementsToHide = [document.getElementById('beta-overlay'), downloadBtn, downloadMenu, document.getElementById('month-popover-btn'), document.getElementById('theme-toggle')];
+                elementsToHide.forEach(el => el && (el.style.visibility = 'hidden'));
+                return html2canvas(document.body).finally(() => elementsToHide.forEach(el => el && (el.style.visibility = 'visible')));
+            }
+
+            document.getElementById('download-png').addEventListener('click', (e) => {
+                e.preventDefault();
+                captureDashboard().then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'esg-pulse-monitor.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+                downloadMenu.classList.add('hidden');
+            });
+
+            document.getElementById('download-pdf').addEventListener('click', (e) => {
+                e.preventDefault();
+                const { jsPDF } = window.jspdf;
+                captureDashboard().then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
+                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.save('esg-pulse-monitor.pdf');
+                });
+                downloadMenu.classList.add('hidden');
+            });
         };
     </script>
 </body>

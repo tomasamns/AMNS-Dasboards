@@ -26,7 +26,7 @@
             font-family: 'Inter', sans-serif;
              overflow-x: hidden;
         }
-        .filter-btn {
+        .filter-btn, .energy-tab-btn {
             background-color: #E5E7EB; /* gray-200 */
             color: #374151; /* gray-700 */
             padding: 0.5rem 1rem;
@@ -36,18 +36,18 @@
             border: none;
             outline: none;
         }
-        .dark .filter-btn {
+        .dark .filter-btn, .dark .energy-tab-btn {
             background-color: #4B5563; /* gray-600 */
             color: #F3F4F6; /* gray-100 */
         }
-        .filter-btn:hover {
+        .filter-btn:hover, .energy-tab-btn:hover {
             background-color: #D1D5DB; /* gray-300 */
             transform: translateY(-2px);
         }
-        .dark .filter-btn:hover {
+        .dark .filter-btn:hover, .dark .energy-tab-btn:hover {
              background-color: #6B7280; /* gray-500 */
         }
-        .filter-btn.active {
+        .filter-btn.active, .energy-tab-btn.active {
             background-color: #10B981; /* green-500 */
             color: white;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -77,270 +77,273 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-6 sm:p-10 transition-colors duration-300">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300">
 
-    <!-- BETA Overlay -->
-    <div id="beta-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0" id="beta-modal">
-            <h3 class="text-2xl font-bold text-yellow-500 mb-4">BETA Testing</h3>
-            <p class="text-gray-700 dark:text-gray-300 mb-6">This dashboard is currently in a testing phase. The data displayed is for demonstration purposes only and should not be used for official reference.</p>
-            <button id="dismiss-beta" class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Acknowledge & Continue</button>
+    <div id="dashboard-container" class="p-6 sm:p-10">
+        <!-- BETA Overlay -->
+        <div id="beta-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center backdrop-blur-sm">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0" id="beta-modal">
+                <h3 class="text-2xl font-bold text-yellow-500 mb-4">BETA Testing</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-6">This dashboard is currently in a testing phase. The data displayed is for demonstration purposes only and should not be used for official reference.</p>
+                <button id="dismiss-beta" class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Acknowledge & Continue</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Header Section -->
-    <header class="relative text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-700 dark:text-gray-300 tracking-wider mb-2">AM/NS INDIA</h2>
-        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2 text-gray-900 dark:text-white">
-            ESG Pulse Monitor
-        </h1>
-        <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">July 2025 Overview</p>
-        <div id="dynamic-greeting" class="flex items-center justify-center gap-2 text-lg text-gray-500 dark:text-gray-400 mt-1"></div>
+        <!-- Header Section -->
+        <header class="relative text-center mb-12">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-700 dark:text-gray-300 tracking-wider mb-2">AM/NS INDIA</h2>
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight mb-2 text-gray-900 dark:text-white">
+                ESG Pulse Monitor
+            </h1>
+            <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">July 2025 Overview</p>
+            <div id="dynamic-greeting" class="flex items-center justify-center gap-2 text-lg text-gray-500 dark:text-gray-400 mt-1"></div>
 
-        <!-- Download Button -->
-        <div class="absolute top-0 left-0">
-            <div class="relative">
-                <button id="download-btn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            <!-- Download Button -->
+            <div class="absolute top-0 left-0">
+                <div class="relative">
+                    <button id="download-btn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </button>
+                    <div id="download-menu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
+                        <a href="#" id="download-png" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PNG</a>
+                        <a href="#" id="download-pdf" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PDF</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side buttons -->
+            <div class="absolute top-0 right-0 flex items-center gap-3">
+                <!-- Custom Month Popover -->
+                <div class="relative">
+                    <button id="month-popover-btn" aria-expanded="false" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 ring-2 ring-indigo-300/60 hover:ring-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 transition">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                    </button>
+                    <div id="month-popover" class="hidden absolute right-0 mt-3 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 z-50">
+                        <div id="month-popover-content"></div>
+                    </div>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
                 </button>
-                <div id="download-menu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
-                    <a href="#" id="download-png" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PNG</a>
-                    <a href="#" id="download-pdf" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PDF</a>
-                </div>
+            </div>
+        </header>
+
+        <!-- Filter Buttons for Monthly, Quarterly, YTD -->
+        <div class="flex justify-center mb-8">
+            <div class="inline-flex p-1 bg-gray-200 dark:bg-gray-700 rounded-full">
+                <button id="filter-monthly" class="time-filter-btn active">Monthly</button>
+                <button id="filter-quarterly" class="time-filter-btn">Quarterly</button>
+                <button id="filter-ytd" class="time-filter-btn">YTD</button>
             </div>
         </div>
 
-        <!-- Right side buttons -->
-        <div class="absolute top-0 right-0 flex items-center gap-3">
-            <!-- Custom Month Popover -->
-            <div class="relative">
-                <button id="month-popover-btn" aria-expanded="false" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 ring-2 ring-indigo-300/60 hover:ring-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 transition">
-                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
+        <!-- Main Dashboard Grid -->
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            
+            <!-- CO2 Intensity Card -->
+            <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col">
+                <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                    <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+                </div>
+                <div class="absolute top-4 right-4 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                     </svg>
-                </button>
-                <div id="month-popover" class="hidden absolute right-0 mt-3 w-80 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl p-4 z-50">
-                    <div id="month-popover-content"></div>
+                    <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Placeholder for CO2 Intensity information.
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Theme Toggle Button -->
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-            </button>
-        </div>
-    </header>
-
-    <!-- Filter Buttons for Monthly, Quarterly, YTD -->
-    <div class="flex justify-center mb-8">
-        <div class="inline-flex p-1 bg-gray-200 dark:bg-gray-700 rounded-full">
-            <button id="filter-monthly" class="time-filter-btn active">Monthly</button>
-            <button id="filter-quarterly" class="time-filter-btn">Quarterly</button>
-            <button id="filter-ytd" class="time-filter-btn">YTD</button>
-        </div>
-    </div>
-
-    <!-- Main Dashboard Grid -->
-    <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-        
-        <!-- CO2 Intensity Card -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col">
-            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
-            </div>
-            <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for CO2 Intensity information.
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-xl font-semibold mb-2 text-cyan-600 dark:text-cyan-400">CO2 Intensity</h2>
-                <p class="text-5xl font-bold mb-1">
-                    <span id="co2-intensity-value">2.13</span> 
-                    <span class="text-2xl text-gray-500 dark:text-gray-400">tCO₂/tcs</span>
-                </p>
-                <p id="co2-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400 mb-2">vs Target: 2.09 tCO₂/tcs</p>
-            </div>
-            <div class="flex-grow">
-                <canvas id="co2LineChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Crude Steel Production Card -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
-            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
-            </div>
-            <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for Crude Steel Production information.
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-                </div>
-            </div>
-            <div>
-                <h2 class="text-xl font-semibold mb-2 text-lime-600 dark:text-lime-400">Crude Steel Production</h2>
-                <div class="flex items-baseline">
+                <div>
+                    <h2 class="text-xl font-semibold mb-2 text-cyan-600 dark:text-cyan-400">CO2 Intensity</h2>
                     <p class="text-5xl font-bold mb-1">
-                        <span id="cs-production-value">0.64</span> 
+                        <span id="co2-intensity-value">2.13</span> 
+                        <span class="text-2xl text-gray-500 dark:text-gray-400">tCO₂/tcs</span>
                     </p>
-                    <div class="relative ml-2">
-                        <select id="unit-selector" class="bg-gray-200 dark:bg-gray-700 text-2xl text-gray-500 dark:text-gray-400 rounded-md p-1 pr-8 focus:outline-none appearance-none">
-                            <option value="MnT">MnT</option>
-                            <option value="t">t</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    <p id="co2-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400 mb-2">vs Target: 2.09 tCO₂/tcs</p>
+                </div>
+                <div class="flex-grow">
+                    <canvas id="co2LineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Crude Steel Production Card -->
+            <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+                <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                    <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+                </div>
+                <div class="absolute top-4 right-4 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Placeholder for Crude Steel Production information.
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold mb-2 text-lime-600 dark:text-lime-400">Crude Steel Production</h2>
+                    <div class="flex items-baseline">
+                        <p class="text-5xl font-bold mb-1">
+                            <span id="cs-production-value">0.64</span> 
+                        </p>
+                        <div class="relative ml-2">
+                            <select id="unit-selector" class="bg-gray-200 dark:bg-gray-700 text-2xl text-gray-500 dark:text-gray-400 rounded-md p-1 pr-8 focus:outline-none appearance-none">
+                                <option value="MnT">MnT</option>
+                                <option value="t">t</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-gray-400">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="cs-production-period-text" class="text-md text-gray-500 dark:text-gray-400">July 2025</p>
+                </div>
+                <div class="mt-4 flex flex-col items-center flex-grow">
+                    <!-- Mini bar chart: last 3 months / selected quarter -->
+                    <div id="prodChartWrap" class="w-full flex-grow">
+                        <canvas id="prodChart" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scrap Input Card -->
+            <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+                <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                    <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+                </div>
+                <div class="absolute top-4 right-4 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Placeholder for Scrap Input information.
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold mb-2 text-orange-600 dark:text-orange-400">Scrap Input</h2>
+                    <p class="text-5xl font-bold mb-1">
+                        <span id="scrap-input-value">6.0</span> 
+                        <span class="text-2xl text-gray-500 dark:text-gray-400">%</span>
+                    </p>
+                    <p class="text-md text-gray-500 dark:text-gray-400">vs Target: 7.1%</p>
+                </div>
+                <div class="mt-4 flex-grow">
+                    <canvas id="scrapChart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <!-- Detailed Charts Section -->
+        <section class="mb-12">
+            <!-- New Energy Card -->
+            <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
+                <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                    <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
+                </div>
+                <div class="absolute top-4 right-4 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                    </svg>
+                    <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                        Placeholder for Energy information.
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-4 text-green-600 dark:text-green-400">Energy Intensity</h2>
+                    <p class="text-5xl font-bold mb-1">
+                        <span id="energy-intensity-value">1.16</span> 
+                        <span class="text-2xl text-gray-500 dark:text-gray-400">MWh/tcs</span>
+                    </p>
+                    <p id="energy-intensity-subtitle" class="text-md text-gray-500 dark:text-gray-400">July 2025</p>
+                </div>
+
+                <div id="energy-chart-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Chart 1: Consumption -->
+                    <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h3 class="text-lg font-semibold">Consumption</h3>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">MWh</span>
+                        </div>
+                         <div class="relative h-64">
+                            <canvas id="energyBreakdownChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Chart 2: Renewable % -->
+                    <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h3 class="text-lg font-semibold">Renewable Energy Share</h3>
+                             <span class="text-sm text-gray-500 dark:text-gray-400">%</span>
+                        </div>
+                         <div class="relative h-64">
+                            <canvas id="energyRenewableChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Chart 3: Composition -->
+                    <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                         <div class="flex justify-between items-baseline mb-2">
+                            <h3 class="text-lg font-semibold">Composition</h3>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">%</span>
+                        </div>
+                        <div class="relative h-64">
+                            <canvas id="energyCompositionChart"></canvas>
                         </div>
                     </div>
                 </div>
-                <p id="cs-production-period-text" class="text-md text-gray-500 dark:text-gray-400">July 2025</p>
+                <p id="energy-chart-placeholder" class="text-center text-gray-500 dark:text-gray-400 mt-12 hidden">Data not available for this period.</p>
             </div>
-            <div class="mt-4 flex flex-col items-center flex-grow">
-                <!-- Mini bar chart: last 3 months / selected quarter -->
-                <div id="prodChartWrap" class="w-full flex-grow">
-                    <canvas id="prodChart" class="w-full h-full"></canvas>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <!-- Scrap Input Card -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg flex flex-col justify-between">
+        <!-- Insights & Summary Section -->
+        <section class="relative bg-gray-200 dark:bg-gray-800 rounded-xl p-6 pt-12 shadow-lg mb-12">
             <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
                 <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
             </div>
             <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                 </svg>
                 <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for Scrap Input information.
+                    Placeholder for Highlights & Insights information.
                     <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
                 </div>
             </div>
-            <div>
-                <h2 class="text-xl font-semibold mb-2 text-orange-600 dark:text-orange-400">Scrap Input</h2>
-                <p class="text-5xl font-bold mb-1">
-                    <span id="scrap-input-value">6.0</span> 
-                    <span class="text-2xl text-gray-500 dark:text-gray-400">%</span>
-                </p>
-                <p class="text-md text-gray-500 dark:text-gray-400">vs Target: 7.1%</p>
-            </div>
-            <div class="mt-4">
-                <div class="w-full flex justify-between items-center text-sm">
-                    <div class="flex-1 text-center">
-                        <span id="external-scrap" class="block text-2xl font-bold text-gray-800 dark:text-gray-300">7.89</span>
-                        <span class="block text-gray-600 dark:text-gray-500">External KT</span>
-                    </div>
-                    <div class="flex-1 text-center">
-                        <span id="internal-scrap" class="block text-2xl font-bold text-gray-800 dark:text-gray-300">29.07</span>
-                        <span class="block text-gray-600 dark:text-gray-500">Internal KT</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Detailed Charts Section -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-        
-        <!-- Down Stream Emission Intensity Chart -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
-            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
-            </div>
-            <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for Down Stream Emission information.
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-                </div>
-            </div>
-            <h2 id="downstream-chart-title" class="text-xl font-semibold mb-4 text-pink-600 dark:text-pink-400">Down Stream Emission Intensity (July)</h2>
-            <div id="downstream-filter-container" class="flex space-x-2 mb-4">
-                <button class="filter-btn active" data-location="all">All Locations</button>
-                <button class="filter-btn" data-location="pune">Pune</button>
-                <button class="filter-btn" data-location="khopoli">Khopoli</button>
-                <button class="filter-btn" data-location="gandhidham">Gandhidham</button>
-            </div>
-            <div class="chart-container">
-                <canvas id="downstreamBarChart"></canvas>
-            </div>
-        </div>
-
-        <!-- CSR Beneficiaries Donut Chart -->
-        <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
-             <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
-            </div>
-            <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for CSR Beneficiaries information.
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-                </div>
-            </div>
-            <h2 id="csr-chart-title" class="text-xl font-semibold mb-4 text-purple-600 dark:text-purple-400">CSR Beneficiaries (July)</h2>
-            <div class="chart-container">
-                <canvas id="csrDonutChart"></canvas>
-            </div>
-        </div>
-    </section>
-
-    <!-- Insights & Summary Section -->
-    <section class="relative bg-gray-200 dark:bg-gray-800 rounded-xl p-6 pt-12 shadow-lg mb-12">
-        <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-            <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">BETA: Do not refer or share externally</p>
-        </div>
-        <div class="absolute top-4 right-4 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-            </svg>
-            <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                Placeholder for Highlights & Insights information.
-                <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-            </div>
-        </div>
-        <h2 id="insights-title" class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">July 2025 Highlights & Insights</h2>
-        <ul id="insights-list" class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
-            <li><span class="font-medium text-green-600 dark:text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
-            <li><span class="font-medium text-orange-600 dark:text-orange-300">Scrap Input Increase:</span> Scrap input percentage increased from 5.6% in June to 6.0% in July.</li>
-            <li><span class="font-medium text-blue-600 dark:text-blue-300">High Water Reuse:</span> Over 5 lakh cubic meters of water were recycled and reused.</li>
-            <li><span class="font-medium text-red-600 dark:text-red-300">Increased CO2 Intensity:</span> CO2 Intensity increased to 2.13 tCO₂/tcs, moving further away from the target.</li>
-            <li><span class="font-medium text-purple-600 dark:text-purple-300">Significant Beneficiaries:</span> CSR initiatives reached over 1.7 lakh people in the health sector.</li>
-        </ul>
-    </section>
+            <h2 id="insights-title" class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">July 2025 Highlights & Insights</h2>
+            <ul id="insights-list" class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                <li><span class="font-medium text-green-600 dark:text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
+                <li><span class="font-medium text-orange-600 dark:text-orange-300">Scrap Input Increase:</span> Scrap input percentage increased from 5.6% in June to 6.0% in July.</li>
+                <li><span class="font-medium text-blue-600 dark:text-blue-300">High Water Reuse:</span> Over 5 lakh cubic meters of water were recycled and reused.</li>
+                <li><span class="font-medium text-red-600 dark:text-red-300">Increased CO2 Intensity:</span> CO2 Intensity increased to 2.13 tCO₂/tcs, moving further away from the target.</li>
+                <li><span class="font-medium text-purple-600 dark:text-purple-300">Significant Beneficiaries:</span> CSR initiatives reached over 1.7 lakh people in the health sector.</li>
+            </ul>
+        </section>
+    </div>
 
     <script>
         // --- GLOBAL STATE & CONFIG ---
-        let downstreamBarChartInstance = null;
         let co2LineChartInstance = null;
-        let csrDonutChartInstance = null;
         let prodChartInstance = null;
+        let scrapChartInstance = null;
+        let energyChartInstances = {};
         let lastQuarterUsed = null;
         let currentDataView = 'monthly';
         let selectedMonthYM = '2025-07'; // Initialize with a default
-        let currentDownstreamLocation = 'all';
 
         // --- THEME TOGGLE LOGIC ---
         const themeToggleBtn = document.getElementById('theme-toggle');
@@ -383,25 +386,25 @@
         // --- DATA STORE ---
         // Raw time-series data, simulating a database table
         const fullDataSeries = [
-            { ym: '2024-01', productionMTD: 668528.00, totalAbsEmissionMTD: 1482810.00 },
-            { ym: '2024-02', productionMTD: 637899.00, totalAbsEmissionMTD: 1394002.00 },
-            { ym: '2024-03', productionMTD: 678052.00, totalAbsEmissionMTD: 1440466.00 },
-            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00 },
-            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00 },
-            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00 },
-            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00 },
-            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00 },
-            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1163087.00 },
-            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1356894.00 },
-            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00 },
-            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00 },
-            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00 },
-            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00 },
-            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00 },
-            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1245932.00 },
-            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1265043.00 },
-            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1336695.00 },
-            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1356904.00 },
+            { ym: '2024-01', productionMTD: 668528.00, totalAbsEmissionMTD: 1482810.00, internalScrap: 20404.00, externalScrap: 6177.00 },
+            { ym: '2024-02', productionMTD: 637899.00, totalAbsEmissionMTD: 1394002.00, internalScrap: 21933.00, externalScrap: 3574.00 },
+            { ym: '2024-03', productionMTD: 678052.00, totalAbsEmissionMTD: 1440466.00, internalScrap: 22851.00, externalScrap: 6425.00 },
+            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00, internalScrap: 22398.00, externalScrap: 2157.00, totalElectricity: 736542.00, gridElectricity: 413023.14, renewableElectricity: 113200.9 },
+            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00, internalScrap: 11571.00, externalScrap: 945.00, totalElectricity: 727638.00, gridElectricity: 447011.86, renewableElectricity: 121180.4 },
+            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00, internalScrap: 16661.00, externalScrap: 1238.00, totalElectricity: 671572.00, gridElectricity: 406391.47, renewableElectricity: 142366.2 },
+            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00, internalScrap: 16830.00, externalScrap: 1109.00, totalElectricity: 696672.00, gridElectricity: 408262.07, renewableElectricity: 142915.1 },
+            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00, internalScrap: 34898.00, externalScrap: 4084.00, totalElectricity: 729944.00, gridElectricity: 460137.37, renewableElectricity: 214637.8 },
+            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1163087.00, internalScrap: 30312.00, externalScrap: 3732.00, totalElectricity: 628460.00, gridElectricity: 378786.15, renewableElectricity: 173051.1 },
+            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1356894.00, internalScrap: 28390.00, externalScrap: 5855.00, totalElectricity: 734619.00, gridElectricity: 488921.14, renewableElectricity: 206368.43 },
+            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00, internalScrap: 21043.00, externalScrap: 6048.00, totalElectricity: 688907.00, gridElectricity: 468288.59, renewableElectricity: 162267.85 },
+            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00, internalScrap: 34691.00, externalScrap: 12727.00, totalElectricity: 710126.00, gridElectricity: 437138.02, renewableElectricity: 138619.5 },
+            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00, internalScrap: 41776.00, externalScrap: 20138.00, totalElectricity: 628969.00, gridElectricity: 437013.45, renewableElectricity: 126796.272 },
+            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00, internalScrap: 22604.00, externalScrap: 18469.00, totalElectricity: 606300.00, gridElectricity: 442010.99, renewableElectricity: 172095.7245 },
+            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00, internalScrap: 14387.00, externalScrap: 9522.00, totalElectricity: 683115.00, gridElectricity: 516231.14, renewableElectricity: 199676.733 },
+            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1245932.00, internalScrap: 26089.00, externalScrap: 6623.00, totalElectricity: 699757.00, gridElectricity: 454544.67, renewableElectricity: 170536.321 },
+            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1265043.00, internalScrap: 33322.00, externalScrap: 8243.00, totalElectricity: 721008.00, gridElectricity: 449690.34, renewableElectricity: 182706.37 },
+            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1336695.00, internalScrap: 29070.00, externalScrap: 7895.00, totalElectricity: 739036.00, gridElectricity: 463709.06, renewableElectricity: 228708 },
+            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1356904.00, internalScrap: 16064.00, externalScrap: 19383.00, totalElectricity: 738121.00, gridElectricity: 490482.63, renewableElectricity: 249423 },
         ];
         selectedMonthYM = fullDataSeries[fullDataSeries.length - 1].ym; // Set latest month on load
 
@@ -409,40 +412,16 @@
         const dashboardData = {
             monthly: {
                 overviewText: 'July 2025 Overview',
-                production: { value: 0.64, valueInTonnes: 637576, periodLabel: 'July 2025' },
-                scrap: { value: 6.0, target: 7.1, external: 7.89, internal: 29.07 },
-                downstreamEmissions: {
-                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.15] },
-                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.03, 0.05] },
-                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.18, 0.16] },
-                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.14, 0.16] }
-                },
-                csr: { beneficiaries: { health: 170793, education: 96294, skill: 28051, environment: 3900, community: 12800, sports: 27077 } }
+                production: { value: 0.64, valueInTonnes: 637576, periodLabel: 'July 2025' }
             },
             quarterly: {
                 overviewText: 'Q2 FY25 Overview',
                 co2: { labels: [], emissions: [], target: [], average: 0 },
-                production: { value: 1.83, valueInTonnes: 1828671, periodLabel: 'Q2 FY25' },
-                scrap: { value: 6.2, target: 7.1, external: 23.50, internal: 85.10 },
-                downstreamEmissions: {
-                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.05, 0.16, 0.14] },
-                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.04, 0.06] },
-                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.17, 0.15] },
-                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.13, 0.15] }
-                },
-                csr: { beneficiaries: { health: 450000, education: 280000, skill: 75000, environment: 11000, community: 38000, sports: 80000 } }
+                production: { value: 1.83, valueInTonnes: 1828671, periodLabel: 'Q2 FY25' }
             },
             ytd: {
                 overviewText: 'Year-to-Date Overview',
-                production: { value: 2.47, valueInTonnes: 2466247.12, periodLabel: 'April 2025 to latest month' },
-                scrap: { value: 5.9, target: 7.1, external: 54.20, internal: 210.30 },
-                downstreamEmissions: {
-                    all: { labels: ['Pune', 'Khopoli', 'Gandhidham'], values: [0.04, 0.17, 0.16] },
-                    pune: { labels: ['Galvanised', 'Cold Rolled'], values: [0.03, 0.05] },
-                    khopoli: { labels: ['Coated Steel', 'Tubes'], values: [0.18, 0.16] },
-                    gandhidham: { labels: ['Pipes', 'Structural'], values: [0.15, 0.17] }
-                },
-                csr: { beneficiaries: { health: 1200000, education: 850000, skill: 220000, environment: 32000, community: 105000, sports: 240000 } }
+                production: { value: 2.47, valueInTonnes: 2466247.12, periodLabel: 'April 2025 to latest month' }
             }
         };
 
@@ -502,9 +481,22 @@
                 updateProductionCard(data);
                 document.getElementById('cs-production-period-text').textContent = data.production.periodLabel;
             }
-            document.getElementById('scrap-input-value').textContent = data.scrap.value;
-            document.getElementById('external-scrap').textContent = data.scrap.external;
-            document.getElementById('internal-scrap').textContent = data.scrap.internal;
+        }
+
+        function updateScrapCard(dataSubset) {
+            if (!dataSubset || dataSubset.length === 0) {
+                document.getElementById('scrap-input-value').textContent = 'N/A';
+                return;
+            }
+
+            const totalInternalScrap = dataSubset.reduce((sum, d) => sum + (d.internalScrap || 0), 0);
+            const totalExternalScrap = dataSubset.reduce((sum, d) => sum + (d.externalScrap || 0), 0);
+            const totalProduction = dataSubset.reduce((sum, d) => sum + (d.productionMTD || 0), 0);
+
+            const totalScrap = totalInternalScrap + totalExternalScrap;
+            const scrapPercentage = totalProduction > 0 ? (totalScrap / totalProduction) * 100 : 0;
+
+            document.getElementById('scrap-input-value').textContent = scrapPercentage.toFixed(1);
         }
 
         function updateProductionCard(data) {
@@ -577,63 +569,6 @@
                 }
             });
         }
-
-        function renderDownstreamChart(data) {
-            const downstreamCtx = document.getElementById('downstreamBarChart').getContext('2d');
-            if (downstreamBarChartInstance) downstreamBarChartInstance.destroy();
-            const colors = getChartColors();
-            downstreamBarChartInstance = new Chart(downstreamCtx, {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'tCO₂/ton', data: data.values,
-                        backgroundColor: ['rgba(255, 159, 64, 0.7)', 'rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(153, 102, 255, 0.7)'],
-                        borderColor: ['rgb(255, 159, 64)', 'rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'], borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor }, suggestedMax: Math.max(...data.values) * 1.2 },
-                        x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
-                    },
-                    plugins: { legend: { display: false } },
-                    animation: {
-                        onComplete: function() {
-                            const chart = this; const ctx = chart.ctx;
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.font = "12px 'Inter', sans-serif";
-                            ctx.fillStyle = document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)';
-                            this.data.datasets.forEach((dataset, i) => {
-                                const meta = chart.getDatasetMeta(i);
-                                meta.data.forEach((bar, index) => ctx.fillText(dataset.data[index].toFixed(2), bar.x, bar.y - 5));
-                            });
-                        }
-                    }
-                }
-            });
-        }
-
-        function renderCsrDonutChart(data) {
-            const csrCtx = document.getElementById('csrDonutChart').getContext('2d');
-            if (csrDonutChartInstance) csrDonutChartInstance.destroy();
-            const colors = getChartColors();
-            csrDonutChartInstance = new Chart(csrCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(data.beneficiaries).map(key => key.charAt(0).toUpperCase() + key.slice(1)),
-                    datasets: [{
-                        label: 'Beneficiaries', data: Object.values(data.beneficiaries),
-                        backgroundColor: ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#F43F5E', '#EF4444'],
-                        borderColor: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff', hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { position: 'right', labels: { color: colors.legendColor, font: { size: 14 } } } }
-                }
-            });
-        }
         
         function renderProductionChart(view){
             const wrap = document.getElementById('prodChartWrap');
@@ -648,9 +583,13 @@
             if (view === 'ytd') {
                 let allFYs = [...new Set(fullDataSeries.map(d => getFY(d.ym)))].sort();
                 allFYs = allFYs.filter(fy => fy === 'FY2025' || fy === 'FY2026'); // Filter for specific FYs
+                const shortFYLabels = allFYs.map(fy => fy.replace('20', ''));
 
                 const monthNames = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
-                const monthColors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8D6E63', '#EC407A', '#7E57C2', '#26A69A', '#D4E157', '#FFA726'];
+                 const monthColors = [
+                    '#4F81BD', '#C0504D', '#9BBB59', '#8064A2', '#4BACC6', '#F79646',
+                    '#A6A6A6', '#77933C', '#FF9900', '#31859C', '#7F7F7F', '#D99694'
+                ];
                 const monthMap = { Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12, Jan: 1, Feb: 2, Mar: 3 };
 
                 const datasets = monthNames.map((monthName, index) => {
@@ -668,7 +607,7 @@
 
                 prodChartInstance = new Chart(ctx, {
                     type: 'bar',
-                    data: { labels: allFYs, datasets: datasets },
+                    data: { labels: shortFYLabels, datasets: datasets },
                     options: {
                         indexAxis: 'y',
                         responsive: true,
@@ -734,6 +673,207 @@
             }
         }
 
+        function renderScrapChart(dataSubset) {
+            const ctx = document.getElementById('scrapChart').getContext('2d');
+            if (scrapChartInstance) scrapChartInstance.destroy();
+            const colors = getChartColors();
+
+            const labels = dataSubset.map(d => new Date(d.ym + '-02').toLocaleString('en-US', { month: 'short' }));
+            const internalData = dataSubset.map(d => (d.internalScrap || 0) / 1000);
+            const externalData = dataSubset.map(d => (d.externalScrap || 0) / 1000);
+
+            scrapChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Internal',
+                            data: internalData,
+                            backgroundColor: 'rgb(234, 88, 12)', // Orange-600
+                            borderColor: 'rgb(234, 88, 12)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'External',
+                            data: externalData,
+                            backgroundColor: 'rgb(251, 146, 60)', // Orange-400
+                            borderColor: 'rgb(251, 146, 60)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            grid: { color: colors.gridColor },
+                            ticks: { color: colors.ticksColor },
+                            title: {
+                                display: true,
+                                text: 'Scrap (KT)',
+                                color: colors.ticksColor
+                            }
+                        },
+                        x: {
+                            stacked: true,
+                            grid: { display: false },
+                            ticks: { color: colors.ticksColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: colors.legendColor
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)} KT`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderEnergyCharts(dataSubset) {
+            const placeholder = document.getElementById('energy-chart-placeholder');
+            const gridContainer = document.getElementById('energy-chart-grid');
+            
+            Object.values(energyChartInstances).forEach(chart => chart && chart.destroy());
+
+            const hasData = dataSubset.some(d => d.totalElectricity);
+
+            if (!hasData) {
+                gridContainer.classList.add('hidden');
+                placeholder.classList.remove('hidden');
+                return;
+            }
+            
+            gridContainer.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            
+            const colors = getChartColors();
+            const newColors = {
+                grid: '#6c5b80',
+                renewable: '#f67481',
+                self: '#f8c391'
+            };
+
+            const labels = dataSubset.map(d => new Date(d.ym + '-02').toLocaleString('en-US', { month: 'short' }));
+            
+            // --- 1. Composition (Pie Chart) ---
+            const totalNonRenewableGrid = dataSubset.reduce((sum, d) => sum + ((d.gridElectricity || 0) - (d.renewableElectricity || 0)), 0);
+            const totalRenewable = dataSubset.reduce((sum, d) => sum + (d.renewableElectricity || 0), 0);
+            const totalSelf = dataSubset.reduce((sum, d) => sum + ((d.totalElectricity || 0) - (d.gridElectricity || 0)), 0);
+            
+            const pieCtx = document.getElementById('energyCompositionChart').getContext('2d');
+            energyChartInstances.composition = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Grid Power', 'RE from Grid', 'Captive'],
+                    datasets: [{
+                        data: [totalNonRenewableGrid, totalRenewable, totalSelf],
+                        backgroundColor: [newColors.grid, newColors.renewable, newColors.self],
+                        borderColor: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: colors.legendColor, font: {size: 10} } } }
+                }
+            });
+
+            // --- 2. Renewable % (Line Chart) ---
+            const renewableCtx = document.getElementById('energyRenewableChart').getContext('2d');
+            const renewablePercentageData = dataSubset.map(d => (d.gridElectricity > 0 ? (d.renewableElectricity / d.gridElectricity) * 100 : 0));
+            energyChartInstances.renewable = new Chart(renewableCtx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Renewable % of Grid', data: renewablePercentageData, borderColor: newColors.renewable, tension: 0.3, pointStyle: 'circle' },
+                        { label: 'Target %', data: Array(labels.length).fill(33), borderColor: 'rgb(75, 192, 192)', borderDash: [5, 5], pointStyle: 'line' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: (v) => v + '%' } },
+                        x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
+                    },
+                    plugins: { legend: { 
+                        position: 'top', 
+                        labels: { 
+                            color: colors.legendColor, 
+                            font: {size: 10},
+                            usePointStyle: true, 
+                        } } 
+                    }
+                }
+            });
+
+            // --- 3. Breakdown (Corrected Stacked Bar Chart) ---
+            const breakdownCtx = document.getElementById('energyBreakdownChart').getContext('2d');
+            const nonRenewableGridData = dataSubset.map(d => (d.gridElectricity || 0) - (d.renewableElectricity || 0));
+            const renewableData = dataSubset.map(d => d.renewableElectricity || 0);
+            const selfGeneratedData = dataSubset.map(d => (d.totalElectricity || 0) - (d.gridElectricity || 0));
+
+            energyChartInstances.breakdown = new Chart(breakdownCtx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Grid Power', data: nonRenewableGridData, backgroundColor: newColors.grid },
+                        { label: 'RE from Grid', data: renewableData, backgroundColor: newColors.renewable },
+                        { label: 'Captive', data: selfGeneratedData, backgroundColor: newColors.self }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            stacked: true,
+                            grid: { color: colors.gridColor }, 
+                            ticks: { 
+                                color: colors.ticksColor,
+                                callback: function(value) {
+                                    return (value / 1000) + 'K';
+                                }
+                            },
+                        },
+                        x: { 
+                            stacked: true,
+                            grid: { color: colors.gridColor }, 
+                            ticks: { color: colors.ticksColor } 
+                        }
+                    },
+                    plugins: { 
+                        legend: { 
+                            position: 'top', 
+                            labels: { 
+                                color: colors.legendColor, 
+                                font: {size: 10},
+                                usePointStyle: true,
+                                pointStyle: 'rect'
+                            } 
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()} MWh`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
         // --- EVENT HANDLERS & LOGIC ---
         function handleQuarterlySwitch(){
             let pastQuartersData = [];
@@ -742,8 +882,16 @@
             for (let i = 0; i < 3; i++) {
                 if (currentQuarter && hasAllMonths(currentQuarter.start, currentQuarter.end)) {
                     const intensity = calculateQuarterlyIntensity(currentQuarter);
+                     const quarterMonths = monthsBetweenInclusive(currentQuarter.start, currentQuarter.end);
+                    const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
+
                     if (intensity !== null) {
-                        pastQuartersData.unshift({ label: `${currentQuarter.fy.replace('20','')} Q${currentQuarter.q}`, intensity: intensity, range: currentQuarter });
+                        pastQuartersData.unshift({ 
+                            label: `${currentQuarter.fy.replace('20','')} Q${currentQuarter.q}`, 
+                            intensity: intensity, 
+                            range: currentQuarter,
+                            data: dataForQuarter
+                        });
                     }
                     currentQuarter = previousQuarterRangeForYM(currentQuarter.start);
                 } else { break; }
@@ -757,9 +905,7 @@
                 };
 
                 const { start, end, q, fy } = mostRecentQuarter.range;
-                const quarterMonths = monthsBetweenInclusive(start, end);
-                const dataForQuarter = fullDataSeries.filter(d => quarterMonths.includes(d.ym));
-                const totalProduction = dataForQuarter.reduce((sum, d) => sum + d.productionMTD, 0);
+                const totalProduction = mostRecentQuarter.data.reduce((sum, d) => sum + d.productionMTD, 0);
                 lastQuarterUsed = { startYM: start, endYM: end };
                 
                 dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
@@ -789,8 +935,23 @@
             document.getElementById(`filter-${view}`).classList.add('active');
             
             let currentData = dashboardData[view];
+            let dataSubset = [];
+            let periodLabelForTitles = '';
 
-            if (view === 'ytd') {
+            if (view === 'monthly') {
+                const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
+                const i = idx >= 0 ? idx : fullDataSeries.length - 1;
+                const start = Math.max(0, i - 2); 
+                dataSubset = fullDataSeries.slice(start, i + 1);
+                periodLabelForTitles = toMonthLabel(selectedMonthYM).split(' ')[0];
+            } else if (view === 'quarterly') {
+                const qRange = lastQuarterUsed;
+                if(qRange) {
+                    const qMonths = monthsBetweenInclusive(qRange.startYM, qRange.endYM);
+                    dataSubset = fullDataSeries.filter(d => qMonths.includes(d.ym));
+                }
+                periodLabelForTitles = dashboardData.quarterly.overviewText.replace(' Overview', '');
+            } else if (view === 'ytd') {
                 const latestDataPoint = fullDataSeries[fullDataSeries.length - 1];
                 const latestFY = getFY(latestDataPoint.ym);
                 const selectedFY = getFY(selectedMonthYM);
@@ -798,6 +959,7 @@
                 let ytdProductionData, ytdLabel, overviewText;
                 
                 const fiscalYearData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY);
+                dataSubset = fiscalYearData;
                 
                 if (selectedFY < latestFY) {
                     ytdProductionData = fiscalYearData.reduce((sum, d) => sum + d.productionMTD, 0);
@@ -814,33 +976,29 @@
                 dashboardData.ytd.production.value = +(ytdProductionData / 1e6).toFixed(2);
                 dashboardData.ytd.production.periodLabel = ytdLabel;
                 dashboardData.ytd.overviewText = overviewText;
-                currentData = dashboardData.ytd; // Ensure currentData reflects these changes
+                currentData = dashboardData.ytd;
+                periodLabelForTitles = currentData.overviewText.replace(' Overview', '');
             }
 
             updateMetrics(currentData);
-
+            updateScrapCard(dataSubset);
+            
+            // --- Chart Updates ---
             let co2ChartData;
             const co2Subtitle = document.getElementById('co2-intensity-subtitle');
-            const downstreamTitle = document.getElementById('downstream-chart-title');
-            const csrTitle = document.getElementById('csr-chart-title');
             const insightsTitle = document.getElementById('insights-title');
-            let periodLabelForTitles = '';
-
+            
             if (view === 'monthly') {
                 co2Subtitle.textContent = 'vs Target: 2.09 tCO₂/tcs';
-                const idx = fullDataSeries.findIndex(d => d.ym === selectedMonthYM);
-                const i = idx >= 0 ? idx : fullDataSeries.length - 1;
-                const start = Math.max(0, i - 2); 
-                const subset = fullDataSeries.slice(start, i + 1);
+                const record = fullDataSeries.find(r => r.ym === selectedMonthYM);
                 
                 co2ChartData = {
-                    labels: subset.map(d => new Date(d.ym+'-02').toLocaleString('en-US',{month:'short'})),
-                    emissions: subset.map(d => d.totalAbsEmissionMTD / d.productionMTD),
-                    target: subset.map(() => 2.09) 
+                    labels: dataSubset.map(d => new Date(d.ym+'-02').toLocaleString('en-US',{month:'short'})),
+                    emissions: dataSubset.map(d => d.totalAbsEmissionMTD / d.productionMTD),
+                    target: dataSubset.map(() => 2.09) 
                 };
-                const latestIntensity = subset[subset.length-1].totalAbsEmissionMTD / subset[subset.length-1].productionMTD;
+                const latestIntensity = record.totalAbsEmissionMTD / record.productionMTD;
                 document.getElementById('co2-intensity-value').textContent = latestIntensity.toFixed(2);
-                periodLabelForTitles = toMonthLabel(selectedMonthYM).split(' ')[0];
 
             } else if (view === 'ytd') {
                 const allFYs = [...new Set(fullDataSeries.map(d => getFY(d.ym)))].sort();
@@ -859,11 +1017,20 @@
                     const latestFYTotalProd = latestFYData.reduce((sum, d) => sum + d.productionMTD, 0);
                     const latestFYTotalEmission = latestFYData.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
                     const latestFYIntensity = latestFYTotalEmission / latestFYTotalProd;
+                    
+                    const selectedFY = getFY(selectedMonthYM);
+                    const fiscalYearData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY);
+                    const selectedMonthIndex = fiscalYearData.findIndex(d => d.ym === selectedMonthYM);
+                    const ytdData = fiscalYearData.slice(0, selectedMonthIndex + 1);
+                    const ytdProd = ytdData.reduce((sum, d) => sum + d.productionMTD, 0);
+                    const ytdEmission = ytdData.reduce((sum, d) => sum + d.totalAbsEmissionMTD, 0);
+                    const ytdIntensity = (ytdEmission / ytdProd).toFixed(2);
+                    const selectedMonthLabel = toMonthLabel(selectedMonthYM).split(' ')[0];
+                    
+                    co2Subtitle.textContent = `${ytdIntensity} tCO₂/tcs (${selectedFY.replace('20','')} ${selectedMonthLabel} YTD)`;
 
-                    const latestMonthLabel = toMonthLabel(latestFYData[latestFYData.length - 1].ym).split(' ')[0];
-                    co2Subtitle.textContent = `YTD ${latestFY} (till ${latestMonthLabel})`;
                     co2ChartData = {
-                        labels: [previousFY, `YTD ${latestFY}`],
+                        labels: [previousFY.replace('20',''), `YTD ${latestFY.replace('20','')}`],
                         emissions: [previousFYIntensity, latestFYIntensity],
                         target: [2.09, 2.09]
                     };
@@ -873,24 +1040,27 @@
                     co2Subtitle.textContent = 'Not enough data for YTD comparison';
                     document.getElementById('co2-intensity-value').textContent = 'N/A';
                 }
-                periodLabelForTitles = currentData.overviewText.replace(' Overview', '');
-
             } else if (view === 'quarterly') {
-                co2ChartData = currentData.co2;
-                document.getElementById('co2-intensity-value').textContent = currentData.co2.average;
-                co2Subtitle.textContent = `${currentData.co2.title} Average Intensity`;
-                periodLabelForTitles = currentData.overviewText.replace(' Overview', '');
+                co2ChartData = dashboardData.quarterly.co2;
+                document.getElementById('co2-intensity-value').textContent = co2ChartData.average;
+                co2Subtitle.textContent = `${co2ChartData.title} Average Intensity`;
             }
             
-            downstreamTitle.textContent = `Down Stream Emission Intensity (${periodLabelForTitles})`;
-            csrTitle.textContent = `CSR Beneficiaries (${periodLabelForTitles})`;
             insightsTitle.textContent = `${periodLabelForTitles} Highlights & Insights`;
+            document.getElementById('energy-intensity-subtitle').textContent = toMonthLabel(selectedMonthYM);
+            const intensityRecord = fullDataSeries.find(d => d.ym === selectedMonthYM);
+            if (intensityRecord && intensityRecord.totalElectricity) {
+                const energyIntensity = intensityRecord.totalElectricity / intensityRecord.productionMTD;
+                document.getElementById('energy-intensity-value').textContent = energyIntensity.toFixed(2);
+            } else {
+                document.getElementById('energy-intensity-value').textContent = "N/A";
+            }
+
 
             renderCo2Chart(co2ChartData);
-            const downstreamData = currentData.downstreamEmissions[currentDownstreamLocation];
-            renderDownstreamChart(downstreamData);
-            renderCsrDonutChart(currentData.csr);
             renderProductionChart(view);
+            renderScrapChart(dataSubset);
+            renderEnergyCharts(dataSubset);
         }
 
         // --- MONTH POPOVER LOGIC ---
@@ -977,20 +1147,6 @@
             document.getElementById('filter-ytd').addEventListener('click', () => updateDashboard('ytd'));
             document.getElementById('unit-selector').addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
 
-            // Downstream filter logic
-            document.getElementById('downstream-filter-container').addEventListener('click', (e) => {
-                if (e.target.tagName === 'BUTTON') {
-                    const location = e.target.dataset.location;
-                    if (location) {
-                        currentDownstreamLocation = location;
-                        document.querySelectorAll('#downstream-filter-container .filter-btn').forEach(btn => btn.classList.remove('active'));
-                        e.target.classList.add('active');
-                        const data = dashboardData[currentDataView].downstreamEmissions[location];
-                        renderDownstreamChart(data);
-                    }
-                }
-            });
-
             // Month popover interactions
             const monthBtn = document.getElementById('month-popover-btn');
             const monthPop = document.getElementById('month-popover');
@@ -1016,7 +1172,7 @@
             const captureDashboard = () => {
                 const elementsToHide = [document.getElementById('beta-overlay'), downloadBtn, downloadMenu, document.getElementById('month-popover-btn'), document.getElementById('theme-toggle')];
                 elementsToHide.forEach(el => el && (el.style.visibility = 'hidden'));
-                return html2canvas(document.body).finally(() => elementsToHide.forEach(el => el && (el.style.visibility = 'visible')));
+                return html2canvas(document.getElementById('dashboard-container')).finally(() => elementsToHide.forEach(el => el && (el.style.visibility = 'visible')));
             }
 
             document.getElementById('download-png').addEventListener('click', (e) => {

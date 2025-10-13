@@ -107,8 +107,9 @@
             <p id="overview-subtitle" class="text-xl text-gray-500 dark:text-gray-400">August 2025 Overview</p>
             <div id="dynamic-greeting" class="flex items-center justify-center gap-2 text-lg text-gray-500 dark:text-gray-400 mt-1"><svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16"></path></svg><span>Good Evening</span></div>
 
-            <!-- Download Button -->
-            <div class="absolute top-0 left-0">
+            <!-- Left side buttons -->
+            <div class="absolute top-0 left-0 flex items-center gap-3">
+                <!-- Download Button -->
                 <div class="relative">
                     <button id="download-btn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -120,6 +121,10 @@
                         <a href="#" id="download-pdf" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Download as PDF</a>
                     </div>
                 </div>
+                <!-- Share Button -->
+                <button id="share-btn" class="p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
             </div>
 
             <!-- Right side buttons -->
@@ -422,28 +427,6 @@
             </div>
         </section>
 
-        <!-- Insights & Summary Section -->
-        <section class="relative bg-gray-200 dark:bg-gray-800 rounded-xl p-6 pt-12 shadow-lg mb-12">
-            <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
-                <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">FY26 Data is Unaudited, Do not Share Externally</p>
-            </div>
-            <div class="absolute top-4 right-4 group">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 cursor-pointer" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-64 p-3 bg-gray-700 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-                    Placeholder for Highlights & Insights information.
-                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-gray-700"></div>
-                </div>
-            </div>
-            <h2 id="insights-title" class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">August Highlights & Insights</h2>
-            <ul id="insights-list" class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
-                <li><span class="font-medium text-green-600 dark:text-green-300">Target Met:</span> The RE from Grid target of 33% was successfully achieved.</li>
-                <li><span class="font-medium text-orange-600 dark:text-orange-300">Scrap Input Increase:</span> Scrap input percentage increased from 5.6% in June to 6.0% in July.</li>
-                <li><span class="font-medium text-blue-600 dark:text-blue-300">High Water Reuse:</span> Over 5 lakh cubic meters of water were recycled and reused.</li>
-                <li><span class="font-medium text-red-600 dark:text-red-300">Increased CO2 Intensity:</span> CO2 Intensity increased to 2.13 tCO₂/tcs, moving further away from the target.</li>
-            </ul>
-        </section>
     </div>
 
     <script>
@@ -1463,7 +1446,7 @@
             document.addEventListener('click', (e) => !downloadMenu.classList.contains('hidden') && !downloadMenu.contains(e.target) && e.target !== downloadBtn && downloadMenu.classList.add('hidden'));
 
             const captureDashboard = () => {
-                const elementsToHide = [document.getElementById('beta-overlay'), downloadBtn, downloadMenu, document.getElementById('month-popover-btn'), document.getElementById('theme-toggle')];
+                const elementsToHide = [document.getElementById('beta-overlay'), downloadBtn, downloadMenu, document.getElementById('month-popover-btn'), document.getElementById('theme-toggle'), document.getElementById('share-btn')];
                 elementsToHide.forEach(el => el && (el.style.visibility = 'hidden'));
                 return html2canvas(document.getElementById('dashboard-container')).finally(() => elementsToHide.forEach(el => el && (el.style.visibility = 'visible')));
             }
@@ -1479,16 +1462,13 @@
                 downloadMenu.classList.add('hidden');
             });
 
-            document.getElementById('download-pdf').addEventListener('click', (e) => {
-                e.preventDefault();
-                const { jsPDF } = window.jspdf;
-                captureDashboard().then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [canvas.width, canvas.height] });
-                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                    pdf.save('esg-pulse-monitor.pdf');
-                });
-                downloadMenu.classList.add('hidden');
+            // Share functionality
+            const shareBtn = document.getElementById('share-btn');
+            shareBtn.addEventListener('click', () => {
+                const subject = encodeURIComponent('Check out the AM/NS India ESG Pulse Monitor');
+                const url = 'https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx';
+                const body = encodeURIComponent(`Hi,\n\nPlease find the link to the ESG Pulse Monitor dashboard below:\n\n${url}\n\nThanks`);
+                window.location.href = `mailto:?subject=${subject}&body=${body}`;
             });
         };
     </script>

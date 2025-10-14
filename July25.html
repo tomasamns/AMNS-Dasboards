@@ -26,7 +26,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-             overflow-x: hidden;
+              overflow-x: hidden;
         }
         .filter-btn, .energy-tab-btn {
             background-color: #E5E7EB; /* gray-200 */
@@ -95,6 +95,17 @@
                 <h3 class="text-2xl font-bold text-yellow-500 mb-4">BETA Testing</h3>
                 <p class="text-gray-700 dark:text-gray-300 mb-6">This dashboard is currently in a testing phase. The data displayed is for demonstration purposes only and should not be used for official reference.</p>
                 <button id="dismiss-beta" class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Acknowledge & Continue</button>
+            </div>
+        </div>
+
+        <!-- Share URL Copied Overlay -->
+        <div id="share-overlay" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 items-center justify-center backdrop-blur-sm opacity-0 transition-opacity duration-500">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl text-center max-w-md mx-4">
+                <div class="flex justify-center items-center mx-auto mb-4 w-12 h-12 rounded-full bg-green-100 dark:bg-green-900">
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">URL Copied!</h3>
+                <p class="text-gray-700 dark:text-gray-300">You have copied the URL of the page. Share it responsibly within the organization.</p>
             </div>
         </div>
 
@@ -362,7 +373,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700 mb-6">
                         <div class="text-center px-4 py-2">
                             <div class="flex justify-center mb-1">
-                                <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" height="512" viewBox="0 0 60 60" width="512" xmlns="http://www.w3.org/2000/svg" id="fi_3251386"><g id="Page-1" fill="none" fill-rule="evenodd"><g id="028---Water-Management" fill="currentColor" fill-rule="nonzero"><path id="Shape" d="m30 9c-11.5979797 0-21 9.4020203-21 21s9.4020203 21 21 21 21-9.4020203 21-21c-.0132259-11.592497-9.407503-20.98677409-21-21zm-16.443 30.478c.3950479-.1843215.7766545-.3961766 1.142-.634.7607673-.5695566 1.6909257-.8668129 2.641-.844.9491965-.0230561 1.8783746.275042 2.637.846 1.0769931.7751256 2.3763293 1.1800497 3.703 1.154 1.3233318.0253963 2.6191912-.379187 3.693-1.153 1.5728319-1.1274197 3.6891681-1.1274197 5.262 0 2.2259503 1.5411258 5.1740497 1.5411258 7.4 0 1.5737028-1.1274535 3.690159-1.1294631 5.266-.005.365565.2389049.7478909.4511225 1.144.635-.4009301.6904846-.8448027 1.3551245-1.329 1.99-.7740789-.3237623-1.6070898-.482804-2.446-.467-1.325928-.0251784-2.6242432.3804574-3.7 1.156-1.5728319 1.1274197-3.6891681 1.1274197-5.262 0-2.2259503-1.5411258-5.1740497-1.5411258-7.4 0-1.5730292 1.1268057-3.6889708 1.1268057-5.262 0-1.0775716-.7764571-2.3780829-1.1821212-3.706-1.156-.8415209-.01604-1.6771912.1429894-2.454.467-.48419-.6345328-.9280632-1.2988395-1.329-1.989zm16.443 9.522c-5.1833109-.0011333-10.1394555-2.1275188-13.712-5.883.3449965-.0793497.6979995-.1186095 1.052-.117.9491965-.0230561 1.8783746.275042 2.637.846 1.0769931.7751256 2.3763293 1.1800497 3.703 1.154 1.3233318.0253963 2.6191912-.379187 3.693-1.153 1.5728319-1.1274197 3.6891681-1.1274197 5.262 0 2.2259503 1.5411258 5.1740497 1.5411258 7.4 0 .757881-.571026 1.6863435-.869473 2.635-.847.3512715-.0020778.701603.0365124 1.044.115-3.5726126 3.7568199-8.5296721 5.8840107-13.714 5.885zm17.358-11.308c-.345954-.1524567-.6784612-.3337634-.994-.542-2.228274-1.5358687-5.1742196-1.5334801-7.4.006-1.5728319 1.1274197-3.6891681 1.1274197-5.262 0-2.2259503-1.5411258-5.1740497-1.5411258-7.4 0-1.5730292 1.1268057-3.6889708 1.1268057-5.262 0-1.0759201-.775216-2.3741237-1.1808169-3.7-1.156-1.3251583-.0251899-2.6229765.3785368-3.7 1.151-.3152124.2079121-.6473881.388886-.993.541-3.54713563-7.968763-1.2127892-17.3291261 5.6608429-22.6990923 6.8736322-5.36996613 16.520682-5.36996613 23.3943142 0 6.8736321 5.3699662 9.2079785 14.7303293 5.6608429 22.6990923z"></path><path id="Shape" d="m58.2 25.02-2.8-.559c-.6512313-3.0252157-1.8444503-5.9076425-3.522-8.508l1.579-2.369c.1092599-.1645007.1676876-.3575206.168-.555 0-.3-.116-1.945-2.414-4.242s-3.937-2.414-4.242-2.414c-.1975323-.00004431-.3906531.05841388-.555.168l-2.367 1.579c-2.6003597-1.67642326-5.4823715-2.86893315-8.507-3.52l-.56-2.8c-.0385839-.19353984-.1335711-.37133627-.273-.511-.216-.212-1.457-1.289-4.707-1.289s-4.491 1.077-4.707 1.293c-.1394289.13966373-.2344161.31746016-.273.511l-.56 2.796c-3.0246285.65106685-5.9066403 1.84357674-8.507 3.52l-2.369-1.579c-.1643469-.10958612-.3574677-.16804431-.555-.168-.3 0-1.944.116-4.242 2.414s-2.414 3.937-2.414 4.242c.00031242.1974794.05874008.3904993.168.555l1.579 2.369c-1.67684682 2.6005-2.86938496 5.4829189-3.52 8.508l-2.8.559c-.19372441.0380671-.37166323.1331304-.511.273-.212.216-1.289 1.457-1.289 4.707s1.077 4.491 1.293 4.707c.13933677.1398696.31727559.2349329.511.273l2.794.559c.65123131 3.0252157 1.84445027 5.9076425 3.522 8.508l-1.579 2.369c-.10925992.1645007-.16768758.3575206-.168.555 0 .305.116 1.945 2.414 4.242s3.937 2.414 4.242 2.414c.1975323.0000443.3906531-.0584139.555-.168l2.369-1.579c2.6003597 1.6764233 5.4823715 2.8689332 8.507 3.52l.56 2.794c.0385839.1935398.1335711.3713363.273.511.216.218 1.457 1.295 4.707 1.295s4.491-1.077 4.707-1.293c.1394289-.1396637.2344161-.3174602.273-.511l.56-2.794c3.024763-.6516832 5.9067827-1.8448739 8.507-3.522l2.369 1.579c.1643469.1095861.3574677.1680443.555.168.305 0 1.944-.116 4.242-2.414s2.414-3.937 2.414-4.242c-.0003124-.1974794-.0587401-.3904993-.168-.555l-1.579-2.369c1.6768468-2.6005 2.869385-5.4829189 3.52-8.508l2.8-.559c.1937244-.0380671.3716632-.1331304.511-.273.212-.216 1.289-1.457 1.289-4.707s-1.077-4.491-1.293-4.707c-.138254-.1391758-.3147043-.2341875-.507-.273zm-.791 8.08-3.051.61c-.3992049.0799834-.7100632.3940056-.786.794-.6062456 3.219104-1.8721241 6.2779131-3.718 8.984-.2295936.3366384-.2319672.7789167-.006 1.118l1.723 2.586c-.3679709 1.0011851-.9761011 1.8967264-1.771 2.608-.7099529.7939335-1.6022267 1.4034252-2.6 1.776l-2.6-1.728c-.3388799-.2262682-.7811575-.2242902-1.118.005-2.7052697 1.8462317-5.7634334 3.1124654-8.982 3.719-.3999944.0759368-.7140166.3867951-.794.786l-.61 3.051c-.9680858.4473908-2.031186.6503276-3.096.591-1.0655752.0591087-2.1295262-.1420124-3.1-.586l-.611-3.056c-.0799834-.3992049-.3940056-.7100632-.794-.786-3.2189151-.6064028-6.2774317-1.8726417-8.983-3.719-.3368425-.2292902-.7791201-.2312682-1.118-.005l-2.584 1.724c-1.0020097-.3679678-1.8982758-.9764672-2.61-1.772-.79378158-.7098791-1.40296203-1.6021998-1.775-2.6l1.726-2.59c.2259672-.3390833.2235936-.7813616-.006-1.118-1.84653553-2.7085577-3.11211268-5.7701853-3.717-8.992-.0759368-.3999944-.38679511-.7140166-.786-.794l-3.051-.606c-.4482328-.9692338-.65119426-2.0338371-.591-3.1-.05910869-1.0655752.14201236-2.1295262.586-3.1l3.056-.61c.39920489-.0799834.7100632-.3940056.786-.794.60624556-3.219104 1.87212407-6.2779131 3.718-8.984.2295936-.3366384.2319672-.7789167.006-1.118l-1.723-2.584c.36768203-1.001906.9758315-1.8981624 1.771-2.61.7099529-.79393349 1.6022267-1.40342516 2.6-1.776l2.59 1.727c.337862.2277765.780138.2277765 1.118 0 2.7079277-1.84891309 5.7696417-3.1165689 8.992-3.723.3999944-.0759368.7140166-.38679511.794-.786l.61-3.051c.9680858-.44739082 2.031186-.65032759 3.096-.591 1.0655752-.05910869 2.1295262.14201236 3.1.586l.611 3.056c.0799834.39920489.3940056.7100632.794.786 3.2189151.60640285 6.2774317 1.87264167 8.983 3.719.337862.2277765.780138.2277765 1.118 0l2.584-1.719c1.0020097.36796783 1.8982758.97646724 2.61 1.772.7937816.7098791 1.402962 1.6021998 1.775 2.6l-1.727 2.6c-.2259672.3390833-.2235936.7813616.006 1.118 1.8456228 2.7054896 3.111491 5.7635929 3.718 8.982.0759368.3999944.3867951.7140166.786.794l3.051.61c.4475866.9680229.6505328 2.0311724.591 3.096.0601943 1.0661629-.1427672 2.1307662-.591 3.1z"></path><path id="Shape" d="m31.22 13.464c-.6975671-.6136987-1.7424329-.6136987-2.44 0-2.039 1.8-6.78 6.586-6.78 12.2-.0010264 2.2682209.9006465 4.4436057 2.506 6.046 1.4556467 1.4610179 3.4316101 2.2846357 5.494 2.29h.1c4.4625244-.1669778 7.9727626-3.8709456 7.9-8.336 0-5.611-4.741-10.401-6.78-12.2zm-1.146 18.536c-1.562662.0167383-3.065123-.6018584-4.163-1.714-1.225867-1.2259317-1.9134577-2.8893183-1.911-4.623 0-4.82 4.46-9.229 6-10.607 1.54 1.378 6 5.79 6 10.608.0772523 3.3724419-2.5559302 6.1878054-5.926 6.336z"></path><path id="Shape" d="m29.964 28c-1.0941805-.0109946-1.9728797-.9058003-1.964-2 0-.5522847-.4477153-1-1-1s-1 .4477153-1 1c-.0077545 2.1983031 1.7657166 3.9878805 3.964 4h.036c.2632485-.0007678.5152126-.1069856.6995644-.2949079.1843517-.1879222.2857172-.4418773.2814356-.7050921-.0076707-.5557121-.4612375-1.0016972-1.017-1z"></path></g></g></svg>
+                                <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" height="512" viewBox="0 0 60 60" width="512" xmlns="http://www.w3.org/2000/svg" id="fi_3251386"><g id="Page-1" fill="none" fill-rule="evenodd"><g id="028---Water-Management" fill="currentColor" fill-rule="nonzero"><path id="Shape" d="m30 9c-11.5979797 0-21 9.4020203-21 21s9.4020203 21 21 21 21-9.4020203 21-21c-.0132259-11.592497-9.407503-20.98677409-21-21zm-16.443 30.478c.3950479-.1843215.7766545-.3961766 1.142-.634.7607673-.5695566 1.6909257-.8668129 2.641-.844.9491965-.0230561 1.8783746.275042 2.637.846 1.0769931.7751256 2.3763293 1.1800497 3.703 1.154 1.3233318.0253963 2.6191912-.379187 3.693-1.153 1.5728319-1.1274197 3.6891681-1.1274197 5.262 0 2.2259503 1.5411258 5.1740497 1.5411258 7.4 0 1.5737028-1.1274535 3.690159-1.1294631 5.266-.005.365565.2389049.7478909.4511225 1.144.635-.4009301.6904846-.8448027 1.3551245-1.329 1.99-.7740789-.3237623-1.6070898-.482804-2.446-.467-1.325928-.0251784-2.6242432.3804574-3.7 1.156-1.5728319 1.1274197-3.6891681 1.1274197-5.262 0-2.2259503-1.5411258-5.1740497-1.5411258-7.4 0-1.5730292 1.1268057-3.6889708 1.1268057-5.262 0-1.0775716-.7764571-2.3780829-1.1821212-3.706-1.156-.8415209-.01604-1.6771912.1429894-2.454.467-.48419-.6345328-.9280632-1.2988395-1.329-1.989zm16.443 9.522c-5.1833109-.0011333-10.1394555-2.1275188-13.712-5.883.3449965-.0793497.6979995-.1186095 1.052-.117.9491965-.0230561 1.8783746.275042 2.637.846 1.0769931.7751256 2.3763293 1.1800497 3.703 1.154 1.3233318.0253963 2.6191912-.379187 3.693-1.153 1.5728319-1.1274197 3.6891681-1.1274197-5.262 0 2.2259503 1.5411258 5.1740497 1.5411258 7.4 0 .757881-.571026 1.6863435-.869473 2.635-.847.3512715-.0020778.701603.0365124 1.044.115-3.5726126 3.7568199-8.5296721 5.8840107-13.714 5.885zm17.358-11.308c-.345954-.1524567-.6784612-.3337634-.994-.542-2.228274-1.5358687-5.1742196-1.5334801-7.4.006-1.5728319 1.1274197-3.6891681 1.1274197-5.262 0-2.2259503-1.5411258-5.1740497-1.5411258-7.4 0-1.5730292 1.1268057-3.6889708 1.1268057-5.262 0-1.0759201-.775216-2.3741237-1.1808169-3.7-1.156-1.3251583-.0251899-2.6229765.3785368-3.7 1.151-.3152124.2079121-.6473881.388886-.993.541-3.54713563-7.968763-1.2127892-17.3291261 5.6608429-22.6990923 6.8736322-5.36996613 16.520682-5.36996613 23.3943142 0 6.8736321 5.3699662 9.2079785 14.7303293 5.6608429 22.6990923z"></path><path id="Shape" d="m58.2 25.02-2.8-.559c-.6512313-3.0252157-1.8444503-5.9076425-3.522-8.508l1.579-2.369c.1092599-.1645007.1676876-.3575206.168-.555 0-.3-.116-1.945-2.414-4.242s-3.937-2.414-4.242-2.414c-.1975323-.00004431-.3906531.05841388-.555.168l-2.367 1.579c-2.6003597-1.67642326-5.4823715-2.86893315-8.507-3.52l-.56-2.8c-.0385839-.19353984-.1335711-.37133627-.273-.511-.216-.212-1.457-1.289-4.707-1.289s-4.491 1.077-4.707 1.293c-.1394289.13966373-.2344161.31746016-.273.511l-.56 2.796c-3.0246285.65106685-5.9066403 1.84357674-8.507 3.52l-2.369-1.579c-.1643469-.10958612-.3574677-.16804431-.555-.168-.3 0-1.944.116-4.242 2.414s-2.414 3.937-2.414 4.242c.00031242.1974794.05874008.3904993.168.555l1.579 2.369c-1.67684682 2.6005-2.86938496 5.4829189-3.52 8.508l-2.8.559c-.19372441.0380671-.37166323.1331304-.511.273-.212.216-1.289 1.457-1.289 4.707s1.077 4.491 1.293 4.707c.13933677.1398696.31727559.2349329.511.273l2.794.559c.65123131 3.0252157 1.84445027 5.9076425 3.522 8.508l-1.579 2.369c-.10925992.1645007-.16768758.3575206-.168.555 0 .305.116 1.945 2.414 4.242s3.937 2.414 4.242 2.414c.1975323.0000443.3906531-.0584139.555-.168l2.369-1.579c2.6003597 1.6764233 5.4823715 2.8689332 8.507 3.52l.56 2.794c.0385839.1935398.1335711.3713363.273.511.216.218 1.457 1.295 4.707 1.295s4.491-1.077 4.707-1.293c.1394289-.1396637.2344161-.3174602.273-.511l.56-2.794c3.024763-.6516832 5.9067827-1.8448739 8.507-3.522l2.369 1.579c.1643469.1095861.3574677.1680443.555.168.305 0 1.944-.116 4.242-2.414s2.414-3.937 2.414-4.242c-.0003124-.1974794-.0587401-.3904993-.168-.555l-1.579-2.369c1.6768468-2.6005 2.869385-5.4829189 3.52-8.508l2.8-.559c.1937244-.0380671.3716632-.1331304.511-.273.212-.216 1.289-1.457 1.289-4.707s-1.077-4.491-1.293-4.707c-.138254-.1391758-.3147043-.2341875-.507-.273zm-.791 8.08-3.051.61c-.3992049.0799834-.7100632.3940056-.786.794-.6062456 3.219104-1.8721241 6.2779131-3.718 8.984-.2295936.3366384-.2319672.7789167-.006 1.118l1.723 2.586c-.3679709 1.0011851-.9761011 1.8967264-1.771 2.608-.7099529.7939335-1.6022267 1.4034252-2.6 1.776l-2.6-1.728c-.3388799-.2262682-.7811575-.2242902-1.118.005-2.7052697 1.8462317-5.7634334 3.1124654-8.982 3.719-.3999944.0759368-.7140166.3867951-.794.786l-.61 3.051c-.9680858.4473908-2.031186.6503276-3.096.591-1.0655752.0591087-2.1295262-.1420124-3.1-.586l-.611-3.056c-.0799834-.3992049-.3940056-.7100632-.794-.786-3.2189151-.6064028-6.2774317-1.8726417-8.983-3.719-.3368425-.2292902-.7791201-.2312682-1.118-.005l-2.584 1.724c-1.0020097-.3679678-1.8982758-.9764672-2.61-1.772-.79378158-.7098791-1.40296203-1.6021998-1.775-2.6l1.726-2.59c.2259672-.3390833.2235936-.7813616-.006-1.118-1.84653553-2.7085577-3.11211268-5.7701853-3.717-8.992-.0759368-.3999944-.38679511-.7140166-.786-.794l-3.051-.606c-.4482328-.9692338-.65119426-2.0338371-.591-3.1-.05910869-1.0655752.14201236-2.1295262.586-3.1l3.056-.61c.39920489-.0799834.7100632-.3940056.786-.794.60624556-3.219104 1.87212407-6.2779131 3.718-8.984.2295936-.3366384.2319672-.7789167.006-1.118l-1.723-2.584c.36768203-1.001906.9758315-1.8981624 1.771-2.61.7099529-.79393349 1.6022267-1.40342516 2.6-1.776l2.59 1.727c.337862.2277765.780138.2277765 1.118 0 2.7079277-1.84891309 5.7696417-3.1165689 8.992-3.723.3999944-.0759368.7140166-.38679511.794-.786l.61-3.051c.9680858-.44739082 2.031186-.65032759 3.096-.591 1.0655752-.05910869 2.1295262.14201236 3.1.586l.611 3.056c.0799834.39920489.3940056.7100632.794.786 3.2189151.60640285 6.2774317 1.87264167 8.983 3.719.337862.2277765.780138.2277765 1.118 0l2.584-1.719c1.0020097.36796783 1.8982758.97646724 2.61 1.772.7937816.7098791 1.402962 1.6021998 1.775 2.6l-1.727 2.6c-.2259672.3390833-.2235936.7813616.006 1.118 1.8456228 2.7054896 3.111491 5.7635929 3.718 8.982.0759368.3999944.3867951.7140166.786.794l3.051.61c.4475866.9680229.6505328 2.0311724.591 3.096.0601943 1.0661629-.1427672 2.1307662-.591 3.1z"></path><path id="Shape" d="m31.22 13.464c-.6975671-.6136987-1.7424329-.6136987-2.44 0-2.039 1.8-6.78 6.586-6.78 12.2-.0010264 2.2682209.9006465 4.4436057 2.506 6.046 1.4556467 1.4610179 3.4316101 2.2846357 5.494 2.29h.1c4.4625244-.1669778 7.9727626-3.8709456 7.9-8.336 0-5.611-4.741-10.401-6.78-12.2zm-1.146 18.536c-1.562662.0167383-3.065123-.6018584-4.163-1.714-1.225867-1.2259317-1.9134577-2.8893183-1.911-4.623 0-4.82 4.46-9.229 6-10.607 1.54 1.378 6 5.79 6 10.608.0772523 3.3724419-2.5559302 6.1878054-5.926 6.336z"></path><path id="Shape" d="m29.964 28c-1.0941805-.0109946-1.9728797-.9058003-1.964-2 0-.5522847-.4477153-1-1-1s-1 .4477153-1 1c-.0077545 2.1983031 1.7657166 3.9878805 3.964 4h.036c.2632485-.0007678.5152126-.1069856.6995644-.2949079.1843517-.1879222.2857172-.4418773.2814356-.7050921-.0076707-.5557121-.4612375-1.0016972-1.017-1z"></path></g></g></svg>
                             </div>
                             <h3 class="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">Water Intensity</h3>
                             <p class="text-5xl font-bold mb-1">
@@ -385,7 +396,7 @@
                         <!-- Chart Column 1: Specific Consumption -->
                         <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
                             <h3 class="text-md font-semibold text-center mb-2">Specific Consumption Trend</h3>
-                            <div class="relative h-48">
+                            <div class="relative h-40">
                                 <canvas id="waterIntensityChart"></canvas>
                             </div>
                         </div>
@@ -393,7 +404,7 @@
                         <!-- Chart Column 2: Water Breakdown -->
                         <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
                             <h3 class="text-md font-semibold text-center mb-2">Withdrawal vs. Recycled</h3>
-                            <div class="relative h-48">
+                            <div class="relative h-40">
                                 <canvas id="waterBreakdownChart"></canvas>
                             </div>
                         </div>
@@ -411,17 +422,50 @@
                             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <div>
+                    <div class="text-center">
                         <div class="flex justify-center mb-2">
-                           <svg class="w-8 h-8 text-green-600 dark:text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75c4.832 0 8.75-3.918 8.75-8.75S16.832 4.25 12 4.25 3.25 8.168 3.25 13 7.168 21.75 12 21.75z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25h6m-3 7.5v-7.5" />
-                            </svg>
+                            <svg id="fi_9293649" class="w-8 h-8 text-green-600 dark:text-green-400" enable-background="new 0 0 64 64" height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="m60.77993 21.45959c-.41832-1.9077-3.04367-4.06543-6.38064-5.24467-5.04633-1.78389-10.22008-.97368-14.20858 2.22024-3.83103 3.07011-5.34565 7.69451-3.68438 11.24786h.00121c.06912.14801.16168.28234.23921.42569-.32817.45484-.68473.88683-.98931 1.3606-.40104.62373-.75491 1.31477-1.12004 1.98974-.44447-4.43628-1.42281-8.32816-2.93849-11.78158.23185-.27768.48579-.54589.68188-.83695 2.77801-4.11712 1.77307-10.22008-2.44383-14.84328-6.27846-6.88431-14.39731-6.25081-17.59605-5.65098-4.43928.82463-8.15731 2.98477-9.04324 5.2543-.51209 1.31267.75611 1.99425 1.36436 2.32241 1.17804.6335 3.37063 1.81153 4.80471 6.08373 2.29116 6.8206 5.87817 9.68516 8.48308 10.88604 1.5026.6936 3.10617 1.041 4.72297 1.041 1.46894 0 2.95111-.2873 4.37918-.86189.63109-.25364.93642-.97128.68278-1.60117-.25604-.63229-.97368-.93402-1.60117-.68278-2.36569.95205-4.90328.90757-7.15237-.12982-3.10497-1.43288-5.58847-4.69532-7.18002-9.43513-1.66728-4.96339-4.34792-6.5862-5.7808-7.36514.95926-1.05422 3.30933-2.44864 6.77011-3.09175 2.79604-.51689 9.8823-1.08187 15.32652 4.89006 3.30722 3.62457 4.25596 8.41817 2.35518 11.55018-2.14797-3.95244-5.06271-7.49467-8.7851-10.49836-.52892-.42914-1.30666-.345-1.731.18512-.42674.52892-.3438 1.30426.18512 1.731 3.97167 3.20354 7.01173 7.02495 9.03844 11.35605 2.22385 4.741 3.30572 10.44126 3.30572 17.42535v8.91237c-9.26368.41832-16.82596 5.44737-18.20911 12.2827-.16829.82463.04448 1.6781.58421 2.33925.55055.67315 1.36315 1.06022 2.22985 1.06022h33.28199c.86309 0 1.6757-.38467 2.22625-1.05783.54094-.65874.75491-1.51221.58902-2.34165-1.3869-6.84239-8.96436-11.8746-18.24036-12.28375v-8.91132c0-.24252-.02614-.45589-.0287-.69555.80735-2.16675 1.78389-4.15664 2.90888-5.90867.14154-.21998.31254-.41637.45964-.632 1.66698 1.66744 3.9607 2.72377 6.34653 2.7741.0577 0 .11781.0024.17791.0024 2.43541 0 6.84224-1.04821 10.29702-7.68489 1.53386-2.9463 3.19032-3.5281 4.18083-3.8743.48565-.17071 1.77908-.62389 1.49059-1.92695zm-10.00612 39.62897c.02645.12983-.02885.2308-.07933.29331-.03847.04808-.14666.15627-.32216.15627h-33.28199c-.1767 0-.28489-.11059-.32336-.15627-.05049-.06251-.10458-.16348-.07814-.2909 1.19367-5.90221 8.52034-10.35231 17.04189-10.35231 8.52035 0 15.84823 4.4501 17.04309 10.3499zm2.15173-34.9649c-2.1397 4.10751-5.01268 6.36021-8.10442 6.36021-.04568 0-.09136 0-.13463-.00241-1.85451-.03967-3.6964-.94093-4.93664-2.32317 2.10965-2.58447 4.66317-4.80096 7.6293-6.60949.5794-.35341.76212-1.11072.40871-1.69133-.35341-.58301-1.11072-.76572-1.69253-.40991-2.9209 1.78178-5.44783 3.95665-7.60781 6.4436-.63455-2.39785.62568-5.43821 3.24186-7.53509 4.70013-3.76251 9.84984-2.52437 11.8477-1.81995 2.11085.74529 3.65432 1.87284 4.36835 2.7191-1.2646.49287-3.30092 1.56874-5.01989 4.86844z"></path></svg>
                         </div>
-                        <h2 class="text-xl font-semibold mb-2 text-green-600 dark:text-green-400 text-center">Tree Plantation</h2>
+                        <h2 class="text-xl font-semibold mb-2 text-green-600 dark:text-green-400">Tree Plantation</h2>
+                         <p class="text-5xl font-bold mb-1">
+                            <span id="tree-plantation-value">N/A</span>
+                        </p>
                     </div>
-                    <div class="flex-grow flex items-center justify-center">
-                        <p class="text-gray-500 dark:text-gray-400">Data for this section is not yet available.</p>
+                    <div class="flex-grow mt-4">
+                        <div class="relative h-40">
+                             <canvas id="treePlantationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Human Index Card -->
+        <section class="mb-12">
+            <div class="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 pt-12 shadow-lg">
+                 <div class="absolute top-0 left-0 right-0 bg-yellow-100 dark:bg-yellow-900/50 p-1 border-b border-yellow-200 dark:border-yellow-800 text-center rounded-t-xl">
+                    <p class="text-xs font-semibold text-yellow-800 dark:text-yellow-300">Data is Unaudited, Do not Share Externally</p>
+                </div>
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Human Index</h2>
+                    <p id="human-index-subtitle" class="text-md text-gray-500 dark:text-gray-400">Monthly Overview</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Male Employees</p>
+                        <p id="male-employees-value" class="text-3xl font-bold text-blue-600 dark:text-blue-400">N/A</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Female Employees</p>
+                        <p id="female-employees-value" class="text-3xl font-bold text-pink-500 dark:text-pink-400">N/A</p>
+                    </div>
+                     <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Diversity %</p>
+                        <p id="diversity-value" class="text-3xl font-bold text-purple-600 dark:text-purple-400">N/A</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">CSR Spend</p>
+                        <p id="csr-spend-value" class="text-3xl font-bold text-green-600 dark:text-green-400">N/A</p>
                     </div>
                 </div>
             </div>
@@ -437,9 +481,10 @@
         let energyChartInstances = {};
         let waterIntensityChartInstance = null;
         let waterBreakdownChartInstance = null;
+        let treePlantationChartInstance = null;
         let lastQuarterUsed = null;
         let currentDataView = 'monthly';
-        let selectedMonthYM = '2025-08'; 
+        let selectedMonthYM = '2025-09'; 
         let renewableShareType = 'grid'; // 'grid' or 'total'
 
         // --- THEME TOGGLE LOGIC ---
@@ -482,35 +527,33 @@
 
         // --- DATA STORE ---
         const fullDataSeries = [
-             { ym: '2024-01', productionMTD: 668528.00, totalAbsEmissionMTD: 1482810.00, internalScrap: 20404.00, externalScrap: 6177.00 },
-            { ym: '2024-02', productionMTD: 637899.00, totalAbsEmissionMTD: 1394002.00, internalScrap: 21933.00, externalScrap: 3574.00 },
-            { ym: '2024-03', productionMTD: 678052.00, totalAbsEmissionMTD: 1440466.00, internalScrap: 22851.00, externalScrap: 6425.00 },
-            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00, internalScrap: 22398.00, externalScrap: 2157.00, totalElectricity: 643849.00, gridElectricity: 413023.00, renewableElectricity: 113201.00, specificWaterConsumption: 3.22, waterWithdrawal: 3920265, waterRecycled: 489996, rainwaterHarvested: 0 },
-            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00, internalScrap: 11571.00, externalScrap: 945.00, totalElectricity: 637645.00, gridElectricity: 447012.00, renewableElectricity: 121180.00, specificWaterConsumption: 3.34, waterWithdrawal: 3952302, waterRecycled: 510166, rainwaterHarvested: 0 },
-            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00, internalScrap: 16661.00, externalScrap: 1238.00, totalElectricity: 582882.00, gridElectricity: 406391.00, renewableElectricity: 142366.00, specificWaterConsumption: 3.2, waterWithdrawal: 3711290, waterRecycled: 489648, rainwaterHarvested: 0 },
-            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00, internalScrap: 16830.00, externalScrap: 1109.00, totalElectricity: 609010.00, gridElectricity: 408262.00, renewableElectricity: 142915.00, specificWaterConsumption: 3.2, waterWithdrawal: 3851194, waterRecycled: 515539, rainwaterHarvested: 181585 },
-            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00, internalScrap: 34898.00, externalScrap: 4084.00, totalElectricity: 641066.00, gridElectricity: 460137.00, renewableElectricity: 214638.00, specificWaterConsumption: 3.24, waterWithdrawal: 3756240, waterRecycled: 531264, rainwaterHarvested: 128608 },
-            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1163087.00, internalScrap: 30312.00, externalScrap: 3732.00, totalElectricity: 558754.00, gridElectricity: 378786.00, renewableElectricity: 173051.00, specificWaterConsumption: 3.43, waterWithdrawal: 2990164, waterRecycled: 628463, rainwaterHarvested: 510 },
-            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1356894.00, internalScrap: 28390.00, externalScrap: 5855.00, totalElectricity: 649596.00, gridElectricity: 488921.00, renewableElectricity: 206368.00, specificWaterConsumption: 3.07, waterWithdrawal: 3937696, waterRecycled: 535146, rainwaterHarvested: 10075 },
-            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00, internalScrap: 21043.00, externalScrap: 6048.00, totalElectricity: 625225.00, gridElectricity: 468289.00, renewableElectricity: 162268.00, specificWaterConsumption: 3.27, waterWithdrawal: 4079991, waterRecycled: 529051, rainwaterHarvested: 0 },
-            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00, internalScrap: 34691.00, externalScrap: 12727.00, totalElectricity: 622837.00, gridElectricity: 437138.00, renewableElectricity: 138620.00, specificWaterConsumption: 3.27, waterWithdrawal: 3964667, waterRecycled: 469834, rainwaterHarvested: 0 },
-            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00, internalScrap: 41776.00, externalScrap: 20138.00, totalElectricity: 572769.00, gridElectricity: 437013.00, renewableElectricity: 126796.00, specificWaterConsumption: 3.43, waterWithdrawal: 3603183, waterRecycled: 493357, rainwaterHarvested: 0 },
-            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00, internalScrap: 22604.00, externalScrap: 18469.00, totalElectricity: 543798.00, gridElectricity: 442011.00, renewableElectricity: 172096.00, specificWaterConsumption: 3.24, waterWithdrawal: 3187649, waterRecycled: 456844, rainwaterHarvested: 0 },
-            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00, internalScrap: 14387.00, externalScrap: 9522.00, totalElectricity: 600975.00, gridElectricity: 516231.00, renewableElectricity: 199677.00, specificWaterConsumption: 3.16, waterWithdrawal: 3487211, waterRecycled: 521370, rainwaterHarvested: 0 },
-            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1245932.00, internalScrap: 26089.00, externalScrap: 6623.00, totalElectricity: 620818.00, gridElectricity: 454545.00, renewableElectricity: 170536.00, specificWaterConsumption: 3.25, waterWithdrawal: 3659729, waterRecycled: 509231, rainwaterHarvested: 0 },
-            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1265043.00, internalScrap: 33322.00, externalScrap: 8243.00, totalElectricity: 638354.00, gridElectricity: 449690.00, renewableElectricity: 182706.00, specificWaterConsumption: 3.27, waterWithdrawal: 3500672, waterRecycled: 512411, rainwaterHarvested: 0 },
-            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1336695.00, internalScrap: 29070.00, externalScrap: 7895.00, totalElectricity: 646968.00, gridElectricity: 463709.00, renewableElectricity: 228708.00, specificWaterConsumption: 2.91, waterWithdrawal: 3644037, waterRecycled: 508834, rainwaterHarvested: 39390 },
-            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1356904.00, internalScrap: 16064.00, externalScrap: 19383.00, totalElectricity: 651959.00, gridElectricity: 491532.00, renewableElectricity: 245604.00, specificWaterConsumption: 2.99, waterWithdrawal: 3465099, waterRecycled: 508924, rainwaterHarvested: 125240 },
-            { ym: '2025-08', productionMTD: 619305.00, totalAbsEmissionMTD: 1320708.00, internalScrap: 27958.00, externalScrap: 7978.00, totalElectricity: 630488.00, gridElectricity: 508484.00, renewableElectricity: 237647.00, specificWaterConsumption: 2.81, waterWithdrawal: 3367815, waterRecycled: 452158, rainwaterHarvested: 33371 },
-            { ym: '2025-09', specificWaterConsumption: 2.81, waterWithdrawal: 2987116, waterRecycled: 453614, rainwaterHarvested: 54541 },
+             // FY25 Data
+            { ym: '2024-04', productionMTD: 653105.00, totalAbsEmissionMTD: 1410577.00, internalScrap: 22398.00, externalScrap: 2157.00, totalElectricity: 643849.00, gridElectricity: 413023.00, renewableElectricity: 113201.00, specificWaterConsumption: 3.22, waterWithdrawal: 3920265, waterRecycled: 489996, rainwaterHarvested: 0, treesPlanted: 13, maleEmployees: 6178, femaleEmployees: 463, csrSpent: 24.33 },
+            { ym: '2024-05', productionMTD: 628778.00, totalAbsEmissionMTD: 1377834.00, internalScrap: 11571.00, externalScrap: 945.00, totalElectricity: 637645.00, gridElectricity: 447012.00, renewableElectricity: 121180.00, specificWaterConsumption: 3.34, waterWithdrawal: 3952302, waterRecycled: 510166, rainwaterHarvested: 0, treesPlanted: 937, maleEmployees: 6229, femaleEmployees: 467, csrSpent: 0.00 },
+            { ym: '2024-06', productionMTD: 583100.00, totalAbsEmissionMTD: 1310694.00, internalScrap: 16661.00, externalScrap: 1238.00, totalElectricity: 582882.00, gridElectricity: 406391.00, renewableElectricity: 142366.00, specificWaterConsumption: 3.2, waterWithdrawal: 3711290, waterRecycled: 489648, rainwaterHarvested: 0, treesPlanted: 3699, maleEmployees: 6315, femaleEmployees: 479, csrSpent: 0.00 },
+            { ym: '2024-07', productionMTD: 588554.00, totalAbsEmissionMTD: 1337874.00, internalScrap: 16830.00, externalScrap: 1109.00, totalElectricity: 609010.00, gridElectricity: 408262.00, renewableElectricity: 142915.00, specificWaterConsumption: 3.2, waterWithdrawal: 3851194, waterRecycled: 515539, rainwaterHarvested: 181585, treesPlanted: 2093, maleEmployees: 6479, femaleEmployees: 533, csrSpent: 0.00 },
+            { ym: '2024-08', productionMTD: 631284.00, totalAbsEmissionMTD: 1368522.00, internalScrap: 34898.00, externalScrap: 4084.00, totalElectricity: 641066.00, gridElectricity: 460137.00, renewableElectricity: 214638.00, specificWaterConsumption: 3.24, waterWithdrawal: 3756240, waterRecycled: 531264, rainwaterHarvested: 128608, treesPlanted: 758, maleEmployees: 7230, femaleEmployees: 589, csrSpent: 5.92 },
+            { ym: '2024-09', productionMTD: 523245.00, totalAbsEmissionMTD: 1163087.00, internalScrap: 30312.00, externalScrap: 3732.00, totalElectricity: 558754.00, gridElectricity: 378786.00, renewableElectricity: 173051.00, specificWaterConsumption: 3.43, waterWithdrawal: 2990164, waterRecycled: 628463, rainwaterHarvested: 510, treesPlanted: 1253, maleEmployees: 6480, femaleEmployees: 630, csrSpent: 7.25 },
+            { ym: '2024-10', productionMTD: 661370.00, totalAbsEmissionMTD: 1356894.00, internalScrap: 28390.00, externalScrap: 5855.00, totalElectricity: 649596.00, gridElectricity: 488921.00, renewableElectricity: 206368.00, specificWaterConsumption: 3.07, waterWithdrawal: 3937696, waterRecycled: 535146, rainwaterHarvested: 10075, treesPlanted: 859, maleEmployees: 6485, femaleEmployees: 629, csrSpent: 2.87 },
+            { ym: '2024-11', productionMTD: 654595.00, totalAbsEmissionMTD: 1331781.00, internalScrap: 21043.00, externalScrap: 6048.00, totalElectricity: 625225.00, gridElectricity: 468289.00, renewableElectricity: 162268.00, specificWaterConsumption: 3.27, waterWithdrawal: 4079991, waterRecycled: 529051, rainwaterHarvested: 0, treesPlanted: 809, maleEmployees: 8910, femaleEmployees: 1345, csrSpent: 5.58 },
+            { ym: '2024-12', productionMTD: 633637.00, totalAbsEmissionMTD: 1363499.00, internalScrap: 34691.00, externalScrap: 12727.00, totalElectricity: 622837.00, gridElectricity: 437138.00, renewableElectricity: 138620.00, specificWaterConsumption: 3.27, waterWithdrawal: 3964667, waterRecycled: 469834, rainwaterHarvested: 0, treesPlanted: 2981, maleEmployees: 9047, femaleEmployees: 1352, csrSpent: 4.04 },
+            { ym: '2025-01', productionMTD: 530428.00, totalAbsEmissionMTD: 1128120.00, internalScrap: 41776.00, externalScrap: 20138.00, totalElectricity: 572769.00, gridElectricity: 437013.00, renewableElectricity: 126796.00, specificWaterConsumption: 3.43, waterWithdrawal: 3603183, waterRecycled: 493357, rainwaterHarvested: 0, treesPlanted: 1513, maleEmployees: 9947, femaleEmployees: 1364, csrSpent: 2.89 },
+            { ym: '2025-02', productionMTD: 549687.00, totalAbsEmissionMTD: 1154141.00, internalScrap: 22604.00, externalScrap: 18469.00, totalElectricity: 543798.00, gridElectricity: 442011.00, renewableElectricity: 172096.00, specificWaterConsumption: 3.24, waterWithdrawal: 3187649, waterRecycled: 456844, rainwaterHarvested: 0, treesPlanted: 1848, maleEmployees: 10242, femaleEmployees: 1369, csrSpent: 1.79 },
+            { ym: '2025-03', productionMTD: 603752.00, totalAbsEmissionMTD: 1332623.00, internalScrap: 14387.00, externalScrap: 9522.00, totalElectricity: 600975.00, gridElectricity: 516231.00, renewableElectricity: 199677.00, specificWaterConsumption: 3.16, waterWithdrawal: 3487211, waterRecycled: 521370, rainwaterHarvested: 0, treesPlanted: 1493, maleEmployees: 10242, femaleEmployees: 1369, csrSpent: 5.51 },
+            // FY26 Data
+            { ym: '2025-04', productionMTD: 596980.00, totalAbsEmissionMTD: 1245932.00, internalScrap: 26089.00, externalScrap: 6623.00, totalElectricity: 620818.00, gridElectricity: 454545.00, renewableElectricity: 170536.00, specificWaterConsumption: 3.25, waterWithdrawal: 3659729, waterRecycled: 509231, rainwaterHarvested: 0, treesPlanted: 1770, maleEmployees: 10732, femaleEmployees: 1353, csrSpent: 4.16 },
+            { ym: '2025-05', productionMTD: 587534.07, totalAbsEmissionMTD: 1265043.00, internalScrap: 33322.00, externalScrap: 8243.00, totalElectricity: 638354.00, gridElectricity: 449690.00, renewableElectricity: 182706.00, specificWaterConsumption: 3.27, waterWithdrawal: 3500672, waterRecycled: 512411, rainwaterHarvested: 0, treesPlanted: 1330, maleEmployees: 10678, femaleEmployees: 1343, csrSpent: 6.89 },
+            { ym: '2025-06', productionMTD: 644157.05, totalAbsEmissionMTD: 1336695.00, internalScrap: 29070.00, externalScrap: 7895.00, totalElectricity: 646968.00, gridElectricity: 463709.00, renewableElectricity: 228708.00, specificWaterConsumption: 2.91, waterWithdrawal: 3644037, waterRecycled: 508834, rainwaterHarvested: 39390, treesPlanted: 5870, maleEmployees: 10506, femaleEmployees: 1401, csrSpent: 4.00 },
+            { ym: '2025-07', productionMTD: 637576.00, totalAbsEmissionMTD: 1356904.00, internalScrap: 16064.00, externalScrap: 19383.00, totalElectricity: 651959.00, gridElectricity: 491532.00, renewableElectricity: 245604.00, specificWaterConsumption: 2.99, waterWithdrawal: 3465099, waterRecycled: 508924, rainwaterHarvested: 125240, treesPlanted: 2023, maleEmployees: 10506, femaleEmployees: 1401, csrSpent: 8.88 },
+            { ym: '2025-08', productionMTD: 619305.00, totalAbsEmissionMTD: 1320708.00, internalScrap: 27958.00, externalScrap: 7978.00, totalElectricity: 630488.00, gridElectricity: 508484.00, renewableElectricity: 237647.00, specificWaterConsumption: 2.81, waterWithdrawal: 3367815, waterRecycled: 452158, rainwaterHarvested: 33371, treesPlanted: 1121, maleEmployees: 10827, femaleEmployees: 1413, csrSpent: 3.13 },
+            { ym: '2025-09', productionMTD: 573165.00, totalAbsEmissionMTD: 1262815.00, internalScrap: 21271.00, externalScrap: 7688.00, totalElectricity: 521466.00, gridElectricity: 475207.00, renewableElectricity: 236061.00, specificWaterConsumption: 2.81, waterWithdrawal: 2987116, waterRecycled: 453614, rainwaterHarvested: 54541, treesPlanted: 720, maleEmployees: 11106, femaleEmployees: 1411, csrSpent: 5.48 }
         ];
-        selectedMonthYM = fullDataSeries[fullDataSeries.length - 2].ym; // Set to Aug 25 initially
 
         // Pre-calculated/static data for different views
         const dashboardData = {
             monthly: {
-                overviewText: 'August 2025 Overview',
-                production: { value: 0.62, valueInTonnes: 619305.00, periodLabel: 'August 2025' }
+                overviewText: 'September 2025 Overview',
+                production: { value: 0.57, valueInTonnes: 573165.00, periodLabel: 'September 2025' }
             },
             quarterly: {
                 overviewText: 'Q2 FY26 Overview',
@@ -575,22 +618,28 @@
         // --- UI UPDATE FUNCTIONS ---
         function updateMetrics(data) {
             if (!data) return;
-            document.getElementById('overview-subtitle').textContent = data.overviewText;
+            const overviewSubtitle = document.getElementById('overview-subtitle');
+            if (overviewSubtitle) overviewSubtitle.textContent = data.overviewText;
+
             if (data.production) {
                 updateProductionCard(data);
-                document.getElementById('cs-production-period-text').textContent = data.production.periodLabel;
+                const csProdPeriodText = document.getElementById('cs-production-period-text');
+                if (csProdPeriodText) csProdPeriodText.textContent = data.production.periodLabel;
             }
         }
 
         function updateScrapCard(dataSubset) {
+            const scrapValueEl = document.getElementById('scrap-input-value');
+            if (!scrapValueEl) return;
+
             if (!dataSubset || dataSubset.length === 0) {
-                document.getElementById('scrap-input-value').textContent = 'N/A';
+                scrapValueEl.textContent = 'N/A';
                 return;
             }
 
             const latestDataPoint = dataSubset[dataSubset.length - 1];
-            if(!latestDataPoint.productionMTD) { // Handle case like Sep 25 with no production
-                 document.getElementById('scrap-input-value').textContent = 'N/A';
+            if(!latestDataPoint.productionMTD) { // Handle case with no production
+                 scrapValueEl.textContent = 'N/A';
                  return;
             }
             const totalInternalScrap = latestDataPoint.internalScrap || 0;
@@ -600,14 +649,17 @@
             const totalScrap = totalInternalScrap + totalExternalScrap;
             const scrapPercentage = totalProduction > 0 ? (totalScrap / totalProduction) * 100 : 0;
 
-            document.getElementById('scrap-input-value').textContent = scrapPercentage.toFixed(1);
+            scrapValueEl.textContent = scrapPercentage.toFixed(1);
         }
 
         function updateProductionCard(data) {
             if (!data || !data.production) return;
-            const unit = document.getElementById('unit-selector').value;
+            const unitSelector = document.getElementById('unit-selector');
             const valueEl = document.getElementById('cs-production-value');
-            valueEl.textContent = (unit === 'MnT') ? data.production.value : data.production.valueInTonnes.toLocaleString();
+            if (!unitSelector || !valueEl) return;
+            
+            const unit = unitSelector.value;
+            valueEl.textContent = (unit === 'MnT') ? data.production.value.toFixed(2) : data.production.valueInTonnes.toLocaleString();
         }
 
         function setDynamicGreeting() {
@@ -646,7 +698,8 @@
         }
 
         function renderCo2Chart(data) {
-            const co2Ctx = document.getElementById('co2LineChart').getContext('2d');
+            const co2Ctx = document.getElementById('co2LineChart')?.getContext('2d');
+            if (!co2Ctx) return;
             if (co2LineChartInstance) co2LineChartInstance.destroy();
             const colors = getChartColors();
             co2LineChartInstance = new Chart(co2Ctx, {
@@ -767,7 +820,8 @@
         }
 
         function renderScrapChart(dataSubset) {
-            const ctx = document.getElementById('scrapChart').getContext('2d');
+            const ctx = document.getElementById('scrapChart')?.getContext('2d');
+            if (!ctx) return;
             if (scrapChartInstance) scrapChartInstance.destroy();
             const colors = getChartColors();
             
@@ -859,13 +913,13 @@
             const hasData = dataSubset.some(d => d.totalElectricity);
 
             if (!hasData) {
-                gridContainer.classList.add('hidden');
-                placeholder.classList.remove('hidden');
+                if (gridContainer) gridContainer.classList.add('hidden');
+                if (placeholder) placeholder.classList.remove('hidden');
                 return;
             }
             
-            gridContainer.classList.remove('hidden');
-            placeholder.classList.add('hidden');
+            if (gridContainer) gridContainer.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
             
             const colors = getChartColors();
             const newColors = {
@@ -881,215 +935,288 @@
             const totalRenewable = dataSubset.reduce((sum, d) => sum + (d.renewableElectricity || 0), 0);
             const totalSelf = dataSubset.reduce((sum, d) => sum + ((d.totalElectricity || 0) - (d.gridElectricity || 0)), 0);
             
-            const pieCtx = document.getElementById('energyCompositionChart').getContext('2d');
-            energyChartInstances.composition = new Chart(pieCtx, {
-                type: 'pie',
-                plugins: [ChartDataLabels],
-                data: {
-                    labels: ['Grid Power', 'RE from Grid', 'Captive'],
-                    datasets: [{
-                        data: [totalNonRenewableGrid, totalRenewable, totalSelf],
-                        backgroundColor: [newColors.grid, newColors.renewable, newColors.self],
-                        borderColor: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { color: colors.legendColor, font: {size: 10}, usePointStyle: true } },
-                        datalabels: {
-                            formatter: (value, ctx) => {
-                                let sum = 0;
-                                let dataArr = ctx.chart.data.datasets[0].data;
-                                dataArr.map(data => {
-                                    sum += data;
-                                });
-                                let percentage = (value*100 / sum).toFixed(1) + "%";
-                                return percentage;
-                            },
-                            color: 'white',
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                            borderRadius: 4,
-                            padding: {
-                                top: 2,
-                                bottom: 2,
-                                left: 4,
-                                right: 4
-                            },
-                            font: {
-                                weight: 'bold',
+            const pieCtx = document.getElementById('energyCompositionChart')?.getContext('2d');
+            if(pieCtx) {
+                energyChartInstances.composition = new Chart(pieCtx, {
+                    type: 'pie',
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: ['Grid Power', 'RE from Grid', 'Captive'],
+                        datasets: [{
+                            data: [totalNonRenewableGrid, totalRenewable, totalSelf],
+                            backgroundColor: [newColors.grid, newColors.renewable, newColors.self],
+                            borderColor: document.documentElement.classList.contains('dark') ? '#1f2937' : '#ffffff',
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { position: 'bottom', labels: { color: colors.legendColor, font: {size: 10}, usePointStyle: true } },
+                            datalabels: {
+                                formatter: (value, ctx) => {
+                                    let sum = 0;
+                                    let dataArr = ctx.chart.data.datasets[0].data;
+                                    dataArr.map(data => {
+                                        sum += data;
+                                    });
+                                    let percentage = (value*100 / sum).toFixed(1) + "%";
+                                    return percentage;
+                                },
+                                color: 'white',
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                borderRadius: 4,
+                                padding: {
+                                    top: 2,
+                                    bottom: 2,
+                                    left: 4,
+                                    right: 4
+                                },
+                                font: {
+                                    weight: 'bold',
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
 
             // --- 2. Renewable % (Line Chart) ---
-            const renewableCtx = document.getElementById('energyRenewableChart').getContext('2d');
-            const renewablePercentageData = dataSubset.map(d => {
-                if (renewableShareType === 'grid') {
-                    return d.gridElectricity > 0 ? (d.renewableElectricity / d.gridElectricity) * 100 : 0;
-                }
-                return d.totalElectricity > 0 ? (d.renewableElectricity / d.totalElectricity) * 100 : 0;
-            });
-            const renewableLabel = renewableShareType === 'grid' ? 'Renewable % of Grid' : 'Renewable % of Total';
+            const renewableCtx = document.getElementById('energyRenewableChart')?.getContext('2d');
+            if (renewableCtx) {
+                const renewablePercentageData = dataSubset.map(d => {
+                    if (renewableShareType === 'grid') {
+                        return d.gridElectricity > 0 ? (d.renewableElectricity / d.gridElectricity) * 100 : 0;
+                    }
+                    return d.totalElectricity > 0 ? (d.renewableElectricity / d.totalElectricity) * 100 : 0;
+                });
+                const renewableLabel = renewableShareType === 'grid' ? 'Renewable % of Grid' : 'Renewable % of Total';
 
-            energyChartInstances.renewable = new Chart(renewableCtx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: renewableLabel, data: renewablePercentageData, borderColor: newColors.renewable, tension: 0.3, pointStyle: 'circle', pointRadius: 6, pointHoverRadius: 8 },
-                        { label: 'Target %', data: Array(labels.length).fill(33), borderColor: 'rgb(75, 192, 192)', borderDash: [5, 5], pointStyle: 'line' }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: (v) => v.toFixed(0) + '%' } },
-                        x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
+                energyChartInstances.renewable = new Chart(renewableCtx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [
+                            { label: renewableLabel, data: renewablePercentageData, borderColor: newColors.renewable, tension: 0.3, pointStyle: 'circle', pointRadius: 6, pointHoverRadius: 8 },
+                            { label: 'Target %', data: Array(labels.length).fill(33), borderColor: 'rgb(75, 192, 192)', borderDash: [5, 5], pointStyle: 'line' }
+                        ]
                     },
-                    plugins: { 
-                        legend: { 
-                            position: 'top', 
-                            labels: { 
-                                color: colors.legendColor, 
-                                font: {size: 10},
-                                usePointStyle: true, 
-                            } 
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: (v) => v.toFixed(0) + '%' } },
+                            x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
                         },
-                        datalabels: {
-                           display: false
+                        plugins: { 
+                            legend: { 
+                                position: 'top', 
+                                labels: { 
+                                    color: colors.legendColor, 
+                                    font: {size: 10},
+                                    usePointStyle: true, 
+                                } 
+                            },
+                            datalabels: {
+                               display: false
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
 
             // --- 3. Breakdown (Corrected Stacked Bar Chart) ---
-            const breakdownCtx = document.getElementById('energyBreakdownChart').getContext('2d');
-            const nonRenewableGridData = dataSubset.map(d => (d.gridElectricity || 0) - (d.renewableElectricity || 0));
-            const renewableData = dataSubset.map(d => d.renewableElectricity || 0);
-            const selfGeneratedData = dataSubset.map(d => (d.totalElectricity || 0) - (d.gridElectricity || 0));
+            const breakdownCtx = document.getElementById('energyBreakdownChart')?.getContext('2d');
+            if (breakdownCtx) {
+                const nonRenewableGridData = dataSubset.map(d => (d.gridElectricity || 0) - (d.renewableElectricity || 0));
+                const renewableData = dataSubset.map(d => d.renewableElectricity || 0);
+                const selfGeneratedData = dataSubset.map(d => (d.totalElectricity || 0) - (d.gridElectricity || 0));
 
-            energyChartInstances.breakdown = new Chart(breakdownCtx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'Grid Power', data: nonRenewableGridData, backgroundColor: newColors.grid },
-                        { label: 'RE from Grid', data: renewableData, backgroundColor: newColors.renewable },
-                        { label: 'Captive', data: selfGeneratedData, backgroundColor: newColors.self }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { 
-                            stacked: true,
-                            grid: { color: colors.gridColor }, 
-                            ticks: { 
-                                color: colors.ticksColor,
-                                callback: function(value) {
-                                    return (value / 1000) + 'K';
-                                }
-                            },
-                        },
-                        x: { 
-                            stacked: true,
-                            grid: { color: colors.gridColor }, 
-                            ticks: { color: colors.ticksColor } 
-                        }
+                energyChartInstances.breakdown = new Chart(breakdownCtx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [
+                            { label: 'Grid Power', data: nonRenewableGridData, backgroundColor: newColors.grid },
+                            { label: 'RE from Grid', data: renewableData, backgroundColor: newColors.renewable },
+                            { label: 'Captive', data: selfGeneratedData, backgroundColor: newColors.self }
+                        ]
                     },
-                    plugins: { 
-                        legend: { 
-                            position: 'top', 
-                            labels: { 
-                                color: colors.legendColor, 
-                                font: {size: 10},
-                                usePointStyle: true,
-                                pointStyle: 'rect'
-                            } 
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()} MWh`
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { 
+                                stacked: true,
+                                grid: { color: colors.gridColor }, 
+                                ticks: { 
+                                    color: colors.ticksColor,
+                                    callback: function(value) {
+                                        return (value / 1000) + 'K';
+                                    }
+                                },
+                            },
+                            x: { 
+                                stacked: true,
+                                grid: { color: colors.gridColor }, 
+                                ticks: { color: colors.ticksColor } 
                             }
                         },
-                        datalabels: {
-                            display: false
+                        plugins: { 
+                            legend: { 
+                                position: 'top', 
+                                labels: { 
+                                    color: colors.legendColor, 
+                                    font: {size: 10},
+                                    usePointStyle: true,
+                                    pointStyle: 'rect'
+                                } 
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()} MWh`
+                                }
+                            },
+                            datalabels: {
+                                display: false
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         function renderWaterCharts(dataSubset) {
             if (waterIntensityChartInstance) waterIntensityChartInstance.destroy();
             if (waterBreakdownChartInstance) waterBreakdownChartInstance.destroy();
+            
+            const waterIntensityCanvas = document.getElementById('waterIntensityChart');
+            const waterBreakdownCanvas = document.getElementById('waterBreakdownChart');
 
             const filteredData = dataSubset.filter(d => d.specificWaterConsumption != null);
             if (filteredData.length === 0) {
-                // Hide charts if no data
-                document.getElementById('waterIntensityChart').style.display = 'none';
-                document.getElementById('waterBreakdownChart').style.display = 'none';
+                if (waterIntensityCanvas) waterIntensityCanvas.style.display = 'none';
+                if (waterBreakdownCanvas) waterBreakdownCanvas.style.display = 'none';
                 return;
             } else {
-                document.getElementById('waterIntensityChart').style.display = 'block';
-                document.getElementById('waterBreakdownChart').style.display = 'block';
+                if (waterIntensityCanvas) waterIntensityCanvas.style.display = 'block';
+                if (waterBreakdownCanvas) waterBreakdownCanvas.style.display = 'block';
             }
 
             const colors = getChartColors();
             const labels = filteredData.map(d => new Date(d.ym + '-02').toLocaleString('en-US', { month: 'short' }));
 
             // 1. Water Intensity Line Chart (Specific Consumption)
-            const intensityCtx = document.getElementById('waterIntensityChart').getContext('2d');
-            waterIntensityChartInstance = new Chart(intensityCtx, {
-                type: 'line',
+            const intensityCtx = waterIntensityCanvas?.getContext('2d');
+            if (intensityCtx) {
+                waterIntensityChartInstance = new Chart(intensityCtx, {
+                    type: 'line',
+                    data: {
+                        labels,
+                        datasets: [{
+                            label: 'Specific Consumption',
+                            data: filteredData.map(d => d.specificWaterConsumption),
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            fill: true,
+                            tension: 0.4,
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } },
+                            x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
+                        },
+                        plugins: { legend: { display: false }, datalabels: { display: false } }
+                    }
+                });
+            }
+
+            // 2. Water Breakdown Stacked Bar Chart (Withdrawal vs Recycled)
+            const breakdownCtx = waterBreakdownCanvas?.getContext('2d');
+            if (breakdownCtx) {
+                waterBreakdownChartInstance = new Chart(breakdownCtx, {
+                    type: 'bar',
+                    data: {
+                        labels,
+                        datasets: [
+                            { label: 'Recycled', data: filteredData.map(d => d.waterRecycled), backgroundColor: '#60a5fa' },
+                            { label: 'Withdrawal', data: filteredData.map(d => d.waterWithdrawal), backgroundColor: '#2563eb' }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: {
+                            y: { stacked: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: v => (v/1e6).toFixed(1) + 'M' } },
+                            x: { stacked: true, grid: { display: false }, ticks: { color: colors.ticksColor } }
+                        },
+                        plugins: {
+                            legend: { position: 'top', labels: { color: colors.legendColor, usePointStyle: true, pointStyle: 'rect', font: {size: 10} } },
+                            datalabels: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.dataset.label}: ${(ctx.raw / 1000).toLocaleString()}K m³`
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderTreeChart(dataSubset) {
+            const ctx = document.getElementById('treePlantationChart')?.getContext('2d');
+            if (!ctx) return;
+            if (treePlantationChartInstance) treePlantationChartInstance.destroy();
+            const colors = getChartColors();
+            
+            const filteredData = dataSubset.filter(d => d.treesPlanted != null);
+            if (filteredData.length === 0) return;
+
+            const labels = filteredData.map(d => new Date(d.ym + '-02').toLocaleString('en-US', { month: 'short' }));
+            const data = filteredData.map(d => d.treesPlanted);
+
+            treePlantationChartInstance = new Chart(ctx, {
+                type: 'bar',
+                plugins: [ChartDataLabels],
                 data: {
                     labels,
                     datasets: [{
-                        label: 'Specific Consumption',
-                        data: filteredData.map(d => d.specificWaterConsumption),
-                        borderColor: 'rgb(59, 130, 246)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        fill: true,
-                        tension: 0.4,
+                        data,
+                        backgroundColor: 'rgba(22, 163, 74, 0.7)',
+                        borderColor: 'rgb(22, 163, 74)',
+                        borderWidth: 1,
+                        borderRadius: 4
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
-                        y: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } },
-                        x: { grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor } }
-                    },
-                    plugins: { legend: { display: false }, datalabels: { display: false } }
-                }
-            });
-
-            // 2. Water Breakdown Stacked Bar Chart (Withdrawal vs Recycled)
-            const breakdownCtx = document.getElementById('waterBreakdownChart').getContext('2d');
-            waterBreakdownChartInstance = new Chart(breakdownCtx, { // Reusing the old instance variable name
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'Recycled', data: filteredData.map(d => d.waterRecycled), backgroundColor: '#60a5fa' },
-                        { label: 'Withdrawal', data: filteredData.map(d => d.waterWithdrawal), backgroundColor: '#2563eb' }
-                    ]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        y: { stacked: true, grid: { color: colors.gridColor }, ticks: { color: colors.ticksColor, callback: v => (v/1e6).toFixed(1) + 'M' } },
-                        x: { stacked: true, grid: { display: false }, ticks: { color: colors.ticksColor } }
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: colors.gridColor },
+                            ticks: { color: colors.ticksColor },
+                            suggestedMax: Math.max(...data) * 1.25 // Add extra space for labels
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: colors.ticksColor }
+                        }
                     },
                     plugins: {
-                        legend: { position: 'top', labels: { color: colors.legendColor, usePointStyle: true, pointStyle: 'rect', font: {size: 10} } },
-                        datalabels: { display: false },
+                        legend: { display: false },
                         tooltip: {
                             callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${(ctx.raw / 1000).toLocaleString()}K m³`
+                                label: (ctx) => ` ${ctx.raw.toLocaleString()} trees`
                             }
+                        },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'right',
+                            padding: { right: 4 },
+                            color: colors.ticksColor,
+                            font: { weight: 'bold' },
+                            formatter: (value) => value.toLocaleString()
                         }
                     }
                 }
@@ -1100,7 +1227,8 @@
         function updateDashboard(view) {
             currentDataView = view;
             document.querySelectorAll('.time-filter-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`filter-${view}`).classList.add('active');
+            const activeBtn = document.getElementById(`filter-${view}`);
+            if (activeBtn) activeBtn.classList.add('active');
             
             let currentData = dashboardData[view];
             let dataSubset = [];
@@ -1121,28 +1249,30 @@
                 }
                 periodLabelForTitles = dashboardData.quarterly.overviewText.replace(' Overview', '');
             } else if (view === 'ytd') {
-                const latestDataPoint = fullDataSeries.find(d => d.productionMTD); // Find last month with production
+                const latestDataPoint = [...fullDataSeries].reverse().find(d => d.productionMTD);
                 const latestFY = getFY(latestDataPoint.ym);
                 const selectedFY = getFY(selectedMonthYM);
 
                 let ytdProductionData, ytdLabel, overviewText;
                 
                 const fiscalYearData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY);
-                dataSubset = fiscalYearData;
+                const upToSelectedMonthData = fiscalYearData.filter(d => d.ym <= selectedMonthYM);
+                dataSubset = upToSelectedMonthData;
                 
                 if (selectedFY < latestFY) {
                     ytdProductionData = fiscalYearData.reduce((sum, d) => sum + (d.productionMTD || 0), 0);
                     ytdLabel = `Total for ${selectedFY}`;
                     overviewText = `${selectedFY} Overview`;
                 } else {
-                    ytdProductionData = fiscalYearData.reduce((sum, d) => sum + (d.productionMTD || 0), 0);
-                    const latestMonthName = toMonthLabel(latestDataPoint.ym).split(' ')[0];
-                    ytdLabel = `YTD for ${latestFY} (till ${latestMonthName})`;
-                    overviewText = `${latestFY} YTD Overview`;
+                    ytdProductionData = upToSelectedMonthData.reduce((sum, d) => sum + (d.productionMTD || 0), 0);
+                    const latestMonthInSubset = upToSelectedMonthData[upToSelectedMonthData.length - 1];
+                    const latestMonthName = toMonthLabel(latestMonthInSubset.ym).split(' ')[0];
+                    ytdLabel = `YTD for ${selectedFY} (till ${latestMonthName})`;
+                    overviewText = `${selectedFY} YTD Overview`;
                 }
 
-                dashboardData.ytd.production.valueInTonnes = +ytdProductionData.toFixed(2);
-                dashboardData.ytd.production.value = +(ytdProductionData / 1e6).toFixed(2);
+                dashboardData.ytd.production.valueInTonnes = +ytdProductionData;
+                dashboardData.ytd.production.value = +(ytdProductionData / 1e6);
                 dashboardData.ytd.production.periodLabel = ytdLabel;
                 dashboardData.ytd.overviewText = overviewText;
                 currentData = dashboardData.ytd;
@@ -1151,16 +1281,17 @@
 
             updateMetrics(currentData);
             updateScrapCard(dataSubset);
+            updateHumanIndexCard(view, dataSubset);
             
             // --- Chart Updates ---
             let co2ChartData;
             const co2Subtitle = document.getElementById('co2-intensity-subtitle');
-            const insightsTitle = document.getElementById('insights-title');
+            const co2ValueEl = document.getElementById('co2-intensity-value');
             
             const co2Subset = dataSubset.filter(d => d.productionMTD);
 
             if (view === 'monthly') {
-                co2Subtitle.textContent = 'vs Target: 2.09 tCO₂/tcs';
+                if (co2Subtitle) co2Subtitle.textContent = 'vs Target: 2.09 tCO₂/tcs';
                 const record = fullDataSeries.find(r => r.ym === selectedMonthYM);
                 
                 if (record && record.productionMTD) {
@@ -1170,17 +1301,17 @@
                         target: co2Subset.map(() => 2.09) 
                     };
                     const latestIntensity = record.totalAbsEmissionMTD / record.productionMTD;
-                    document.getElementById('co2-intensity-value').textContent = latestIntensity.toFixed(2);
+                    if (co2ValueEl) co2ValueEl.textContent = latestIntensity.toFixed(2);
                 } else {
                     co2ChartData = { labels: [], emissions: [], target: [] };
-                    document.getElementById('co2-intensity-value').textContent = 'N/A';
+                    if (co2ValueEl) co2ValueEl.textContent = 'N/A';
                 }
 
 
             } else if (view === 'ytd') {
                 const allFYs = [...new Set(fullDataSeries.filter(d=>d.productionMTD).map(d => getFY(d.ym)))].sort();
     
-                if (allFYs.length >= 2) {
+                if (allFYs.length >= 2 && co2Subtitle && co2ValueEl) {
                     const latestFY = allFYs[allFYs.length - 1];
                     const previousFY = allFYs[allFYs.length - 2];
 
@@ -1197,75 +1328,85 @@
                     
                     const selectedFY = getFY(selectedMonthYM);
                     const fiscalYearData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY && d.productionMTD);
-                    const selectedMonthIndex = fiscalYearData.findIndex(d => d.ym === selectedMonthYM);
-                    const ytdData = fiscalYearData.slice(0, selectedMonthIndex + 1);
+                    const ytdData = fiscalYearData.filter(d => d.ym <= selectedMonthYM);
                     const ytdProd = ytdData.reduce((sum, d) => sum + (d.productionMTD || 0), 0);
                     const ytdEmission = ytdData.reduce((sum, d) => sum + (d.totalAbsEmissionMTD || 0), 0);
                     const ytdIntensity = (ytdEmission / ytdProd).toFixed(2);
                     const selectedMonthLabel = toMonthLabel(selectedMonthYM).split(' ')[0];
                     
-                    co2Subtitle.textContent = `${ytdIntensity} tCO₂/tcs (${selectedFY.replace('20','')} ${selectedMonthLabel} YTD)`;
+                    co2Subtitle.textContent = `${ytdIntensity} tCO₂/tcs (${selectedFY.replace('FY','')} ${selectedMonthLabel} YTD)`;
 
                     co2ChartData = {
-                        labels: [previousFY.replace('20',''), `YTD ${latestFY.replace('20','')}`],
+                        labels: [previousFY.replace('FY',''), `YTD ${latestFY.replace('FY','')}`],
                         emissions: [previousFYIntensity, latestFYIntensity],
                         target: [2.09, 2.09]
                     };
-                    document.getElementById('co2-intensity-value').textContent = latestFYIntensity.toFixed(2);
+                    co2ValueEl.textContent = latestFYIntensity.toFixed(2);
                 } else {
                     co2ChartData = { labels: [], emissions: [], target: [] };
-                    co2Subtitle.textContent = 'Not enough data for YTD comparison';
-                    document.getElementById('co2-intensity-value').textContent = 'N/A';
+                    if (co2Subtitle) co2Subtitle.textContent = 'Not enough data for YTD comparison';
+                    if (co2ValueEl) co2ValueEl.textContent = 'N/A';
                 }
             } else if (view === 'quarterly') {
                 co2ChartData = dashboardData.quarterly.co2;
-                document.getElementById('co2-intensity-value').textContent = co2ChartData.average;
-                co2Subtitle.textContent = `${co2ChartData.title} Average Intensity`;
+                if (co2ValueEl) co2ValueEl.textContent = co2ChartData.average;
+                if (co2Subtitle) co2Subtitle.textContent = `${co2ChartData.title} Average Intensity`;
             }
             
-            if(insightsTitle) {
-                insightsTitle.textContent = `${periodLabelForTitles} Highlights & Insights`;
-            }
             // Update Energy & Water cards
             const intensityRecord = fullDataSeries.find(d => d.ym === selectedMonthYM);
-            document.getElementById('energy-intensity-subtitle').textContent = toMonthLabel(selectedMonthYM);
+            const energyIntensityValueEl = document.getElementById('energy-intensity-value');
+            const energyIntensitySubtitleEl = document.getElementById('energy-intensity-subtitle');
+            const waterIntensityValueEl = document.getElementById('water-intensity-value');
+            const waterIntensitySubtitleEl = document.getElementById('water-intensity-subtitle');
+
+            if (energyIntensitySubtitleEl) energyIntensitySubtitleEl.textContent = toMonthLabel(selectedMonthYM);
             if (intensityRecord && intensityRecord.totalElectricity && intensityRecord.productionMTD) {
                 const energyIntensity = intensityRecord.totalElectricity / intensityRecord.productionMTD;
-                document.getElementById('energy-intensity-value').textContent = energyIntensity.toFixed(2);
+                if (energyIntensityValueEl) energyIntensityValueEl.textContent = energyIntensity.toFixed(2);
             } else {
-                document.getElementById('energy-intensity-value').textContent = "N/A";
+                if (energyIntensityValueEl) energyIntensityValueEl.textContent = "N/A";
             }
-            document.getElementById('water-intensity-subtitle').textContent = toMonthLabel(selectedMonthYM);
+            if (waterIntensitySubtitleEl) waterIntensitySubtitleEl.textContent = toMonthLabel(selectedMonthYM);
              if (intensityRecord && intensityRecord.specificWaterConsumption) {
-                document.getElementById('water-intensity-value').textContent = intensityRecord.specificWaterConsumption.toFixed(2);
+                if (waterIntensityValueEl) waterIntensityValueEl.textContent = intensityRecord.specificWaterConsumption.toFixed(2);
             } else {
-                document.getElementById('water-intensity-value').textContent = "N/A";
+                if (waterIntensityValueEl) waterIntensityValueEl.textContent = "N/A";
             }
 
              // Rainwater Harvested YTD Calculation
-            const { y: selectedY, m: selectedM } = ymToParts(selectedMonthYM);
             const fyForRainwater = getFY(selectedMonthYM) || 'FY2025';
-
             const rainwaterYTD = fullDataSeries
-                .filter(d => getFY(d.ym) === fyForRainwater && d.rainwaterHarvested != null)
+                .filter(d => getFY(d.ym) === fyForRainwater && d.rainwaterHarvested != null && d.ym <= selectedMonthYM)
                 .reduce((sum, d) => sum + d.rainwaterHarvested, 0);
             
-            document.getElementById('rainwater-harvested-value').textContent = rainwaterYTD.toLocaleString();
-            document.getElementById('rainwater-harvested-subtitle').textContent = `m³ (${fyForRainwater.replace('20','')} YTD)`;
+            const rainwaterValueEl = document.getElementById('rainwater-harvested-value');
+            const rainwaterSubtitleEl = document.getElementById('rainwater-harvested-subtitle');
+            if (rainwaterValueEl) rainwaterValueEl.textContent = rainwaterYTD.toLocaleString();
+            if (rainwaterSubtitleEl) rainwaterSubtitleEl.textContent = `m³ (${fyForRainwater.replace('FY','')} YTD)`;
             
             const [year, month] = selectedMonthYM.split('-');
             const monthName = new Date(selectedMonthYM + '-02').toLocaleString('en-US', { month: 'long' });
             const shortYear = year.substring(2);
             const formattedDate = `(${monthName}'${shortYear})`;
             const compositionTitleEl = document.getElementById('composition-title');
-            compositionTitleEl.innerHTML = `Composition <span class="text-base font-normal text-gray-500 dark:text-gray-400">${formattedDate}</span>`;
-
+            if(compositionTitleEl) {
+                compositionTitleEl.innerHTML = `Composition <span class="text-base font-normal text-gray-500 dark:text-gray-400">${formattedDate}</span>`;
+            }
 
             renderCo2Chart(co2ChartData);
             renderProductionChart(view);
             renderScrapChart(dataSubset);
             renderEnergyCharts(dataSubset);
             renderWaterCharts(dataSubset);
+
+            // Update Tree Plantation Card
+            const treeValueEl = document.getElementById('tree-plantation-value');
+            const latestTreeData = fullDataSeries.find(d => d.ym === selectedMonthYM);
+            if (treeValueEl) {
+                treeValueEl.textContent = latestTreeData && latestTreeData.treesPlanted != null ? latestTreeData.treesPlanted.toLocaleString() : 'N/A';
+            }
+            renderTreeChart(dataSubset);
         }
 
         function handleQuarterlySwitch(){
@@ -1280,7 +1421,7 @@
 
                     if (intensity !== null) {
                         pastQuartersData.unshift({ 
-                            label: `${currentQuarter.fy.replace('20','')} Q${currentQuarter.q}`, 
+                            label: `${currentQuarter.fy.replace('FY','')} Q${currentQuarter.q}`, 
                             intensity: intensity, 
                             range: currentQuarter,
                             data: dataForQuarter
@@ -1302,8 +1443,8 @@
                 lastQuarterUsed = { startYM: start, endYM: end };
                 
                 dashboardData.quarterly.overviewText = `${fy} Q${q} Overview`;
-                dashboardData.quarterly.production.valueInTonnes = +totalProduction.toFixed(2);
-                dashboardData.quarterly.production.value = +(totalProduction / 1e6).toFixed(2);
+                dashboardData.quarterly.production.valueInTonnes = +totalProduction;
+                dashboardData.quarterly.production.value = +(totalProduction / 1e6);
                 dashboardData.quarterly.production.periodLabel = `${fy} Q${q} (${rangeLabel(start, end)})`;
             }
         }
@@ -1315,14 +1456,77 @@
             const selLabel = toMonthLabel(ym);
             dashboardData.monthly.overviewText = `${selLabel} Overview`;
             if (rec.productionMTD) {
-                dashboardData.monthly.production.valueInTonnes = +rec.productionMTD.toFixed(2);
-                dashboardData.monthly.production.value = +(rec.productionMTD / 1e6).toFixed(2);
+                dashboardData.monthly.production.valueInTonnes = +rec.productionMTD;
+                dashboardData.monthly.production.value = +(rec.productionMTD / 1e6);
             } else {
                  dashboardData.monthly.production.valueInTonnes = 0;
                 dashboardData.monthly.production.value = 0;
             }
             dashboardData.monthly.production.periodLabel = selLabel;
             updateDashboard('monthly');
+        }
+
+        function updateHumanIndexCard(view, dataSubset) {
+            const subtitleEl = document.getElementById('human-index-subtitle');
+            const maleEl = document.getElementById('male-employees-value');
+            const femaleEl = document.getElementById('female-employees-value');
+            const diversityEl = document.getElementById('diversity-value');
+            const csrEl = document.getElementById('csr-spend-value');
+
+            if (!subtitleEl || !maleEl || !femaleEl || !diversityEl || !csrEl) return;
+            
+            let periodLabel = '';
+            if (view === 'monthly') periodLabel = toMonthLabel(selectedMonthYM);
+            if (view === 'quarterly') periodLabel = dashboardData.quarterly.production.periodLabel;
+            if (view === 'ytd') periodLabel = dashboardData.ytd.production.periodLabel;
+            subtitleEl.textContent = periodLabel;
+
+            // Employee and Diversity data is always based on the latest month in the selection
+            const latestRecord = dataSubset.length > 0 ? dataSubset[dataSubset.length - 1] : null;
+            if (latestRecord && latestRecord.maleEmployees != null && latestRecord.femaleEmployees != null) {
+                const maleCount = latestRecord.maleEmployees;
+                const femaleCount = latestRecord.femaleEmployees;
+                const totalEmployees = maleCount + femaleCount;
+                const diversity = totalEmployees > 0 ? (femaleCount / totalEmployees) * 100 : 0;
+                maleEl.textContent = maleCount.toLocaleString();
+                femaleEl.textContent = femaleCount.toLocaleString();
+                diversityEl.textContent = `${diversity.toFixed(1)}%`;
+            } else {
+                maleEl.textContent = 'N/A';
+                femaleEl.textContent = 'N/A';
+                diversityEl.textContent = 'N/A';
+            }
+            
+            // CSR Spend
+            let totalCSRCrores = 0;
+            let hasCsrData = false;
+
+            if (view === 'monthly') {
+                const record = fullDataSeries.find(d => d.ym === selectedMonthYM);
+                if (record && record.csrSpent != null) {
+                    totalCSRCrores = record.csrSpent;
+                    hasCsrData = true;
+                }
+            } else if (view === 'quarterly') {
+                if (dataSubset.length > 0) {
+                    totalCSRCrores = dataSubset.reduce((sum, d) => sum + (d.csrSpent || 0), 0);
+                    hasCsrData = dataSubset.some(d => d.csrSpent != null);
+                }
+            } else if (view === 'ytd') {
+                const selectedFY = getFY(selectedMonthYM);
+                const ytdData = fullDataSeries.filter(d => getFY(d.ym) === selectedFY && d.ym <= selectedMonthYM);
+
+                if (ytdData.length > 0) {
+                    totalCSRCrores = ytdData.reduce((sum, d) => sum + (d.csrSpent || 0), 0);
+                    hasCsrData = ytdData.some(d => d.csrSpent != null);
+                }
+            }
+
+            if (hasCsrData) {
+                csrEl.innerHTML = `₹${totalCSRCrores.toFixed(2)}<span class="text-xl"> Cr</span>`;
+            } else {
+                csrEl.textContent = 'N/A';
+            }
         }
 
         // --- MONTH POPOVER LOGIC ---
@@ -1346,7 +1550,7 @@
                     const year = startYear + Math.floor((i + 3) / 12);
                     return toYM(year, month);
                 });
-                const monthNames = ['Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec','Jan','Feb','Mar'];
+                const monthNames = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
 
                 months.forEach((ym, i) => {
                     const btn = document.createElement('button');
@@ -1377,8 +1581,8 @@
             });
         }
         function closeMonthPopover() {
-            document.getElementById('month-popover').classList.add('hidden');
-            document.getElementById('month-popover-btn').setAttribute('aria-expanded','false');
+            document.getElementById('month-popover')?.classList.add('hidden');
+            document.getElementById('month-popover-btn')?.setAttribute('aria-expanded','false');
         }
 
         // --- INITIALIZATION ---
@@ -1387,16 +1591,22 @@
             // Beta Overlay
             const betaOverlay = document.getElementById('beta-overlay');
             const betaModal = document.getElementById('beta-modal');
-            setTimeout(() => {
-                betaModal.classList.remove('scale-95', 'opacity-0');
-                betaModal.classList.add('scale-100', 'opacity-100');
-            }, 100);
-            document.getElementById('dismiss-beta').addEventListener('click', () => {
-                betaOverlay.style.opacity = 0;
+            const dismissBeta = document.getElementById('dismiss-beta');
+            
+            if (betaModal) {
                 setTimeout(() => {
-                    betaOverlay.style.display = 'none';
-                }, 300);
-            });
+                    betaModal.classList.remove('scale-95', 'opacity-0');
+                    betaModal.classList.add('scale-100', 'opacity-100');
+                }, 100);
+            }
+            if (dismissBeta && betaOverlay) {
+                dismissBeta.addEventListener('click', () => {
+                    betaOverlay.style.opacity = 0;
+                    setTimeout(() => {
+                        betaOverlay.style.display = 'none';
+                    }, 300);
+                });
+            }
 
             // Set dynamic greeting
             setDynamicGreeting();
@@ -1405,12 +1615,12 @@
             updateDashboard('monthly');
 
             // Attach event listeners
-            document.getElementById('filter-monthly').addEventListener('click', () => updateDashboard('monthly'));
-            document.getElementById('filter-quarterly').addEventListener('click', () => updateDashboard('quarterly'));
-            document.getElementById('filter-ytd').addEventListener('click', () => updateDashboard('ytd'));
-            document.getElementById('unit-selector').addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
+            document.getElementById('filter-monthly')?.addEventListener('click', () => updateDashboard('monthly'));
+            document.getElementById('filter-quarterly')?.addEventListener('click', () => updateDashboard('quarterly'));
+            document.getElementById('filter-ytd')?.addEventListener('click', () => updateDashboard('ytd'));
+            document.getElementById('unit-selector')?.addEventListener('change', () => updateProductionCard(dashboardData[currentDataView]));
             
-            document.getElementById('re-toggle-container').addEventListener('click', (e) => {
+            document.getElementById('re-toggle-container')?.addEventListener('click', (e) => {
                 if(e.target.tagName === 'BUTTON'){
                     const type = e.target.dataset.type;
                     if(type && type !== renewableShareType) {
@@ -1426,24 +1636,30 @@
             // Month popover interactions
             const monthBtn = document.getElementById('month-popover-btn');
             const monthPop = document.getElementById('month-popover');
-            monthBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (monthPop.classList.contains('hidden')) {
-                    buildMonthPopover();
-                    monthPop.classList.remove('hidden');
-                    monthBtn.setAttribute('aria-expanded','true');
-                } else {
-                    closeMonthPopover();
-                }
-            });
-            document.addEventListener('click', (e) => !monthPop.classList.contains('hidden') && !monthPop.contains(e.target) && e.target !== monthBtn && closeMonthPopover());
-            document.addEventListener('keydown', (e) => e.key === 'Escape' && closeMonthPopover());
+            if(monthBtn && monthPop) {
+                monthBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (monthPop.classList.contains('hidden')) {
+                        buildMonthPopover();
+                        monthPop.classList.remove('hidden');
+                        monthBtn.setAttribute('aria-expanded','true');
+                    } else {
+                        closeMonthPopover();
+                    }
+                });
+                document.addEventListener('click', (e) => !monthPop.classList.contains('hidden') && !monthPop.contains(e.target) && e.target !== monthBtn && closeMonthPopover());
+                document.addEventListener('keydown', (e) => e.key === 'Escape' && closeMonthPopover());
+            }
 
             // Download functionality
             const downloadBtn = document.getElementById('download-btn');
             const downloadMenu = document.getElementById('download-menu');
-            downloadBtn.addEventListener('click', (e) => { e.stopPropagation(); downloadMenu.classList.toggle('hidden'); });
-            document.addEventListener('click', (e) => !downloadMenu.classList.contains('hidden') && !downloadMenu.contains(e.target) && e.target !== downloadBtn && downloadMenu.classList.add('hidden'));
+            const downloadPng = document.getElementById('download-png');
+
+            if (downloadBtn && downloadMenu) {
+                downloadBtn.addEventListener('click', (e) => { e.stopPropagation(); downloadMenu.classList.toggle('hidden'); });
+                document.addEventListener('click', (e) => !downloadMenu.classList.contains('hidden') && !downloadMenu.contains(e.target) && e.target !== downloadBtn && downloadMenu.classList.add('hidden'));
+            }
 
             const captureDashboard = () => {
                 const elementsToHide = [document.getElementById('beta-overlay'), downloadBtn, downloadMenu, document.getElementById('month-popover-btn'), document.getElementById('theme-toggle'), document.getElementById('share-btn')];
@@ -1451,25 +1667,50 @@
                 return html2canvas(document.getElementById('dashboard-container')).finally(() => elementsToHide.forEach(el => el && (el.style.visibility = 'visible')));
             }
 
-            document.getElementById('download-png').addEventListener('click', (e) => {
-                e.preventDefault();
-                captureDashboard().then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'esg-pulse-monitor.png';
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
+            if(downloadPng) {
+                downloadPng.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    captureDashboard().then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = 'esg-pulse-monitor.png';
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    });
+                    if (downloadMenu) downloadMenu.classList.add('hidden');
                 });
-                downloadMenu.classList.add('hidden');
-            });
+            }
 
             // Share functionality
             const shareBtn = document.getElementById('share-btn');
-            shareBtn.addEventListener('click', () => {
-                const subject = encodeURIComponent('Check out the AM/NS India ESG Pulse Monitor');
-                const url = 'https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx';
-                const body = encodeURIComponent(`Hi,\n\nPlease find the link to the ESG Pulse Monitor dashboard below:\n\n${url}\n\nThanks`);
-                window.location.href = `mailto:?subject=${subject}&body=${body}`;
-            });
+            const shareOverlay = document.getElementById('share-overlay');
+
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    const url = 'https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx';
+                    
+                    const textarea = document.createElement('textarea');
+                    textarea.value = url;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        if (shareOverlay) {
+                            shareOverlay.classList.remove('hidden');
+                            setTimeout(() => shareOverlay.classList.remove('opacity-0'), 10);
+                            
+                            setTimeout(() => {
+                                shareOverlay.classList.add('opacity-0');
+                                setTimeout(() => {
+                                    shareOverlay.classList.add('hidden');
+                                }, 500); // fade out duration
+                            }, 2500); // show for 2.5 seconds
+                        }
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                    document.body.removeChild(textarea);
+                });
+            }
         };
     </script>
 </body>

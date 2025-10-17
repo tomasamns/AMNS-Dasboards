@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AM/NS India - Compact ESG Dashboard</title>
-    <!-- Inter font from Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Inter font from Google Fonts --><link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Enable class-based dark mode in Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <style>
         /* Set a specific font and ensure the container is responsive */
         body {
@@ -22,7 +26,7 @@
             min-height: 100vh;       /* Ensure body takes full viewport height */
             padding: 20px;           /* Add some padding for smaller viewports */
             box-sizing: border-box;  /* Include padding in height/width calculation */
-            background-color: #f9fafb; /* A light background to make the dashboard stand out */
+            transition: background-color 0.3s ease;
         }
         #dashboard-container {
             width: 1080px;
@@ -30,75 +34,77 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden; /* Ensure content doesn't spill out */
             flex-shrink: 0; /* Prevent the container from shrinking */
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 dark:bg-gray-900">
 
-    <!-- Main Dashboard Container with fixed dimensions -->
-    <div id="dashboard-container" class="relative bg-white rounded-lg flex items-center p-4">
-        <!-- Fixed 6-column grid -->
-        <div class="w-full h-full grid grid-cols-6 divide-x divide-gray-200">
+    <!-- Main Dashboard Container with fixed dimensions --><div id="dashboard-container" class="relative bg-white dark:bg-gray-800 rounded-lg flex items-center p-4">
+        
+        <!-- Theme Toggle Button --><button id="theme-toggle" class="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+            <svg id="theme-icon-light" class="h-4 w-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg id="theme-icon-dark" class="h-4 w-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+        
+        <!-- Fixed 6-column grid --><div class="w-full h-full grid grid-cols-6 divide-x divide-gray-200 dark:divide-gray-700">
 
-            <!-- Info Panel -->
-            <div class="flex flex-col justify-center items-start pr-6">
-                <h2 class="text-lg font-bold text-gray-800 tracking-wide">AM/NS INDIA</h2>
-                <p class="text-md text-gray-600">ESG Pulse Monitor</p>
-                <hr class="my-3 border-gray-200 w-full">
-                <p id="month-display" class="text-lg font-semibold text-indigo-600">--</p>
-                <p id="greeting-display" class="text-md text-gray-500 mt-1 flex items-center gap-2">--</p>
+            <!-- Info Panel --><div class="flex flex-col justify-center items-start pr-6">
+                <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 tracking-wide">AM/NS INDIA</h2>
+                <p class="text-md text-gray-600 dark:text-gray-300">ESG Pulse Monitor</p>
+                <hr class="my-3 border-gray-200 dark:border-gray-600 w-full">
+                <p id="month-display" class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">--</p>
+                <p id="greeting-display" class="text-md text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-2">--</p>
             </div>
 
-            <!-- Metric 1: Production -->
-            <div class="relative flex flex-col justify-center items-center">
-                <p class="text-base font-medium text-gray-500">Production</p>
-                <p class="text-4xl font-bold text-gray-800 mt-2">
+            <!-- Metric 1: Production --><div class="relative flex flex-col justify-center items-center">
+                <p class="text-base font-medium text-gray-500 dark:text-gray-400">Production</p>
+                <p class="text-4xl font-bold text-gray-800 dark:text-gray-100 mt-2">
                     <span id="production-value">--</span>
-                    <span class="text-lg font-semibold text-gray-500 align-baseline">MnT</span>
+                    <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">MnT</span>
                 </p>
             </div>
 
-            <!-- Metric 2: CO2 Intensity -->
-            <div class="relative flex flex-col justify-center items-center">
-                <p class="text-base font-medium text-gray-500">CO₂ Intensity</p>
-                <p class="text-4xl font-bold text-cyan-600 mt-2">
+            <!-- Metric 2: CO2 Intensity --><div class="relative flex flex-col justify-center items-center">
+                <p class="text-base font-medium text-gray-500 dark:text-gray-400">CO₂ Intensity</p>
+                <p class="text-4xl font-bold text-cyan-600 dark:text-cyan-400 mt-2">
                     <span id="co2-value">--</span>
-                    <span class="text-lg font-semibold text-gray-500 align-baseline">tCO₂/tcs</span>
+                    <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">tCO₂/tcs</span>
                 </p>
             </div>
 
-            <!-- Metric 3: Energy Intensity -->
-            <div class="relative flex flex-col justify-center items-center">
-                <p class="text-base font-medium text-gray-500">Energy Intensity</p>
-                <p class="text-4xl font-bold text-green-600 mt-2">
+            <!-- Metric 3: Energy Intensity --><div class="relative flex flex-col justify-center items-center">
+                <p class="text-base font-medium text-gray-500 dark:text-gray-400">Energy Intensity</p>
+                <p class="text-4xl font-bold text-green-600 dark:text-green-400 mt-2">
                     <span id="energy-value">--</span>
-                     <span class="text-lg font-semibold text-gray-500 align-baseline">MWh/tcs</span>
+                     <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">MWh/tcs</span>
                 </p>
             </div>
 
-            <!-- Metric 4: Water Intensity -->
-            <div class="relative flex flex-col justify-center items-center">
-                <p class="text-base font-medium text-gray-500">Water Intensity</p>
-                <p class="text-4xl font-bold text-blue-600 mt-2">
+            <!-- Metric 4: Water Intensity --><div class="relative flex flex-col justify-center items-center">
+                <p class="text-base font-medium text-gray-500 dark:text-gray-400">Water Intensity</p>
+                <p class="text-4xl font-bold text-blue-600 dark:text-blue-400 mt-2">
                     <span id="water-value">--</span>
-                    <span class="text-lg font-semibold text-gray-500 align-baseline">m³/tcs</span>
+                    <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">m³/tcs</span>
                 </p>
             </div>
 
-            <!-- Metric 5: Diversity -->
-            <div class="relative flex flex-col justify-center items-center">
-                <p class="text-base font-medium text-gray-500">Diversity</p>
-                <p class="text-4xl font-bold text-purple-600 mt-2">
+            <!-- Metric 5: Diversity --><div class="relative flex flex-col justify-center items-center">
+                <p class="text-base font-medium text-gray-500 dark:text-gray-400">Diversity</p>
+                <p class="text-4xl font-bold text-purple-600 dark:text-purple-400 mt-2">
                     <span id="diversity-value">--</span>
-                     <span class="text-lg font-semibold text-gray-500 align-baseline">%</span>
+                     <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">%</span>
                 </p>
             </div>
         </div>
-         <!-- "See More" Button -->
-        <a href="https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx" 
+         <!-- "See More" Button --><a href="https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx" 
            target="_blank" 
            rel="noopener noreferrer" 
-           class="absolute bottom-5 right-5 flex items-center gap-1.5 bg-gray-100 text-gray-600 font-medium text-xs px-2.5 py-1 rounded-full shadow-sm hover:shadow-md hover:bg-indigo-600 hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+           class="absolute bottom-5 right-5 flex items-center gap-1.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-medium text-xs px-2.5 py-1 rounded-full shadow-sm hover:shadow-md hover:bg-indigo-600 dark:hover:bg-indigo-500 hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             <span>See More</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -119,8 +125,49 @@
         };
 
         window.onload = function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light'); // Sun icon
+            const darkIcon = document.getElementById('theme-icon-dark');  // Moon icon
+
+            // --- THEME LOGIC ---
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    lightIcon.classList.add('hidden');     // Hide sun
+                    darkIcon.classList.remove('hidden'); // Show moon
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    lightIcon.classList.remove('hidden');  // Show sun
+                    darkIcon.classList.add('hidden');    // Hide moon
+                }
+            }
+
+            // Get IST hour (UTC+5.5) for consistent time-based actions
+            const now = new Date();
+            const istOffset = 5.5 * 60 * 60 * 1000;
+            const istTime = new Date(now.getTime() + istOffset);
+            const istHour = istTime.getUTCHours();
+            
+            // System theme based on IST time (5 PM to 6 AM is dark)
+            const systemIsNight = istHour >= 17 || istHour < 6;
+            const systemTheme = systemIsNight ? 'dark' : 'light';
+            
+            // Check for user-saved theme in localStorage
+            const userTheme = localStorage.getItem('theme');
+
+            // Apply theme: user's choice overrides the system's default
+            applyTheme(userTheme || systemTheme);
+
+            // Manual toggle event listener
+            themeToggle.addEventListener('click', () => {
+                const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                const newTheme = isCurrentlyDark ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+            
             // --- DYNAMIC INFO PANEL CONTENT ---
-            const currentHour = new Date().getHours();
 
             // Set Month Display
             const monthDisplayEl = document.getElementById('month-display');
@@ -130,19 +177,19 @@
                 monthDisplayEl.textContent = monthYear;
             }
 
-            // Set Greeting with Icon
+            // Set Greeting with Icon (based on IST)
             const greetingDisplayEl = document.getElementById('greeting-display');
             if (greetingDisplayEl) {
                 let greeting = '';
                 let iconSvg = '';
 
-                if (currentHour >= 5 && currentHour < 12) {
+                if (istHour >= 5 && istHour < 12) {
                     greeting = 'Good Morning';
                     iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
-                } else if (currentHour >= 12 && currentHour < 17) {
+                } else if (istHour >= 12 && istHour < 17) {
                     greeting = 'Good Afternoon';
                     iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
-                } else if (currentHour >= 17 && currentHour < 21) {
+                } else if (istHour >= 17 && istHour < 21) {
                     greeting = 'Good Evening';
                     iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16" /></svg>`;
                 } else {

@@ -14,15 +14,22 @@
         /* Set a specific font and ensure the container is responsive */
         body {
             font-family: 'Inter', sans-serif;
-            /* Reset margin and add a small padding to ensure shadow and corners are visible in embeds */
+            /* Use flexbox to center the dashboard on the page */
             margin: 0;
-            padding: 10px 10px 50px 10px; /* Changed right padding from 50px to 10px */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center;     /* Center vertically */
+            min-height: 100vh;       /* Ensure body takes full viewport height */
+            padding: 20px;           /* Add some padding for smaller viewports */
+            box-sizing: border-box;  /* Include padding in height/width calculation */
+            background-color: #f9fafb; /* A light background to make the dashboard stand out */
         }
         #dashboard-container {
-            width: 1080px; /* Changed from 1050px */
+            width: 1080px;
             height: 200px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden; /* Ensure content doesn't spill out */
+            flex-shrink: 0; /* Prevent the container from shrinking */
         }
     </style>
 </head>

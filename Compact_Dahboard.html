@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM/NS India - Compact ESG Dashboard</title>
+    <!-- Inter font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Set a specific font and ensure the container is responsive */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Center the dashboard for better viewing with padding on mobile */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f2f5;
+            padding: 1rem; /* Add padding for small screens */
+        }
+        #dashboard-container {
+            width: 100%;
+            max-width: 1080px; /* Max width for desktop */
+            height: auto; /* Auto height for content flow */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Ensure content doesn't spill out */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Dashboard Container with responsive dimensions -->
+    <div id="dashboard-container" class="relative bg-white rounded-lg flex items-center p-4">
+        <!-- Responsive Grid: Stacks vertically on mobile, horizontal on large screens -->
+        <div class="w-full h-full grid grid-cols-1 lg:grid-cols-6 divide-y lg:divide-y-0 divide-gray-200">
+
+            <!-- Info Panel -->
+            <div class="flex flex-col justify-center items-center lg:items-start py-4 lg:p-4 text-center lg:text-left">
+                <h2 class="text-sm font-bold text-gray-800 tracking-wide">AM/NS INDIA</h2>
+                <p class="text-xs text-gray-600">ESG Pulse Monitor</p>
+                <hr class="my-2 border-gray-200 w-16 lg:w-full">
+                <p id="month-display" class="text-sm font-semibold text-indigo-600">--</p>
+                <p id="greeting-display" class="text-xs text-gray-500 mt-1 flex items-center gap-1.5">--</p>
+            </div>
+
+            <!-- Metric 1: Production -->
+            <div class="relative flex flex-col justify-center items-center py-4 lg:p-4">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-px bg-gray-200 hidden lg:block"></div>
+                <p class="text-sm font-medium text-gray-500">Production</p>
+                <p class="text-2xl sm:text-3xl font-bold text-gray-800 mt-1">
+                    <span id="production-value">--</span>
+                    <span class="text-sm sm:text-base font-semibold text-gray-500 align-baseline">MnT</span>
+                </p>
+            </div>
+
+            <!-- Metric 2: CO2 Intensity -->
+            <div class="relative flex flex-col justify-center items-center py-4 lg:p-4">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-px bg-gray-200 hidden lg:block"></div>
+                <p class="text-sm font-medium text-gray-500">CO₂ Intensity</p>
+                <p class="text-2xl sm:text-3xl font-bold text-cyan-600 mt-1">
+                    <span id="co2-value">--</span>
+                    <span class="text-sm sm:text-base font-semibold text-gray-500 align-baseline">tCO₂/tcs</span>
+                </p>
+            </div>
+
+            <!-- Metric 3: Energy Intensity -->
+            <div class="relative flex flex-col justify-center items-center py-4 lg:p-4">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-px bg-gray-200 hidden lg:block"></div>
+                <p class="text-sm font-medium text-gray-500">Energy Intensity</p>
+                <p class="text-2xl sm:text-3xl font-bold text-green-600 mt-1">
+                    <span id="energy-value">--</span>
+                     <span class="text-sm sm:text-base font-semibold text-gray-500 align-baseline">MWh/tcs</span>
+                </p>
+            </div>
+
+            <!-- Metric 4: Water Intensity -->
+            <div class="relative flex flex-col justify-center items-center py-4 lg:p-4">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-px bg-gray-200 hidden lg:block"></div>
+                <p class="text-sm font-medium text-gray-500">Water Intensity</p>
+                <p class="text-2xl sm:text-3xl font-bold text-blue-600 mt-1">
+                    <span id="water-value">--</span>
+                    <span class="text-sm sm:text-base font-semibold text-gray-500 align-baseline">m³/tcs</span>
+                </p>
+            </div>
+
+            <!-- Metric 5: Diversity -->
+            <div class="relative flex flex-col justify-center items-center py-4 lg:p-4">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-px bg-gray-200 hidden lg:block"></div>
+                <p class="text-sm font-medium text-gray-500">Diversity</p>
+                <p class="text-2xl sm:text-3xl font-bold text-purple-600 mt-1">
+                    <span id="diversity-value">--</span>
+                     <span class="text-sm sm:text-base font-semibold text-gray-500 align-baseline">%</span>
+                </p>
+            </div>
+        </div>
+         <!-- "See More" Button -->
+        <a href="https://arcelormittal.sharepoint.com/sites/amnsindia-sustainability/SitePages/Dashboard-Advanced.aspx" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="absolute bottom-4 right-4 flex items-center gap-1.5 bg-gray-100 text-gray-600 font-medium text-xs px-2.5 py-1 rounded-full shadow-sm hover:shadow-md hover:bg-indigo-600 hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <span>See More</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
+
+    <script>
+        // Data for the latest month ('2025-09') is used directly.
+        const latestMonthData = {
+            ym: '2025-09',
+            productionMTD: 573165.00,
+            totalAbsEmissionMTD: 1262815.00,
+            totalElectricity: 521466.00,
+            specificWaterConsumption: 2.81,
+            maleEmployees: 11106,
+            femaleEmployees: 1411
+        };
+
+        window.onload = function() {
+            // --- DYNAMIC INFO PANEL CONTENT ---
+            const currentHour = new Date().getHours();
+
+            // Set Month Display
+            const monthDisplayEl = document.getElementById('month-display');
+            if (monthDisplayEl) {
+                const date = new Date(latestMonthData.ym + '-02'); // Use day 02 to avoid timezone issues
+                const monthYear = date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+                monthDisplayEl.textContent = monthYear;
+            }
+
+            // Set Greeting with Icon
+            const greetingDisplayEl = document.getElementById('greeting-display');
+            if (greetingDisplayEl) {
+                let greeting = '';
+                let iconSvg = '';
+
+                if (currentHour >= 5 && currentHour < 12) {
+                    greeting = 'Good Morning';
+                    iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
+                } else if (currentHour >= 12 && currentHour < 17) {
+                    greeting = 'Good Afternoon';
+                    iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
+                } else if (currentHour >= 17 && currentHour < 21) {
+                    greeting = 'Good Evening';
+                    iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10V3M12 21v-2m-7.07-2.93l1.41-1.41M4.93 4.93l1.41 1.41M21 12h-2M5 12H3m15.07 4.07l-1.41-1.41M17.66 6.34l-1.41 1.41M4 16h16" /></svg>`;
+                } else {
+                    greeting = 'Good Night';
+                    iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+                }
+                greetingDisplayEl.innerHTML = `${iconSvg}<span>${greeting}</span>`;
+            }
+            
+            // --- CALCULATE METRICS ---
+
+            // 1. Production in Million Tonnes (MnT)
+            const productionMnT = latestMonthData.productionMTD / 1_000_000;
+
+            // 2. CO2 Intensity
+            const co2Intensity = latestMonthData.totalAbsEmissionMTD / latestMonthData.productionMTD;
+
+            // 3. Energy Intensity
+            const energyIntensity = latestMonthData.totalElectricity / latestMonthData.productionMTD;
+
+            // 4. Water Intensity (already provided)
+            const waterIntensity = latestMonthData.specificWaterConsumption;
+
+            // 5. Diversity Percentage
+            const totalEmployees = latestMonthData.maleEmployees + latestMonthData.femaleEmployees;
+            const diversityPercentage = (latestMonthData.femaleEmployees / totalEmployees) * 100;
+
+            // --- UPDATE THE DOM ---
+            document.getElementById('production-value').textContent = productionMnT.toFixed(2);
+            document.getElementById('co2-value').textContent = co2Intensity.toFixed(2);
+            document.getElementById('energy-value').textContent = energyIntensity.toFixed(2);
+            document.getElementById('water-value').textContent = waterIntensity.toFixed(2);
+            document.getElementById('diversity-value').textContent = diversityPercentage.toFixed(1);
+        };
+    </script>
+</body>
+</html>

@@ -29,7 +29,7 @@
             transition: background-color 0.3s ease;
         }
         #dashboard-container {
-            width: 1150px;
+            width: 1200px;
             height: 200px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden; /* Ensure content doesn't spill out */
@@ -38,7 +38,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-gray-900">
 
     <!-- Main Dashboard Container with fixed dimensions --><div id="dashboard-container" class="relative bg-white dark:bg-gray-800 rounded-lg flex items-center p-4">
         
@@ -58,7 +58,7 @@
                 <p class="text-md text-gray-600 dark:text-gray-300">ESG Pulse Monitor</p>
                 <hr class="my-3 border-gray-200 dark:border-gray-600 w-full">
                 <p id="month-display" class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">September 2025</p>
-                <p id="greeting-display" class="text-md text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><span>Good Afternoon</span></p>
+                <p id="greeting-display" class="text-md text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><span>Good Morning</span></p>
             </div>
 
             <!-- Metric 1: Production --><div class="relative flex flex-col justify-center items-center">
@@ -187,9 +187,11 @@
 
             // Manual toggle event listener
             themeToggle.addEventListener('click', () => {
-                const isCurrentlyDark = document.documentElement.classList.contains('dark');
-                const newTheme = isCurrentlyDark ? 'light' : 'dark';
+                // Determine the new theme based on the current state
+                const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                // Save the user's preference
                 localStorage.setItem('theme', newTheme);
+                // Apply the new theme
                 applyTheme(newTheme);
             });
             
@@ -253,3 +255,4 @@
     </script>
 </body>
 </html>
+

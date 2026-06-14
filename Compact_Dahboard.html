@@ -63,7 +63,7 @@
                 <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 tracking-wide">AM/NS INDIA</h2>
                 <p class="text-md text-gray-600 dark:text-gray-300">ESG Pulse Monitor</p>
                 <hr class="my-3 border-gray-200 dark:border-gray-600 w-full">
-                <p id="month-display" class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">February 2026</p>
+                <p id="month-display" class="text-lg font-semibold text-indigo-600 dark:text-indigo-400">April 2026</p>
                 <p id="greeting-display" class="text-md text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-2">--</p>
             </div>
 
@@ -82,7 +82,7 @@
                 </svg>
                 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Production</p>
                 <p class="text-4xl font-bold text-gray-800 dark:text-gray-100 mt-1">
-                    <span id="production-value">0.54</span>
+                    <span id="production-value">0.65</span>
                     <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">MnT</span>
                 </p>
             </div>
@@ -101,7 +101,7 @@
                 </svg>
                 <p class="text-base font-medium text-gray-500 dark:text-gray-400">CO₂ Intensity</p>
                 <p class="text-4xl font-bold text-cyan-600 dark:text-cyan-400 mt-1">
-                    <span id="co2-value">2.22</span>
+                    <span id="co2-value">2.05</span>
                     <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">tCO₂/tcs</span>
                 </p>
             </div>
@@ -113,7 +113,7 @@
                 </svg>
                 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Energy Intensity</p>
                 <p class="text-4xl font-bold text-green-600 dark:text-green-400 mt-1">
-                    <span id="energy-value">1.13</span>
+                    <span id="energy-value">1.00</span>
                      <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">MWh/tcs</span>
                 </p>
             </div>
@@ -133,7 +133,7 @@
                 </svg>
                 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Water Intensity</p>
                 <p class="text-4xl font-bold text-blue-600 dark:text-blue-400 mt-1">
-                    <span id="water-value">3.07</span>
+                    <span id="water-value">3.00</span>
                     <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">m³/tcs</span>
                 </p>
             </div>
@@ -145,7 +145,7 @@
                 </svg>
                 <p class="text-base font-medium text-gray-500 dark:text-gray-400">Diversity</p>
                 <p class="text-4xl font-bold text-purple-600 dark:text-purple-400 mt-1">
-                    <span id="diversity-value">11.2</span>
+                    <span id="diversity-value">11.1</span>
                      <span class="text-lg font-semibold text-gray-500 dark:text-gray-400 align-baseline">%</span>
                 </p>
             </div>
@@ -163,9 +163,9 @@
     </div>
 
     <script>
-        // Data for March 2026
+        // Data for April 2026
         const latestMonthData = {
-            displayDate: 'March 2026',
+            displayDate: 'April 2026',
             production: 0.65,
             co2: 2.05,
             energy: 1.00,
@@ -179,7 +179,6 @@
             const darkIcon = document.getElementById('theme-icon-dark');  // Moon icon
 
             // --- THEME LOGIC ---
-
             function applyTheme(theme) {
                 const isDark = theme === 'dark';
                 // Use the 'force' parameter of toggle for a more robust state change
@@ -247,7 +246,6 @@
             }
             
             // --- UPDATE METRICS ---
-            // Direct assignment since calculations are pre-done
             document.getElementById('production-value').textContent = latestMonthData.production.toFixed(2);
             document.getElementById('co2-value').textContent = latestMonthData.co2.toFixed(2);
             document.getElementById('energy-value').textContent = latestMonthData.energy.toFixed(2);
